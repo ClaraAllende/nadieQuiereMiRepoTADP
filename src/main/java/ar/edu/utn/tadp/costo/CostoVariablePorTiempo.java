@@ -5,33 +5,33 @@ import java.math.BigDecimal;
 import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
- * Calcula costo fijo.
+ * Calcula costo variable por tiempo de la reunion.
  * <p>
  * Implementa patron Singleton.
  * 
  * @version 11-05-2012
  */
-public class CostoFijo implements Costo {
+public class CostoVariablePorTiempo implements Costo {
 
 	// Instancia es unica para la clase.
-	private static CostoFijo instancia;
+	private static CostoVariablePorTiempo instancia;
 
 	/**
 	 * No tiene contructor publico.
 	 */
-	private CostoFijo() {
+	private CostoVariablePorTiempo() {
 		super();
 	}
 
 	/**
 	 * Forma unica de obtener instancia de la clase.
 	 * 
-	 * @return Instancia unica de <code>CostoFijo</code>
+	 * @return Instancia unica de <code>CostoVariablePorTiempo</code>
 	 */
-	public CostoFijo getInstancia() {
+	public CostoVariablePorTiempo getInstancia() {
 		// Lo hacemos "lazy"
 		if (instancia == null) {
-			instancia = new CostoFijo();
+			instancia = new CostoVariablePorTiempo();
 		}
 		return instancia;
 	}
