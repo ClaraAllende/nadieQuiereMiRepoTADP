@@ -1,13 +1,10 @@
 package ar.edu.utn.tadp.empresa;
-
+import ar.edu.utn.tadp.reunion.*;
+import ar.edu.utn.tadp.recurso.*;
+import ar.edu.utn.tadp.excepcion.*;
+import ar.edu.utn.tadp.criterio.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import ar.edu.utn.tadp.criterio.Requisito;
-import ar.edu.utn.tadp.excepcion.ExcepcionParaUsuario;
-import ar.edu.utn.tadp.recurso.Persona;
-import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
@@ -16,10 +13,10 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<>();
 
-	public Reunion createReunion(Persona anfitrion, List<Requisito> criterios) {
+	public Reunion createReunion(Persona anfitrion, List<Criterio> criterios) {
 		try {
 			// TODO Auto-generated method stub
-		} catch (ExcepcionParaUsuario e) {
+		} catch (UserException e) {
 			// TODO: handle exception
 		}
 		return null;

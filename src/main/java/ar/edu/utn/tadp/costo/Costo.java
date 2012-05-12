@@ -5,9 +5,9 @@ import java.math.BigDecimal;
 import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
- * Interfaz para las estrategias del caclulo de costo.
+ * Interfaz para las estrategias del cálculo de costo.
  * <p>
- * Implementa patron Strategy.
+ * Implementa patrón Strategy.
  * 
  * @version 11-05-2012
  */

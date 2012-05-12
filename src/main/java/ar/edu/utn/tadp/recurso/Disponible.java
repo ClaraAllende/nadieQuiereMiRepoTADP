@@ -1,8 +1,9 @@
 package ar.edu.utn.tadp.recurso;
 
+
 /**
- * Interfaz para lso objetos que pueden estar ocupados.
+ * Interfaz para los objetos que pueden estar ocupados.
  */
 public interface Disponible {
-	// TODO
+	//TODO: definir el contrato 
 }
