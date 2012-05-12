@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class Empresa {
 
-	private List<Recurso> recursos = new ArrayList<>();
+	private List<Recurso> recursos = new ArrayList<Recurso>();
 
 	public Reunion createReunion(Persona anfitrion, List<Criterio> criterios) {
 		try {
