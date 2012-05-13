@@ -14,7 +14,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
  */
 public class Empresa {
 
-	private List<Recurso> recursos = new ArrayList<>();
+	private List<Recurso> recursos = new ArrayList<Recurso>();
 
 	public Reunion createReunion(Persona anfitrion, List<Requisito> criterios) {
 		try {
