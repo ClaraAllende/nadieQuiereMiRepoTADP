@@ -7,7 +7,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
 
-public class Agenda {
+import ar.edu.utn.tadp.recurso.Disponible;
+
+public class Agenda implements Disponible {
 	/*
 	 * Constantes 
 	 */
@@ -62,9 +64,10 @@ public class Agenda {
 				return intervalo;
 			}
 		}
-		throw new RuntimeException();
-		//TODO generar excepcion propia.
+		throw new NoSuchIntervalException();
 	}
+
+
 
 
 }
