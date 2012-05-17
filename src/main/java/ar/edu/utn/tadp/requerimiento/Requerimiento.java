@@ -1,7 +1,12 @@
 package ar.edu.utn.tadp.requerimiento;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
 
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Recurso;
@@ -19,6 +24,7 @@ import com.google.common.collect.Sets;
 public class Requerimiento {
 
 	private Collection<Propiedad> condiciones;
+	private Collection<Recurso> meSatisfacen;
 
 	public Requerimiento(Collection<Propiedad> condiciones) {
 		this.condiciones = condiciones;
@@ -58,5 +64,19 @@ public class Requerimiento {
 
 	public void agregarCondiciones(Set<Propiedad> unasCondiciones) {
 		this.condiciones = unasCondiciones;
+	}
+
+	public void buscaLosQueTeSatisfacen(List<Recurso> recursos) {
+		meSatisfacen = this.filtrarConjunto(recursos);
+		
+	}
+
+	public ArrayList<Recurso> teSatisfacenDurante(Hours horas, DateTime vencimiento) {
+		ArrayList<Recurso> recursos = new ArrayList<Recurso>();
+		for (Recurso recurso : meSatisfacen){
+			if (recurso.tenesDisponibleAntesDe(horas, vencimiento)) recursos.add(recurso);
+		}
+		if (recursos.isEmpty()) throw new RuntimeException();
+		return recursos;
 	}
 }

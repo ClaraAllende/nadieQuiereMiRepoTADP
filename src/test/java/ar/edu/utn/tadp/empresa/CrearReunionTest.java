@@ -19,7 +19,6 @@ public class CrearReunionTest {
 	 */
 	@Before
 	public void crearContexto() {
-		// TODO
 	}
 
 	/**
@@ -28,7 +27,6 @@ public class CrearReunionTest {
 	 */
 	@Test
 	public void creaReunionParaIntegrantesDeUnProyecto() {
-		// TODO
 	}
 
 	/**

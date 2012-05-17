@@ -4,8 +4,14 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
+
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.propiedad.Propiedad;
+
+
+
 
 /**
  * Representa a todos los recursos de la empresa, tanto humanos como no.
@@ -44,5 +50,9 @@ public class Recurso {
 
 	public void setAgenda(Agenda agenda) {
 		this.agenda = agenda;
+	}
+
+	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {
+		return this.agenda.tenesDisponibleAntesDe(horas,vencimiento) ;
 	}
 }
