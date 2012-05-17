@@ -25,5 +25,7 @@ public class RangoTest {
 	public void test() {
 		Assert.assertTrue(periodo.equals(periodo2));
 	}
-
+/*
+ * No entiendo nada de git, me está rompiendo la cabeza.
+ */
 }
