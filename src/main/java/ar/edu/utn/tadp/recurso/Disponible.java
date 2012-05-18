@@ -1,9 +1,29 @@
 package ar.edu.utn.tadp.recurso;
 
+import java.util.List;
 
-/**
- * Interfaz para los objetos que pueden estar ocupados.
- */
+import org.joda.time.Duration;
+import org.joda.time.Interval;
+
+
 public interface Disponible {
-	//TODO: definir el contrato 
+	
+	
+	/**
+	 * Interfaz para los objetos que pueden estar ocupados.
+	 */
+	
+//	Ocuparse durante un intervalo
+	public void ocupateDurante(Interval unIntervalo);
+	
+//	Saber si está disponible o no durante un intervalo
+	public boolean disponibleDurante (Interval unIntervalo);
+	
+//	conocer sus intervalos disponibles
+	public List<Interval> horariosDisponibles();
+	
+//	saber si tiene un intervalo disponible de una duración dada, si no la tiene tira exception
+	public Interval intervaloDisponibleDe(Duration unaDuracion);
+
+
 }
