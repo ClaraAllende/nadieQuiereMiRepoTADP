@@ -2,7 +2,7 @@ package ar.edu.utn.tadp.recurso;
 
 
 
-public class Recurso implements Disponible {
+public class Recurso {
 	//TODO: implementar la clase
 	}
 
