@@ -13,11 +13,7 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<Recurso>();
 
-<<<<<<< HEAD
-	public Reunion createReunion(Persona anfitrion, List<Seleccionador> criterios) {
-=======
 	public Reunion createReunion(Persona anfitrion, List<Requerimiento> criterios) {
->>>>>>> 94ff1662e8f9f70f38ca1e49badecf615bf65d6f
 		try {
 			// TODO Auto-generated method stub
 		} catch (UserException e) {

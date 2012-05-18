@@ -7,11 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
 
-<<<<<<< HEAD
 public class Agenda{
-=======
-public class Agenda implements Disponible {
->>>>>>> 94ff1662e8f9f70f38ca1e49badecf615bf65d6f
+
 	/*
 	 * Constantes 
 	 */

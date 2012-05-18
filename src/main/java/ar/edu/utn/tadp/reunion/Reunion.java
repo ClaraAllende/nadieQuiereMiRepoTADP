@@ -7,9 +7,6 @@ import java.util.Collection;
 import ar.edu.utn.tadp.costos.Costeable;
 
 public class Reunion {
-<<<<<<< HEAD
-	// TODO Falta definir la interfaz
-=======
 
 	public long getCantidadDePersonasQueNecesitanTransporte() {
 		return 0;
@@ -33,5 +30,4 @@ public class Reunion {
 	private Collection<Costeable> dameListDeLosCosteables() {
 		return new ArrayList<Costeable>();
 	}
->>>>>>> 94ff1662e8f9f70f38ca1e49badecf615bf65d6f
 }
