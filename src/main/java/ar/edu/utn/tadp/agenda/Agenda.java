@@ -15,7 +15,7 @@ public class Agenda implements Disponible {
 	 */
  	public static DateTime FUTURO = new DateTime(java.lang.Long.MAX_VALUE);
 	
-	private List<Interval> horariosOcupados;
+	private List<Interval> horariosOcupados = new ArrayList<Interval>();
 	
 	public List<Interval> getHorariosOcupados() {
 		return horariosOcupados;
