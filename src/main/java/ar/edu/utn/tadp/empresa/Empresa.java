@@ -13,7 +13,7 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<Recurso>();
 
-	public Reunion createReunion(Persona anfitrion, List<Criterio> criterios) {
+	public Reunion createReunion(Persona anfitrion, List<Seleccionador> criterios) {
 		try {
 			// TODO Auto-generated method stub
 		} catch (UserException e) {
