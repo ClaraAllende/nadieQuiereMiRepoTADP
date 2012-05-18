@@ -1,13 +1,11 @@
 package ar.edu.utn.tadp.recurso;
 
-import ar.edu.utn.tadp.agenda.*;
-import ar.edu.utn.tadp.propiedad.*;
-import java.util.List;
-
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
-import com.google.common.collect.Iterables;
+
+import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.propiedad.Propiedad;
 
 
 public class Recurso  {
