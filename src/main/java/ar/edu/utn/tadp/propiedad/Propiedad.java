@@ -30,6 +30,12 @@ public class Propiedad {
 	@Override
 	public boolean equals(Object unObjeto) {
 		Propiedad otraPropiedad = (Propiedad) unObjeto;
+<<<<<<< HEAD
+=======
+		if (!(unObjeto instanceof Propiedad)) {
+			return false;
+		}
+>>>>>>> 94ff1662e8f9f70f38ca1e49badecf615bf65d6f
 		return this.getTipo().toLowerCase()
 				.equals(otraPropiedad.getTipo().toLowerCase())
 				&& this.getValor().toLowerCase()
