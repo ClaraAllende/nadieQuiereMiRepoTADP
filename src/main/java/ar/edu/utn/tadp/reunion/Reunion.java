@@ -1,5 +1,12 @@
 package ar.edu.utn.tadp.reunion;
 
 public class Reunion {
-	// TODO Falta definir la interfaz
+
+	public long getCantidadDePersonasQueNecesitanTransporte() {
+		return 0;
+	}
+
+	public long getDuracionDeReunion() {
+		return 0;
+	}
 }
