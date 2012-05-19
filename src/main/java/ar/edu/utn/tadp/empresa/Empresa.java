@@ -22,7 +22,8 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<Recurso>();
 
-	public Reunion createReunion(Persona anfitrion, List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
+	public Reunion createReunion(Persona anfitrion,
+			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
 		this.satisfaceRequerimientos(criterios);
@@ -32,17 +33,17 @@ public class Empresa {
 
 		try {
 			asistentes = this.seleccionarCandidatos(candidatos);
-		} catch (NoHayAsistentesDisponiblesException e){
+		} catch (NoHayAsistentesDisponiblesException e) {
 			throw new CantMakeReunionException(e);
 		}
 
 		/*
-		 * Se supone que ocuparAsistente no puede fallar, por eso no va
-		 * con try/catch si falla estamos al horno, porque estan dadas las
+		 * Se supone que ocuparAsistente no puede fallar, por eso no va con
+		 * try/catch si falla estamos al horno, porque estan dadas las
 		 * condiciones para que no falle nunca.
 		 */
 		Interval intervalo = ocuparAsistentes(horas, asistentes);
-		
+
 		return new Reunion(anfitrion, asistentes, intervalo);
 	}
 
@@ -50,16 +51,17 @@ public class Empresa {
 		Interval intervalo = new Interval(0, 0);
 
 		for (Recurso recurso : asistentes) {
-			intervalo = recurso.intervaloDisponibleDe(horas.toStandardDuration());
-			intervalo = intervalo.withEnd(intervalo.getStart().plus(horas.toStandardDuration()));
+			intervalo = recurso.intervaloDisponibleDe(horas
+					.toStandardDuration());
+			intervalo = intervalo.withEnd(intervalo.getStart().plus(
+					horas.toStandardDuration()));
 
-			if (todosLosAsistentesTienenDisponibleElIntervalo(asistentes, intervalo)) {
+			if (todosLosAsistentesTienenDisponibleElIntervalo(asistentes,
+					intervalo)) {
 				// si lo tienen, ocupo a todos los recursos.
 				recurso.getAgenda().ocupateDurante(intervalo);
 			}
-
 		}
-		
 		for (Recurso recurso : asistentes) {
 			recurso.ocupateDurante(intervalo);
 		}
@@ -67,8 +69,8 @@ public class Empresa {
 	}
 
 	private boolean todosLosAsistentesTienenDisponibleElIntervalo(
-			ArrayList<Recurso> asistentes, final Interval intervalo ) {
-		
+			ArrayList<Recurso> asistentes, final Interval intervalo) {
+
 		return Iterators.all(asistentes.iterator(), new Predicate<Recurso>() {
 
 			@Override
@@ -76,17 +78,16 @@ public class Empresa {
 				return recurso.getAgenda().disponibleDurante(intervalo);
 			}
 		});
-		
 	}
 
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
 			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
-		
+
 		for (Requerimiento requerimiento : criterios) {
-			candidatos.add(requerimiento.teSatisfacenDurante(horas, vencimiento));
+			candidatos.add(requerimiento
+					.teSatisfacenDurante(horas, vencimiento));
 		}
-		
 		return candidatos;
 	}
 

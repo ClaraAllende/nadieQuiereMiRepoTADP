@@ -19,6 +19,8 @@ public class AgendaTest {
 	private Interval intervalo1;
 	private Interval intervalo2;
 	private Interval intervalo3;
+	private Interval intervalo4;
+	private Interval intervalo5;
 	private DateTime fecha1;
 	private DateTime fecha2;
 	private DateTime fecha3;
@@ -29,15 +31,17 @@ public class AgendaTest {
 	public void setUp() {
 		agenda = new Agenda();
 		
-		fecha1 = new DateTime(2012,05,12,8,00,00);
-		fecha2 = new DateTime(2012,05,12,9,30,00);
-		fecha3 = new DateTime(2012,05,12,12,30,00);
-		fecha4 = new DateTime(2012,05,12,15,00,00);
-		fecha5 = new DateTime(2012,05,12,21,45,00);
+		fecha1 = new DateTime(2012,10,12,8,00,00);
+		fecha2 = new DateTime(2012,10,12,9,30,00);
+		fecha3 = new DateTime(2012,10,12,12,30,00);
+		fecha4 = new DateTime(2012,10,12,15,00,00);
+		fecha5 = new DateTime(2012,10,12,21,45,00);
 		
 		intervalo1 = new Interval(fecha1, fecha3);
-		intervalo2 = new Interval(DateTime.now(),Agenda.FUTURO);
+		intervalo2 = new Interval(Agenda.HOY,Agenda.FUTURO);
 		intervalo3 = new Interval(fecha4, fecha5);
+		intervalo4 = new Interval(Agenda.HOY, fecha1);
+		intervalo5 = new Interval(fecha3, Agenda.FUTURO);
 	}
 
 	@Test
@@ -54,14 +58,17 @@ public class AgendaTest {
 	@Test
 	public void testHorariosDisponibles() {
 		List<Interval> al = new ArrayList<Interval>();
-		al.add(intervalo2);
+		al.add(intervalo4);
+		al.add(intervalo5);
+		agenda.ocupateDurante(intervalo1);
 		Assert.assertEquals(agenda.horariosDisponibles(), al);
 	}
 
 	@Test
 	public void testIntervaloDisponibleDe() {
+		agenda.ocupateDurante(intervalo1);
 		Interval interval = agenda.intervaloDisponibleDe(intervalo1.toDuration());
-		boolean condition = interval.equals(intervalo2);
+		boolean condition = interval.equals(intervalo4);
 		Assert.assertTrue(condition);
 		
 		//se puede refactorizar todo para que quede en una linea, pero se ve mejor así.
