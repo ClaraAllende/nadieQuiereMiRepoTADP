@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.recurso;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,25 +11,35 @@ import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.costos.Costeable;
+import ar.edu.utn.tadp.costos.Costo;
+import ar.edu.utn.tadp.costos.CostoFijo;
+import ar.edu.utn.tadp.costos.CostoPorPersona;
+import ar.edu.utn.tadp.empresa.Empresa;
 import ar.edu.utn.tadp.propiedad.Propiedad;
+import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Representa a todos los recursos de la empresa, tanto humanos como no.
  * 
  * @version 18-05-2012
  */
-public class Recurso {
+public class Recurso implements Costeable {
+	public static final Recurso CATERING = new Recurso(new CostoFijo(BigDecimal.valueOf(400.00)));
+	public static final Recurso TRANSPORTE = new Recurso(new CostoPorPersona(BigDecimal.valueOf(25.0)));
+	
 	private Agenda agenda = new Agenda();
-	private BigDecimal costoPorHora = new BigDecimal(0);
 	// Propiedades de un Recurso serian TipoRecurso y Edificio
 	private Set<Propiedad> propiedades = new HashSet<Propiedad>();
 
-	public BigDecimal getCostoPorHora() {
-		return costoPorHora;
-	}
+	private Costeable costeable;
 
-	public void setCostoPorHora(BigDecimal costoPorHora) {
-		this.costoPorHora = costoPorHora;
+	public Recurso() {
+		this.costeable = Costo.SIN_COSTO;
+	}
+	
+	public Recurso(Costeable costeable) {
+		this.costeable = costeable;
 	}
 
 	public Set<Propiedad> getPropiedades() {
@@ -65,5 +76,14 @@ public class Recurso {
 
 	public Interval intervaloDisponibleDe(Duration standardDuration) {
 		return this.agenda.intervaloDisponibleDe(standardDuration);
+	}
+
+	@Override
+	public BigDecimal dameTuCostoPara(Reunion reunion) {
+		return this.costeable.dameTuCostoPara(reunion);
+	}
+
+	public void apuntateALaReunion(ArrayList<Recurso> recursos) {
+		recursos.add(this);
 	}
 }

@@ -1,6 +1,8 @@
 package ar.edu.utn.tadp.empresa;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
@@ -30,16 +32,18 @@ public class CrearReunionTest {
 	private Propiedad sectorGerencia = new Propiedad("sector", "gerencia");
 	private Propiedad rolProgramador = new Propiedad("rol", "programador");
 	private Propiedad rolArquitecto = new Propiedad("rol", "Arquitecto");
-	private Propiedad rolGerente = new Propiedad("Rol", "Gerente");
+	private Propiedad rolP = new Propiedad("Rol", "Gerente");
 	private Propiedad edificioCatalinas = new Propiedad("edificio", "catalinas");
 	private Propiedad edificioMadero = new Propiedad("edificio", "Madero");
 	private Propiedad tipoSala = new Propiedad("tipo", "Sala");
+	private Propiedad propiedadProjectLeader = new Propiedad("Rol", "Project Leader");
 	private Persona programador1;
 	private Persona programador2;
 	private Persona programador3;
 	private Persona arquitecto1;
 	private Persona gerente1;
 	private Persona gerente2;
+	private Persona lider;
 	private Recurso sala;
 	private Empresa unaEmpresa;
 
@@ -72,24 +76,31 @@ public class CrearReunionTest {
 		arquitecto1.addPropiedad(sectorDesarrollo);
 		arquitecto1.addPropiedad(edificioCatalinas);
 		gerente1 = new Persona(Rol.GERENTE);
-		gerente1.addPropiedad(rolGerente);
+		gerente1.addPropiedad(rolP);
 		gerente1.addPropiedad(proyectoApollo);
 		gerente1.addPropiedad(sectorGerencia);
 		gerente1.addPropiedad(edificioMadero);
 		gerente2 = new Persona(Rol.GERENTE);
-		gerente2.addPropiedad(rolGerente);
+		gerente2.addPropiedad(rolP);
 		gerente2.addPropiedad(proyectoMir);
 		gerente2.addPropiedad(sectorGerencia);
 		gerente2.addPropiedad(edificioMadero);
 		gerente3 = new Persona(Rol.GERENTE);
-		gerente3.addPropiedad(rolGerente);
+		gerente3.addPropiedad(rolP);
 		gerente3.addPropiedad(proyectoShuttle);
 		gerente3.addPropiedad(sectorGerencia);
 		gerente3.addPropiedad(edificioMadero);
+		lider = new Persona(Rol.PROYECT_LIDER);
+		lider.addPropiedad(propiedadProjectLeader);
+		lider.addPropiedad(proyectoShuttle);
+		lider.addPropiedad(edificioCatalinas);
+		lider.addPropiedad(edificioMadero);
+		
 		sala = new Recurso();
 		sala.addPropiedad(tipoSala);
 		sala.addPropiedad(edificioMadero);
 		unaEmpresa = new Empresa();
+		unaEmpresa.addRecurso(lider);
 		unaEmpresa.addRecurso(arquitecto1);
 		unaEmpresa.addRecurso(gerente1);
 		unaEmpresa.addRecurso(gerente2);
@@ -98,6 +109,7 @@ public class CrearReunionTest {
 		unaEmpresa.addRecurso(programador3);
 		unaEmpresa.addRecurso(sala);
 	}
+	
 
 	/**
 	 * Se reserva una sala para todos los integrantes de un proyecto
@@ -138,7 +150,7 @@ public class CrearReunionTest {
 		Requerimiento reqSala = new Requerimiento(pripiedadesSala);
 
 		ArrayList<Propiedad> pripiedadesGerente = new ArrayList<Propiedad>();
-		pripiedadesGerente.add(rolGerente);
+		pripiedadesGerente.add(rolP);
 		Requerimiento reqGerente1 = new Requerimiento(pripiedadesGerente);
 		Requerimiento reqGerente2 = new Requerimiento(pripiedadesGerente);
 		Requerimiento reqGerente3 = new Requerimiento(pripiedadesGerente);
@@ -158,8 +170,34 @@ public class CrearReunionTest {
 	 * Se reserva una sala para 3 programadores y un project leader, la sala se
 	 * reserva y se agrega el catering automaticamente.
 	 */
+	@Test
 	public void creaReunionCon3ProgramadoresYProjectLeader() {
-		// TODO
+		
+		Collection<Propiedad> propiedadesSala = new ArrayList<Propiedad>();
+		propiedadesSala.add(tipoSala);
+		
+		Requerimiento sala = new Requerimiento(propiedadesSala );
+		Collection<Propiedad> propiedadesProjectLeader = new ArrayList<Propiedad>();
+		
+		propiedadesProjectLeader.add(propiedadProjectLeader);
+		lider.addPropiedad(propiedadProjectLeader);
+		Requerimiento requerimientoProjectLeader = new Requerimiento(propiedadesProjectLeader );
+	
+		ArrayList<Propiedad> propiedadesProgramador = new ArrayList<Propiedad>();
+		propiedadesProgramador.add(rolProgramador);
+		Requerimiento reqProgramador1 = new Requerimiento(propiedadesProgramador);
+		Requerimiento reqProgramador2 = new Requerimiento(propiedadesProgramador);
+		Requerimiento reqProgramador3 = new Requerimiento(propiedadesProgramador);
+		
+		List<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
+		requerimientos.add(requerimientoProjectLeader);
+		requerimientos.add(reqProgramador1);
+		requerimientos.add(reqProgramador2);
+		requerimientos.add(reqProgramador3);
+		Reunion reunion = unaEmpresa.createReunion(lider, requerimientos , Hours.THREE, DateTime.now().plusDays(2));
+		
+		Assert.assertNotNull(reunion);
+		Assert.assertTrue(reunion.tieneCatering());
 	}
 
 	/**
