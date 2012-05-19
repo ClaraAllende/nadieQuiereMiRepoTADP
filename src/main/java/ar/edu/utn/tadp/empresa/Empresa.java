@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
@@ -22,71 +23,81 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<Recurso>();
 
-	public Reunion createReunion(Persona anfitrion, List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
+	public Reunion createReunion(Persona anfitrion,
+			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
 		this.satisfaceRequerimientos(criterios);
 		candidatos = seleccionarCandidatos(criterios, horas, vencimiento);
 
-		ArrayList<Recurso> recursos = new ArrayList<Recurso>();
-
-		try {
-			recursos = this.seleccionarCandidatos(candidatos);
-		} catch (NoHayAsistentesDisponiblesException e){
-			throw new CantMakeReunionException(e);
-		}
+		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
+		asistentes = this.seleccionarCandidatos(candidatos);
 
 		/*
-		 * Se supone que ocuparAsistente no puede fallar, por eso no va
-		 * con try/catch si falla estamos al horno, porque estan dadas las
+		 * Se supone que ocuparAsistente no puede fallar, por eso no va con
+		 * try/catch si falla estamos al horno, porque estan dadas las
 		 * condiciones para que no falle nunca.
 		 */
-		Interval intervalo = ocuparAsistentes(horas, recursos);
-		
-		return new Reunion(anfitrion, recursos, intervalo);
+
+		Interval intervalo = ocuparAsistentes(horas, asistentes);
+
+		return new Reunion(anfitrion, asistentes, intervalo);
+
+	}
+
+	public void removeRecurso(Recurso recurso) {
+		this.recursos.remove(recurso);
+	}
+
+	public void removeAllRecurso() {
+		this.recursos.removeAll(this.recursos);
+	}
+
+	/*
+	 * Metodos privados, auxiliares de generarReunion
+	 */
+
+	private boolean todosDisponiblesDurante(ArrayList<Recurso> asistentes,
+			final Interval intervalo) {
+		Predicate<? super Recurso> predicate = new Predicate<Recurso>() {
+
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.getAgenda().disponibleDurante(intervalo);
+			}
+		};
+		return Iterators.all(asistentes.iterator(), predicate);
 	}
 
 	private Interval ocuparAsistentes(Hours horas, ArrayList<Recurso> asistentes) {
 		Interval intervalo = new Interval(0, 0);
 
 		for (Recurso recurso : asistentes) {
-			intervalo = recurso.intervaloDisponibleDe(horas.toStandardDuration());
-			intervalo = intervalo.withEnd(intervalo.getStart().plus(horas.toStandardDuration()));
-
-			if (todosLosAsistentesTienenDisponibleElIntervalo(asistentes, intervalo)) {
-				// si lo tienen, ocupo a todos los recursos.
-				recurso.getAgenda().ocupateDurante(intervalo);
-			}
-
+			intervalo = recurso.intervaloDisponibleDe(horas
+					.toStandardDuration());
+			intervalo = intervalo.withEnd(intervalo.getStart().plus(
+					horas.toStandardDuration()));
+			if (todosDisponiblesDurante(asistentes, intervalo))
+				break;
 		}
-		
 		for (Recurso recurso : asistentes) {
 			recurso.ocupateDurante(intervalo);
 		}
 		return intervalo;
 	}
 
-	private boolean todosLosAsistentesTienenDisponibleElIntervalo(
-			ArrayList<Recurso> asistentes, final Interval intervalo ) {
-		
-		return Iterators.all(asistentes.iterator(), new Predicate<Recurso>() {
-
-			@Override
-			public boolean apply(Recurso recurso) {
-				return recurso.getAgenda().disponibleDurante(intervalo);
-			}
-		});
-		
+	public void addRecurso(Recurso recurso) {
+		this.recursos.add(recurso);
 	}
 
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
 			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
-		
+
 		for (Requerimiento requerimiento : criterios) {
-			candidatos.add(requerimiento.teSatisfacenDurante(horas, vencimiento));
+			candidatos.add(requerimiento
+					.teSatisfacenDurante(horas, vencimiento));
 		}
-		
 		return candidatos;
 	}
 
@@ -98,26 +109,14 @@ public class Empresa {
 
 	private ArrayList<Recurso> seleccionarCandidatos(
 			ArrayList<ArrayList<Recurso>> candidatos) {
-		
+
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		for (ArrayList<Recurso> recursos : candidatos) {
 			Recurso recurso = recursos.get(0);
 			recurso.apuntateALaReunion(asistentes);
 		}
 		if (asistentes.isEmpty())
-			throw new NoHayAsistentesDisponiblesException();
+			throw new UserException("No hay candidatos disponibles");
 		return asistentes;
-	}
-
-	public void addRecurso(Recurso recurso) {
-		this.recursos.add(recurso);
-	}
-
-	public void removeRecurso(Recurso recurso) {
-		this.recursos.remove(recurso);
-	}
-
-	public void removeAllRecurso() {
-		this.recursos.removeAll(this.recursos);
 	}
 }
