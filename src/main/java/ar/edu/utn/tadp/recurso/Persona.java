@@ -10,6 +10,10 @@ public class Persona extends Recurso implements Costeable {
 
 	private Rol rol;
 
+	public Persona(Rol rol) {
+		this.rol = rol;
+	}
+
 	@Override
 	public BigDecimal dameTuCostoPara(Reunion reunion) {
 		return this.rol.getCostoPorHora().dameTuCostoPara(reunion);
