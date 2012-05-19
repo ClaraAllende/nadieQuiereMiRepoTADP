@@ -1,9 +1,5 @@
 package ar.edu.utn.tadp.empresa;
 
-import ar.edu.utn.tadp.requerimiento.*;
-import ar.edu.utn.tadp.reunion.*;
-import ar.edu.utn.tadp.recurso.*;
-import ar.edu.utn.tadp.excepcion.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +7,13 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
-import com.google.common.collect.Collections2;
+import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
-import com.google.common.collect.Iterators;
+import ar.edu.utn.tadp.requerimiento.Requerimiento;
 import ar.edu.utn.tadp.reunion.Reunion;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
@@ -55,11 +54,9 @@ public class Empresa {
 			intervalo = intervalo.withEnd(intervalo.getStart().plus(horas.toStandardDuration()));
 
 			if (todosLosAsistentesTienenDisponibleElIntervalo(asistentes, intervalo)) {
-
 				// si lo tienen, ocupo a todos los recursos.
 				recurso.getAgenda().ocupateDurante(intervalo);
 			}
-
 
 		}
 		
@@ -85,9 +82,11 @@ public class Empresa {
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
 			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
+		
 		for (Requerimiento requerimiento : criterios) {
 			candidatos.add(requerimiento.teSatisfacenDurante(horas, vencimiento));
 		}
+		
 		return candidatos;
 	}
 
