@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
@@ -122,7 +123,7 @@ public class CrearReunionTest {
 	 * Se reserva una sala para 3 gerentes cualquiera para dentro de 2 dias,
 	 * pero falla porque estan todos ocupados.
 	 */
-	@Test
+	@Test (expected = UserException.class)
 	public void fallaCreandoRenionCon3GerentesOcupadosDentroDe2Dias() {
 
 		// Intervalo de ocupacion 5 dias.
