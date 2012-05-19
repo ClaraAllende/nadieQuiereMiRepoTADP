@@ -37,12 +37,10 @@ public class Requerimiento {
 	 *         criterio
 	 */
 	public Collection<Recurso> filtrarConjunto(Collection<Recurso> recursos) {
-		// si, le puse self :P y la tengo que declarar final porque sino se
-		// queja ¬¬
 		final Requerimiento self = this;
 		Predicate<Recurso> p = new Predicate<Recurso>() {
 			public boolean apply(Recurso unRecurso) {
-				return self.cumpleCondicion(unRecurso);
+				return self.cumpleCondiciones(unRecurso);
 			}
 		};
 		return Sets.newHashSet(Iterables.filter(recursos, p));
@@ -52,14 +50,16 @@ public class Requerimiento {
 	 * @return verdadero si todas las condiciones estan incluidas entre las
 	 *         propiedades del recurso, que tendra otras mas.
 	 */
-	// FIXME no cumple con el enunciado!
-	public boolean cumpleCondicion(Recurso unRecurso) {
-		boolean cumple = false;
-		for (Propiedad propiedad : this.condiciones) {
-			// FIXME se esta pisando el valor de "cumple"
-			cumple = Iterables.contains(unRecurso.getPropiedades(), propiedad);
-		}
-		return cumple;
+
+	public boolean cumpleCondiciones(Recurso unRecurso) {
+			final Recurso recursoActual=unRecurso;
+		Predicate<Propiedad> p= new Predicate<Propiedad>(){
+			public boolean apply(Propiedad propiedad){
+				return Iterables.contains(recursoActual.getPropiedades(), propiedad);	
+			}
+		};
+		
+		return Iterables.all(this.condiciones, p);
 	}
 
 	public void agregarCondiciones(Set<Propiedad> unasCondiciones) {
