@@ -16,14 +16,14 @@ public class RequerimientoTest {
 	private Propiedad tipoNotebook = new Propiedad("Tipo", "NoteBook");
 	private Propiedad edificioCatalinas = new Propiedad("edificio", "catalinas");
 	private Propiedad edificioMadero = new Propiedad("edificio", "Madero");
+	private Propiedad edificioX = new Propiedad("edificio", "NoExiste");
 	private Recurso proyector1;
 	private Recurso proyector2;
 	private Recurso proyector3;
 	private Recurso notebook1;
 	private Recurso notebook2;
 	private Recurso notebook3;
-	private ArrayList<Recurso> proyectores;
-	private ArrayList<Recurso> notebooks;
+	private ArrayList<Recurso> recursos;
 	private Requerimiento requerimiento;
 
 	@Before
@@ -46,14 +46,13 @@ public class RequerimientoTest {
 		notebook3 = new Recurso();
 		notebook3.addPropiedad(tipoNotebook);
 		notebook3.addPropiedad(edificioMadero);
-		notebooks = new ArrayList<Recurso>();
-		notebooks.add(notebook1);
-		notebooks.add(notebook2);
-		notebooks.add(notebook3);
-		proyectores = new ArrayList<Recurso>();
-		proyectores.add(proyector1);
-		proyectores.add(proyector2);
-		proyectores.add(proyector3);
+		recursos = new ArrayList<Recurso>();
+		recursos.add(notebook1);
+		recursos.add(notebook2);
+		recursos.add(notebook3);
+		recursos.add(proyector1);
+		recursos.add(proyector2);
+		recursos.add(proyector3);
 	}
 
 	@Test
@@ -65,11 +64,55 @@ public class RequerimientoTest {
 
 		// Filtra.
 		HashSet<Recurso> resultado = new HashSet<Recurso>(
-				requerimiento.filtrarConjunto(proyectores));
+				requerimiento.filtrarConjunto(recursos));
+
+		// Existen en total 3 proyectores.
+		Assert.assertEquals(3, resultado.size());
+	}
+
+	@Test
+	public void buscaTodosLosRecursosDeMadero() {
+		// Crea requerimiento.
+		ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
+		condiciones.add(edificioMadero);
+		requerimiento = new Requerimiento(condiciones);
+
+		// Filtra.
+		HashSet<Recurso> resultado = new HashSet<Recurso>(
+				requerimiento.filtrarConjunto(recursos));
+
+		// Hay hay 1 proyector y 2 notebook en el edificio Madero.
+		Assert.assertEquals(3, resultado.size());
+	}
+
+	@Test
+	public void buscaTodosProyectoresDeMadero() {
+		// Crea requerimiento.
+		ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
+		condiciones.add(tipoProyector);
+		condiciones.add(edificioMadero);
+		requerimiento = new Requerimiento(condiciones);
+
+		// Filtra.
+		HashSet<Recurso> resultado = new HashSet<Recurso>(
+				requerimiento.filtrarConjunto(recursos));
+
+		// Valida el resultado. Solo hay 1 proyector en el edificio Madero.
+		Assert.assertEquals(1, resultado.size());
+	}
+
+	@Test
+	public void buscaLoQueNoExiste() {
+		// Crea requerimiento.
+		ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
+		condiciones.add(edificioX);
+		requerimiento = new Requerimiento(condiciones);
+
+		// Filtra.
+		HashSet<Recurso> resultado = new HashSet<Recurso>(
+				requerimiento.filtrarConjunto(recursos));
 
 		// Valida el resultado.
-		Assert.assertTrue(resultado.containsAll(proyectores));
-		resultado.removeAll(proyectores);
 		Assert.assertTrue(resultado.isEmpty());
 	}
 }

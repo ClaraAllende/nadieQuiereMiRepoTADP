@@ -11,7 +11,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 
 /**
- * Representa un objeto que sabe filtrar a los recursos.
+ * Representa un objeto que sabe filtrar a los recursos. Y tiene cargadas las
+ * condiciones.
  * 
  * @author clari
  */
@@ -42,12 +43,14 @@ public class Requerimiento {
 	}
 
 	/**
-	 * @return verdadero si alguna de las condiciones está incluida en las
-	 *         propiedades del recurso (al menos una)
+	 * @return verdadero si todas las condiciones estan incluidas entre las
+	 *         propiedades del recurso, que tendra otras mas.
 	 */
+	// FIXME no cumple con el enunciado!
 	public boolean cumpleCondicion(Recurso unRecurso) {
 		boolean cumple = false;
 		for (Propiedad propiedad : this.condiciones) {
+			// FIXME se esta pisando el valor de "cumple"
 			cumple = Iterables.contains(unRecurso.getPropiedades(), propiedad);
 		}
 		return cumple;
