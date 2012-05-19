@@ -76,6 +76,10 @@ public class Agenda{
 		return interval.isBefore(vencimiento);
 	}
 
+	public boolean estasOcupadoDurante(Interval intervalo) {
+		return horariosOcupados.contains(intervalo);
+	}
+
 
 
 
