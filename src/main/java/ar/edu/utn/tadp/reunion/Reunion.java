@@ -2,7 +2,6 @@ package ar.edu.utn.tadp.reunion;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.Interval;
@@ -14,13 +13,13 @@ import ar.edu.utn.tadp.recurso.Recurso;
 public class Reunion {
 
 	private Persona host;
-	private List<Recurso> asistentes;
+	private List<Recurso> recursos;
 	private Interval horario;
 
-	public Reunion(Persona anfitrion, ArrayList<Recurso> asistentes,
+	public Reunion(Persona anfitrion, ArrayList<Recurso> recursos,
 			Interval horario) {
 		this.host = anfitrion;
-		this.asistentes = asistentes;
+		this.recursos = recursos;
 		this.horario = horario;
 	}
 
@@ -35,18 +34,14 @@ public class Reunion {
 	public BigDecimal getCostoTotal() {
 		BigDecimal result = BigDecimal.valueOf(0);
 
-		for (Costeable costeable : dameListDeLosCosteables()) {
-			result.add(costeable.dameTuCostoPara(this));
+		for (Costeable costeable : recursos) {
+			result = result.add(costeable.dameTuCostoPara(this));
 		}
 
 		return result;
 	}
 
-	private Collection<Costeable> dameListDeLosCosteables() {
-		return new ArrayList<Costeable>();
-	}
-
 	public boolean tieneCatering() {
-		return asistentes.contains(Recurso.CATERING);
+		return recursos.contains(Recurso.CATERING);
 	}
 }
