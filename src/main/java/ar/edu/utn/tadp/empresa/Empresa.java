@@ -1,8 +1,8 @@
 package ar.edu.utn.tadp.empresa;
+import ar.edu.utn.tadp.requerimiento.*;
 import ar.edu.utn.tadp.reunion.*;
 import ar.edu.utn.tadp.recurso.*;
 import ar.edu.utn.tadp.excepcion.*;
-import ar.edu.utn.tadp.criterio.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<Recurso>();
 
-	public Reunion createReunion(Persona anfitrion, List<Seleccionador> criterios) {
+	public Reunion createReunion(Persona anfitrion, List<Requerimiento> criterios) {
 		try {
 			// TODO Auto-generated method stub
 		} catch (UserException e) {

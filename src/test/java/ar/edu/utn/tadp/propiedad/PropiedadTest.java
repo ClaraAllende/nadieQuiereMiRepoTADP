@@ -30,7 +30,13 @@ public class PropiedadTest {
 	}
 
 	@Test
-	public void esDistintaAOtras() {
+	public void esDistintaDeNull() {
+		Propiedad unaPropiedad = new Propiedad(tipoMayuscula, valorMinuscula);
+		Assert.assertFalse(unaPropiedad.equals(null));
+	}
+
+	@Test
+	public void esDistintaDeOtras() {
 		Propiedad unaPropiedad = new Propiedad(tipoMayuscula, valorMinuscula);
 		Propiedad otraPropiedad1 = new Propiedad(tipoMinuscula + 1,
 				valorMayuscula);

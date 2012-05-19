@@ -7,10 +7,13 @@ import java.util.Set;
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 
-
-public class Recurso  {
+/**
+ * Representa a todos los recursos de la empresa, tanto humanos como no.
+ * 
+ * @version 18-05-2012
+ */
+public class Recurso {
 	private Agenda agenda;
-
 	private BigDecimal costoPorHora = new BigDecimal(0);
 	// Propiedades de un Recurso serian TipoRecurso y Edificio
 	private Set<Propiedad> propiedades = new HashSet<Propiedad>();
@@ -18,7 +21,6 @@ public class Recurso  {
 	public BigDecimal getCostoPorHora() {
 		return costoPorHora;
 	}
-
 
 	public void setCostoPorHora(BigDecimal costoPorHora) {
 		this.costoPorHora = costoPorHora;
@@ -32,4 +34,15 @@ public class Recurso  {
 		this.propiedades = propiedades;
 	}
 
+	public void addPropiedad(Propiedad propiedad) {
+		this.propiedades.add(propiedad);
+	}
+
+	public Agenda getAgenda() {
+		return agenda;
+	}
+
+	public void setAgenda(Agenda agenda) {
+		this.agenda = agenda;
+	}
 }
