@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
+import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 public class Agenda{
@@ -64,6 +65,10 @@ public class Agenda{
 			}
 		}
 		throw new NoSuchIntervalException();
+	}
+
+	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {
+		return this.intervaloDisponibleDe(horas.toStandardDuration()).isBefore(vencimiento);
 	}
 
 
