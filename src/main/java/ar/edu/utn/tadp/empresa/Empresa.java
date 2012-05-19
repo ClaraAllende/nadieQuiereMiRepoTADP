@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
-import ar.edu.utn.tadp.excepcion.UserException;
 import com.google.common.collect.Collections2;
 import ar.edu.utn.tadp.recurso.Recurso;
 import com.google.common.collect.Iterators;
@@ -59,7 +58,7 @@ public class Empresa {
 					horas.toStandardDuration()));
 
 			if (todosLosAsistentesTienenDisponibleElIntervalo(asistentes, intervalo)) {
-				// intervalo dado
+
 				// si lo tienen, ocupo a todos los recursos.
 				recurso.getAgenda().ocupateDurante(intervalo);
 			}
@@ -93,11 +92,7 @@ public class Empresa {
 
 	private void satisfaceRequerimientos(List<Requerimiento> criterios) {
 		for (Requerimiento requerimiento : criterios) {
-			try {
-				requerimiento.buscaLosQueTeSatisfacen(recursos);
-			} catch (UserException e) {
-				// TODO: handle exception
-			}
+			requerimiento.buscaLosQueTeSatisfacen(recursos);
 		}
 	}
 
