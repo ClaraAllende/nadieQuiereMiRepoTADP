@@ -17,7 +17,8 @@ public class Reunion {
 	private List<Recurso> asistentes;
 	private Interval horario;
 
-	public Reunion(Persona anfitrion, ArrayList<Recurso> asistentes, Interval horario) {
+	public Reunion(Persona anfitrion, ArrayList<Recurso> asistentes,
+			Interval horario) {
 		this.host = anfitrion;
 		this.asistentes = asistentes;
 		this.horario = horario;
@@ -31,15 +32,14 @@ public class Reunion {
 	public long getDuracionDeReunion() {
 		return 0;
 	}
-	
+
 	public BigDecimal getCostoTotal() {
 		BigDecimal result = BigDecimal.valueOf(0);
-		
-		for (Costeable costeable : dameListDeLosCosteables())
-		{
+
+		for (Costeable costeable : dameListDeLosCosteables()) {
 			result.add(costeable.dameTuCostoPara(this));
 		}
-		
+
 		return result;
 	}
 
