@@ -71,7 +71,9 @@ public class Agenda{
 	}
 
 	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {
-		return this.intervaloDisponibleDe(horas.toStandardDuration()).isBefore(vencimiento);
+		Interval interval = this.intervaloDisponibleDe(horas.toStandardDuration());
+		interval = interval.withEnd(interval.getStart().plus(horas.toStandardDuration()));
+		return interval.isBefore(vencimiento);
 	}
 
 

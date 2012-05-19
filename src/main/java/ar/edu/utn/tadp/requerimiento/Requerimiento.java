@@ -8,6 +8,7 @@ import java.util.Set;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 
+import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Recurso;
 
@@ -79,7 +80,7 @@ public class Requerimiento {
 				recursos.add(recurso);
 		}
 		if (recursos.isEmpty())
-			throw new RuntimeException();
+			throw new UserException("No hay recurso que satisfaga este requerimiento");
 		return recursos;
 	}
 }

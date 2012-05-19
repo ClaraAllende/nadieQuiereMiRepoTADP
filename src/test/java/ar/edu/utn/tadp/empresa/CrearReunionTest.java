@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
@@ -122,7 +123,7 @@ public class CrearReunionTest {
 	 * Se reserva una sala para 3 gerentes cualquiera para dentro de 2 dias,
 	 * pero falla porque estan todos ocupados.
 	 */
-	@Test
+	@Test(expected = UserException.class)
 	public void fallaCreandoRenionCon3GerentesOcupadosDentroDe2Dias() {
 
 		// Intervalo de ocupacion 5 dias.
@@ -167,8 +168,38 @@ public class CrearReunionTest {
 	 * distintos proyectos, y otra solo con persona de un proyecto X) y luego se
 	 * verifica que el costo sea el correcto.
 	 */
-	public void crea2ReunionesConLosMismosRolesPeroAnfitrionDistinto() {
-		// TODO
+	@Test
+	public void crea2ReunionesConLosMismosRolesPeroDistintoCosto() {
+		ArrayList<Propiedad> condiciones1 = new ArrayList<Propiedad>();
+		condiciones1.add(proyectoApollo);
+		condiciones1.add(edificioMadero);
+		condiciones1.add(rolProgramador);
+		Requerimiento programadorApollo = new Requerimiento(condiciones1);
+
+		ArrayList<Requerimiento> requerimientos1 = new ArrayList<Requerimiento>();
+		requerimientos1.add(programadorApollo);
+
+		// Anfintrion es de Apollo y el invitado tambien
+		Reunion reunionBarata = unaEmpresa.createReunion(gerente1,
+				requerimientos1, Hours.SEVEN, DateTime.now().plusDays(2));
+
+		ArrayList<Propiedad> condiciones2 = new ArrayList<Propiedad>();
+		condiciones2.add(proyectoMir);
+		condiciones2.add(edificioMadero);
+		condiciones2.add(rolProgramador);
+		Requerimiento programadorMir = new Requerimiento(condiciones2);
+
+		ArrayList<Requerimiento> requerimientos2 = new ArrayList<Requerimiento>();
+		requerimientos2.add(programadorMir);
+
+		// Anfintrion es de Apollo y el invitado de Mir
+		Reunion reunionCara = unaEmpresa.createReunion(gerente1,
+				requerimientos2, Hours.SEVEN, DateTime.now().plusDays(2));
+
+		float costoReunionBarata = reunionBarata.getCostoTotal().floatValue();
+		float costoReunionCara = reunionCara.getCostoTotal().floatValue();
+
+		Assert.assertTrue(costoReunionBarata < costoReunionCara);
 	}
 
 	/**
