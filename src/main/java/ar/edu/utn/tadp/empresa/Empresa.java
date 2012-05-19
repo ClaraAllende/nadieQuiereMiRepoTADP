@@ -7,7 +7,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
-import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
@@ -59,9 +58,10 @@ public class Empresa {
 			for (Recurso rec : asistentes) {
 				// le pregunto a todos los recursos si tienen disponible el
 				// intervalo dado
+				// FIXME Ver para que se pisa el "flag"
 				flag = rec.getAgenda().disponibleDurante(intervalo);
 			}
-			if (flag = true) {
+			if (flag) {
 				// si lo tienen, ocupo a todos los recursos.
 				recurso.getAgenda().ocupateDurante(intervalo);
 			}
@@ -82,11 +82,7 @@ public class Empresa {
 
 	private void satisfaceRequerimientos(List<Requerimiento> criterios) {
 		for (Requerimiento requerimiento : criterios) {
-			try {
-				requerimiento.buscaLosQueTeSatisfacen(recursos);
-			} catch (UserException e) {
-				// TODO: handle exception
-			}
+			requerimiento.buscaLosQueTeSatisfacen(recursos);
 		}
 	}
 
