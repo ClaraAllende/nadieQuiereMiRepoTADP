@@ -16,12 +16,12 @@ public class Reunion {
 	private Persona host;
 	private List<Recurso> asistentes;
 	private Interval horario;
+	private Recurso sala;
 
-	public Reunion(Persona anfitrion, ArrayList<Recurso> asistentes, Interval horario) {
+	public Reunion(Persona anfitrion, ArrayList<Recurso> recursos, Interval horario) {
 		this.host = anfitrion;
-		this.asistentes = asistentes;
+		this.asistentes = recursos;
 		this.horario = horario;
-		// TODO Auto-generated constructor stub
 	}
 
 	public long getCantidadDePersonasQueNecesitanTransporte() {
@@ -29,7 +29,7 @@ public class Reunion {
 	}
 
 	public long getDuracionDeReunion() {
-		return 0;
+		return horario.toDuration().getStandardHours();
 	}
 	
 	public BigDecimal getCostoTotal() {

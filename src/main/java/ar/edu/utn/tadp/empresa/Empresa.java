@@ -11,7 +11,9 @@ import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Iterators;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
@@ -50,19 +52,26 @@ public class Empresa {
 //			le pongo quiero que el final del intervalo sea las ghoras despues del comienzo.
 			intervalo = intervalo.withEnd(intervalo.getStart().plus(horas.toStandardDuration()));
 			
-			boolean flag = true;
-//			recorro nuevamente la lista de recursos
-			for (Recurso rec : asistentes){
-//			le pregunto a todos los recursos si tienen disponible el intervalo dado
-				flag = rec.getAgenda().disponibleDurante(intervalo);
-			}
-			if (flag = true) {
+			if (todosLosAsistentesTienenDisponibleElIntervalo(asistentes, intervalo)) {
 //				si lo tienen, ocupo a todos los recursos.
 				recurso.getAgenda().ocupateDurante(intervalo);
 			}
 		}
 //		por ultimo devuelvo una reunion inicializada feliz y contenta :)
 		return new Reunion(anfitrion, asistentes, intervalo);
+	}
+
+	private boolean todosLosAsistentesTienenDisponibleElIntervalo(
+			ArrayList<Recurso> asistentes, final Interval intervalo ) {
+		
+		return Iterators.all(asistentes.iterator(), new Predicate<Recurso>() {
+
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.getAgenda().disponibleDurante(intervalo);
+			}
+		});
+		
 	}
 
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(List<Requerimiento> criterios,
