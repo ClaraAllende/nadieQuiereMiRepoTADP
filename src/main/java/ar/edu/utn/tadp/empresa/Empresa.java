@@ -19,8 +19,7 @@ public class Empresa {
 
 	private List<Recurso> recursos = new ArrayList<Recurso>();
 
-	public Reunion createReunion(Persona anfitrion,
-			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
+	public Reunion createReunion(Persona anfitrion, List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
 		this.satisfaceRequerimientos(criterios);
@@ -35,47 +34,42 @@ public class Empresa {
 		}
 
 		/*
-		 * Se supone que lo que sigue no puede fallar, por eso no va con
-		 * try/catch si falla estamos al horno, porque estan dadas las
+		 * Se supone que ocuparAsistente no puede fallar, por eso no va
+		 * con try/catch si falla estamos al horno, porque estan dadas las
 		 * condiciones para que no falle nunca.
 		 */
+		Interval intervalo = ocuparAsistentes(horas, asistentes);
+		
+		return new Reunion(anfitrion, asistentes, intervalo);
+	}
 
-		// inicializo un intervalo vacio
+	private Interval ocuparAsistentes(Hours horas, ArrayList<Recurso> asistentes) {
 		Interval intervalo = new Interval(0, 0);
 
 		for (Recurso recurso : asistentes) {
-			// en intervalo guardo el primer intervalo que cumpla con la
-			// disponibilidad de horas del recurso elegido
-			intervalo = recurso.getAgenda().intervaloDisponibleDe(
-					horas.toStandardDuration());
-			// le pongo quiero que el final del intervalo sea las ghoras despues
-			// del comienzo.
-			intervalo = intervalo.withEnd(intervalo.getStart().plus(
-					horas.toStandardDuration()));
+			intervalo = recurso.intervaloDisponibleDe(horas.toStandardDuration());
+			intervalo = intervalo.withEnd(intervalo.getStart().plus(horas.toStandardDuration()));
 
 			boolean flag = true;
-			// recorro nuevamente la lista de recursos
 			for (Recurso rec : asistentes) {
-				// le pregunto a todos los recursos si tienen disponible el
-				// intervalo dado
-				// FIXME Ver para que se pisa el "flag"
-				flag = rec.getAgenda().disponibleDurante(intervalo);
+			// FIXME me rompe las bolas la bandera, revisar como se hace
+			// para no tenerla
+				if (!rec.disponibleDurante(intervalo)) flag = false;
 			}
-			if (flag) {
-				// si lo tienen, ocupo a todos los recursos.
-				recurso.getAgenda().ocupateDurante(intervalo);
-			}
+			if (flag) break;
 		}
-		// por ultimo devuelvo una reunion inicializada feliz y contenta :)
-		return new Reunion(anfitrion, asistentes, intervalo);
+		
+		for (Recurso recurso : asistentes) {
+			recurso.ocupateDurante(intervalo);
+		}
+		return intervalo;
 	}
 
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
 			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 		for (Requerimiento requerimiento : criterios) {
-			candidatos.add(requerimiento
-					.teSatisfacenDurante(horas, vencimiento));
+			candidatos.add(requerimiento.teSatisfacenDurante(horas, vencimiento));
 		}
 		return candidatos;
 	}

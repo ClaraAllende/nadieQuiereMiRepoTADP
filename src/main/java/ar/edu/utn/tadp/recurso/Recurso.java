@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
 import org.joda.time.Hours;
+import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.propiedad.Propiedad;
@@ -51,5 +53,17 @@ public class Recurso {
 
 	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {
 		return this.agenda.tenesDisponibleAntesDe(horas, vencimiento);
+	}
+
+	public void ocupateDurante(Interval intervalo) {
+		this.agenda.ocupateDurante(intervalo);
+	}
+
+	public boolean disponibleDurante(Interval intervalo) {
+		return this.agenda.disponibleDurante(intervalo);
+	}
+
+	public Interval intervaloDisponibleDe(Duration standardDuration) {
+		return this.agenda.intervaloDisponibleDe(standardDuration);
 	}
 }
