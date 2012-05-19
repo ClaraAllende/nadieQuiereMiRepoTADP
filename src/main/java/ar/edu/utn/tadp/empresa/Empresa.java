@@ -12,6 +12,8 @@ import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
 import ar.edu.utn.tadp.reunion.Reunion;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
@@ -57,18 +59,24 @@ public class Empresa {
 			}
 
 		}
+		
+		for (Recurso recurso : asistentes) {
+			recurso.ocupateDurante(intervalo);
+		}
+		return intervalo;
+	}
 
+	private boolean todosLosAsistentesTienenDisponibleElIntervalo(
+			ArrayList<Recurso> asistentes, final Interval intervalo ) {
 		
-		for (Recurso recurso : asistentes) {
-			recurso.ocupateDurante(intervalo);
-		}
-		return intervalo;
-		}
+		return Iterators.all(asistentes.iterator(), new Predicate<Recurso>() {
+
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.getAgenda().disponibleDurante(intervalo);
+			}
+		});
 		
-		for (Recurso recurso : asistentes) {
-			recurso.ocupateDurante(intervalo);
-		}
-		return intervalo;
 	}
 
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
