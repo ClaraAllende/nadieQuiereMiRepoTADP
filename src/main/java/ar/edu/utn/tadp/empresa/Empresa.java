@@ -23,24 +23,24 @@ public class Empresa {
 	public Reunion createReunion(Persona anfitrion, List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 		
-		for( Requerimiento requerimiento : criterios) {
-			try {
-				requerimiento.buscaLosQueTeSatisfacen(recursos);
-			} 
-			catch (UserException e) {
-				// TODO: handle exception
-			}
-		}
-		for( Requerimiento requerimiento : criterios){
-			try{
-				candidatos.add(requerimiento.teSatisfacenDurante(horas,vencimiento)); 
-			}
-			catch(UserException e) {
-				// TODO: handle exception
-			}
-		}
+		this.satisfaceRequerimientos(criterios);
+		candidatos = seleccionarCandidatos(criterios, horas, vencimiento);
+
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>(); 
-		asistentes = this.seleccionarCandidatos(candidatos);
+		
+		try{
+			asistentes = this.seleccionarCandidatos(candidatos);
+		}
+		catch (NoHayAsistentesDisponiblesException e){
+			throw new CantMakeReunionException(e);
+		}
+		
+		/*
+		 * Se supone que lo que sigue no puede fallar, por eso no va con try/catch
+		 * si falla estamos al horno, porque estan dadas las condiciones para que 
+		 * no falle nunca.
+		 */
+		
 		//inicializo un intervalo vacio
 		Interval intervalo = new Interval(0, 0);
 		
@@ -65,11 +65,32 @@ public class Empresa {
 		return new Reunion(anfitrion, asistentes, intervalo);
 	}
 
+	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(List<Requerimiento> criterios,
+			Hours horas, DateTime vencimiento) {
+		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
+		for( Requerimiento requerimiento : criterios){
+			candidatos.add(requerimiento.teSatisfacenDurante(horas,vencimiento)); 
+		}
+		return candidatos;
+	}
+
+	private void satisfaceRequerimientos(List<Requerimiento> criterios) {
+		for( Requerimiento requerimiento : criterios) {
+			try {
+				requerimiento.buscaLosQueTeSatisfacen(recursos);
+			} 
+			catch (UserException e) {
+				// TODO: handle exception
+			}
+		}
+	}
+
 	private ArrayList<Recurso> seleccionarCandidatos(ArrayList<ArrayList<Recurso>> candidatos) {
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		for (ArrayList<Recurso> recursos : candidatos){
 			asistentes.add(recursos.get(0));
 		}
+		if (asistentes.isEmpty()) throw new NoHayAsistentesDisponiblesException();
 		return asistentes;
 	}
 
