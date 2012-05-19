@@ -9,6 +9,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
@@ -127,8 +128,7 @@ public class CrearReunionTest {
 	public void fallaCreandoRenionCon3GerentesOcupadosDentroDe2Dias() {
 
 		// Intervalo de ocupacion 5 dias.
-		Interval ocupado3Dias = new Interval(DateTime.now(), DateTime.now()
-				.plusDays(5));
+		Interval ocupado3Dias = new Interval(Agenda.HOY, Agenda.HOY.plusDays(5));
 
 		gerente1.ocupateDurante(ocupado3Dias);
 		gerente2.ocupateDurante(ocupado3Dias);
@@ -138,11 +138,11 @@ public class CrearReunionTest {
 		pripiedadesSala.add(tipoSala);
 		Requerimiento reqSala = new Requerimiento(pripiedadesSala);
 
-		ArrayList<Propiedad> pripiedadesGerente = new ArrayList<Propiedad>();
-		pripiedadesGerente.add(rolGerente);
-		Requerimiento reqGerente1 = new Requerimiento(pripiedadesGerente);
-		Requerimiento reqGerente2 = new Requerimiento(pripiedadesGerente);
-		Requerimiento reqGerente3 = new Requerimiento(pripiedadesGerente);
+		ArrayList<Propiedad> propiedadesGerente = new ArrayList<Propiedad>();
+		propiedadesGerente.add(rolGerente);
+		Requerimiento reqGerente1 = new Requerimiento(propiedadesGerente);
+		Requerimiento reqGerente2 = new Requerimiento(propiedadesGerente);
+		Requerimiento reqGerente3 = new Requerimiento(propiedadesGerente);
 
 		ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
 		requerimientos.add(reqSala);
@@ -206,7 +206,20 @@ public class CrearReunionTest {
 	 * Se crea una reunion que incluya a un arquitecto del proyecto X y se
 	 * verifica que su tiempo este ocupado en ese rango.
 	 */
+	@Test
 	public void creaReunionYValidaQueLaGenteQuedeOcupada() {
-		// TODO
+
+		Interval intervalo = new Interval(Agenda.HOY, Agenda.HOY.plusHours(2));
+		ArrayList<Propiedad> propiedadesArq = new ArrayList<Propiedad>();
+		propiedadesArq.add(rolArquitecto);
+		propiedadesArq.add(proyectoApollo);
+		Requerimiento reqArquitecto = new Requerimiento(propiedadesArq);
+		ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
+		requerimientos.add(reqArquitecto);
+		unaEmpresa
+				.createReunion(gerente1, requerimientos, intervalo.toDuration()
+						.toStandardHours(), intervalo.getEnd().plusDays(2));
+
+		Assert.assertTrue(arquitecto1.estasOcupadoDurante(intervalo));
 	}
 }
