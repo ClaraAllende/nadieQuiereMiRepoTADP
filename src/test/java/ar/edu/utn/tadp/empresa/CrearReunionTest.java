@@ -128,8 +128,7 @@ public class CrearReunionTest {
 	public void fallaCreandoRenionCon3GerentesOcupadosDentroDe2Dias() {
 
 		// Intervalo de ocupacion 5 dias.
-		Interval ocupado3Dias = new Interval(DateTime.now(), DateTime.now()
-				.plusDays(5));
+		Interval ocupado3Dias = new Interval(Agenda.HOY, Agenda.HOY.plusDays(5));
 
 		gerente1.ocupateDurante(ocupado3Dias);
 		gerente2.ocupateDurante(ocupado3Dias);
