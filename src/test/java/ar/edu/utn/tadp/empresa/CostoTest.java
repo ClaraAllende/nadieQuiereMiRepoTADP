@@ -10,8 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.costos.Costeable;
-import ar.edu.utn.tadp.costos.Costo;
+import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorHora;
+import ar.edu.utn.tadp.costos.CostoPorPersona;
 import ar.edu.utn.tadp.reunion.Reunion;
 
 public class CostoTest {
@@ -26,15 +27,15 @@ public class CostoTest {
 	}
 	
 	@Test
-	public void testCostoDeTransporte() {
-		Costeable costeable = Costo.TRANSPORTE;
+	public void testCostoPorPersona() {
+		Costeable costeable = new CostoPorPersona(BigDecimal.valueOf(25.0));
 		
 		assertEquals(BigDecimal.valueOf(175.0), costeable.dameTuCostoPara(reunion));
 	}
 
 	@Test
-	public void testCostoDeCatering() { 
-		Costeable costeable = Costo.CATERING;
+	public void testCostoFijo() { 
+		Costeable costeable = new CostoFijo(BigDecimal.valueOf(400.0));
 		
 		assertEquals(BigDecimal.valueOf(400.0), costeable.dameTuCostoPara(reunion));
 	}

@@ -4,8 +4,7 @@ import java.math.BigDecimal;
 
 public abstract class Costo implements Costeable {
 
-	public static final Costo CATERING = new CostoFijo(BigDecimal.valueOf(400.0));
-	public static final Costo TRANSPORTE = new CostoPorPersona(BigDecimal.valueOf(25.0));
+	public static final Costo SIN_COSTO = new CostoFijo(BigDecimal.valueOf(0));
 	
 	private BigDecimal costo;
 	

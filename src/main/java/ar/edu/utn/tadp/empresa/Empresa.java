@@ -32,14 +32,17 @@ public class Empresa {
 
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		asistentes = this.seleccionarCandidatos(candidatos);
+
 		/*
 		 * Se supone que ocuparAsistente no puede fallar, por eso no va con
 		 * try/catch si falla estamos al horno, porque estan dadas las
 		 * condiciones para que no falle nunca.
 		 */
+
 		Interval intervalo = ocuparAsistentes(horas, asistentes);
 
 		return new Reunion(anfitrion, asistentes, intervalo);
+
 	}
 
 	public void removeRecurso(Recurso recurso) {
@@ -106,9 +109,11 @@ public class Empresa {
 
 	private ArrayList<Recurso> seleccionarCandidatos(
 			ArrayList<ArrayList<Recurso>> candidatos) {
+
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		for (ArrayList<Recurso> recursos : candidatos) {
-			asistentes.add(recursos.get(0));
+			Recurso recurso = recursos.get(0);
+			recurso.apuntateALaReunion(asistentes);
 		}
 		if (asistentes.isEmpty())
 			throw new UserException("No hay candidatos disponibles");

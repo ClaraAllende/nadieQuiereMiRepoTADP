@@ -16,7 +16,6 @@ public class Reunion {
 	private Persona host;
 	private List<Recurso> asistentes;
 	private Interval horario;
-	private Recurso sala;
 
 	public Reunion(Persona anfitrion, ArrayList<Recurso> asistentes,
 			Interval horario) {
@@ -45,5 +44,9 @@ public class Reunion {
 
 	private Collection<Costeable> dameListDeLosCosteables() {
 		return new ArrayList<Costeable>();
+	}
+
+	public boolean tieneCatering() {
+		return asistentes.contains(Recurso.CATERING);
 	}
 }
