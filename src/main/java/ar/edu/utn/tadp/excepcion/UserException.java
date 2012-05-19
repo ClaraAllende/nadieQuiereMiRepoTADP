@@ -12,7 +12,7 @@ public class UserException extends RuntimeException {
 		super();
 	}
 
-	public UserException(Throwable e) {
-		super(e);
+	public UserException(String string) {
+		super(string);
 	}
 }
