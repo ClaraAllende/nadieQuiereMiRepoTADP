@@ -8,6 +8,8 @@ import org.joda.time.Duration;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import ar.edu.utn.tadp.excepcion.UserException;
+
 public class Agenda{
 
 	/*
@@ -65,7 +67,7 @@ public class Agenda{
 				return intervalo;
 			}
 		}
-		throw new NoSuchIntervalException();
+		throw new UserException("no hay un intervalo disponible de la duracion pedida");
 	}
 
 	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {

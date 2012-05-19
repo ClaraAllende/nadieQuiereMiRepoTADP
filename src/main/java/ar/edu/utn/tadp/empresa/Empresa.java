@@ -7,6 +7,10 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterators;
+
+import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
@@ -27,11 +31,7 @@ public class Empresa {
 
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 
-		try {
-			asistentes = this.seleccionarCandidatos(candidatos);
-		} catch (NoHayAsistentesDisponiblesException e) {
-			throw new CantMakeReunionException(e);
-		}
+		asistentes = this.seleccionarCandidatos(candidatos);
 
 		/*
 		 * Se supone que ocuparAsistente no puede fallar, por eso no va
@@ -43,20 +43,38 @@ public class Empresa {
 		return new Reunion(anfitrion, asistentes, intervalo);
 	}
 
+	
+	public void removeRecurso(Recurso recurso) {
+		this.recursos.remove(recurso);
+	}
+	
+	public void removeAllRecurso() {
+		this.recursos.removeAll(this.recursos);
+	}
+
+	/*
+	 * Metodos privados, auxiliares de generarReunion
+	 */
+
+	private boolean todosDisponiblesDurante(ArrayList<Recurso> asistentes,
+			final Interval intervalo) {
+		Predicate<? super Recurso> predicate = new Predicate<Recurso>() {
+			
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.getAgenda().disponibleDurante(intervalo);
+			}
+		};
+		return Iterators.all(asistentes.iterator(), predicate);
+	}
+	
 	private Interval ocuparAsistentes(Hours horas, ArrayList<Recurso> asistentes) {
 		Interval intervalo = new Interval(0, 0);
-
+		
 		for (Recurso recurso : asistentes) {
 			intervalo = recurso.intervaloDisponibleDe(horas.toStandardDuration());
 			intervalo = intervalo.withEnd(intervalo.getStart().plus(horas.toStandardDuration()));
-
-			boolean flag = true;
-			for (Recurso rec : asistentes) {
-			// FIXME me rompe las bolas la bandera, revisar como se hace
-			// para no tenerla
-				if (!rec.disponibleDurante(intervalo)) flag = false;
-			}
-			if (flag) break;
+			if (todosDisponiblesDurante(asistentes, intervalo)) break;
 		}
 		
 		for (Recurso recurso : asistentes) {
@@ -64,7 +82,11 @@ public class Empresa {
 		}
 		return intervalo;
 	}
-
+	
+	public void addRecurso(Recurso recurso) {
+		this.recursos.add(recurso);
+	}
+	
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
 			List<Requerimiento> criterios, Hours horas, DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
@@ -87,19 +109,8 @@ public class Empresa {
 			asistentes.add(recursos.get(0));
 		}
 		if (asistentes.isEmpty())
-			throw new NoHayAsistentesDisponiblesException();
+			throw new UserException("No hay candidatos disponibles");
 		return asistentes;
 	}
-
-	public void addRecurso(Recurso recurso) {
-		this.recursos.add(recurso);
-	}
-
-	public void removeRecurso(Recurso recurso) {
-		this.recursos.remove(recurso);
-	}
-
-	public void removeAllRecurso() {
-		this.recursos.removeAll(this.recursos);
-	}
+	
 }
