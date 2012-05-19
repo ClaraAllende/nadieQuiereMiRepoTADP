@@ -1,14 +1,12 @@
 package ar.edu.utn.tadp.agenda;
 
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
 
 import org.joda.time.DateTime;
-import org.joda.time.Duration;
+import org.joda.time.Hours;
 import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
@@ -74,4 +72,9 @@ public class AgendaTest {
 		//se puede refactorizar todo para que quede en una linea, pero se ve mejor así.
 	}
 
+	@Test
+	public void testTenesDisponibleAntesDe(){
+		agenda.ocupateDurante(intervalo3);
+		Assert.assertTrue(agenda.tenesDisponibleAntesDe(Hours.ONE, fecha5));
+	}
 }

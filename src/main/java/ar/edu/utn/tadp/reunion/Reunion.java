@@ -18,10 +18,10 @@ public class Reunion {
 	private Interval horario;
 	private Recurso sala;
 
-	public Reunion(Persona anfitrion, ArrayList<Recurso> recursos,
+	public Reunion(Persona anfitrion, ArrayList<Recurso> asistentes,
 			Interval horario) {
 		this.host = anfitrion;
-		this.asistentes = recursos;
+		this.asistentes = asistentes;
 		this.horario = horario;
 	}
 
