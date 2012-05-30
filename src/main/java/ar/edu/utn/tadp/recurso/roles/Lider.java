@@ -7,14 +7,12 @@ import ar.edu.utn.tadp.recurso.Recurso;
 
 public class Lider extends Rol {
 
-	protected Lider(CostoPorHora costoPorHora) {
-		super(costoPorHora);
+	protected Lider(final String nombre, final CostoPorHora costoPorHora) {
+		super(nombre, costoPorHora);
 	}
 
 	@Override
-	public void necesitasRecurso(ArrayList<Recurso> recursos) {
+	public void necesitasRecurso(final ArrayList<Recurso> recursos) {
 		recursos.add(Recurso.CATERING);
-
 	}
-
 }
