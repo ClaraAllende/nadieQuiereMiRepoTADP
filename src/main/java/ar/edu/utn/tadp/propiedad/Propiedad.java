@@ -6,11 +6,11 @@ package ar.edu.utn.tadp.propiedad;
  * Contiene Tipo->Valor. Ejemplo: "Edificio"->"Catalinas",
  * "Nombre"->"Pepe Argento"
  * 
- * @version 18-05-2012
+ * @version 29-05-2012
  */
 public class Propiedad {
-	String tipo = "";
-	String valor = "";
+	String tipo;
+	String valor;
 
 	public Propiedad(String tipo, String valor) {
 		this.tipo = tipo;
@@ -43,15 +43,7 @@ public class Propiedad {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
 	public String getValor() {
 		return valor;
-	}
-
-	public void setValor(String valor) {
-		this.valor = valor;
 	}
 }
