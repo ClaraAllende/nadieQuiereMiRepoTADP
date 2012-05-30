@@ -44,4 +44,9 @@ public class Reunion {
 	public boolean tieneCatering() {
 		return recursos.contains(Recurso.CATERING);
 	}
+
+	public String getUbicacion() {
+		//TODO getUbicacion Hacer que devuelva la ubicacion de la sala, se debe modificar para que la sala se setee primero antes de los candidatos 
+		return null;
+	}
 }

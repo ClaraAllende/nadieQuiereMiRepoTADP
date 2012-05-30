@@ -50,15 +50,6 @@ public class Agenda{
 			disponibles.add(intDisponible);
 		}
 		return disponibles;
-		//TODO TESTEAR!!! Esta medio oscuro esto, pero me parece que tiene sentido
-		/* Si no tiene horarios ocupados, devuelve el intervalo desde el instante YA
-		 * hasta el maximo posible de las fechas (anio 29mil y pico).
-		 * Si no, empieza un algoritmo raro... 
-		 * a un intervalo nuevo int2 le pongo el inicio de i y el inicio del horarioOcupado.
-		 * lo guardo en la coleccion de disponibles.
-		 * saco i de la coleccion y le cambio el inicio por el final del 
-		 * intervalo ocupado. Finalmente vuelvo a agregar a i.  
-		 */
 	}
 	
 	public Interval intervaloDisponibleDe(Duration unaDuracion){
