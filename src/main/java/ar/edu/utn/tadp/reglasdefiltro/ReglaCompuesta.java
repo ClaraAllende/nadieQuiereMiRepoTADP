@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.collect.Collections2;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
-
 import ar.edu.utn.tadp.recurso.Persona;
 
 public class ReglaCompuesta implements ReglaDeFiltrado {
