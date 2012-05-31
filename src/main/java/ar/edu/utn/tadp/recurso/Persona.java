@@ -8,12 +8,17 @@ import org.joda.time.Interval;
 import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.reunion.Reunion;
 
+/**
+ * Representa a los recursos humanos dentro de la empresa.
+ * 
+ * @version 31-05-2012
+ */
 public class Persona extends Recurso {
-	// XXX Tienen que ser publicos para que funcione Reflection
-	public String nombre;
-	public String sector;
-	public String proyecto;
-	public final Rol rol;
+	// Propiedades de una Persona serian: proyecto rol sector nombre
+	protected String nombre;
+	protected String sector;
+	protected String proyecto;
+	protected final Rol rol;
 
 	private Estado estado;
 
@@ -31,8 +36,6 @@ public class Persona extends Recurso {
 		super.apuntateALaReunion(recursos);
 		this.rol.necesitasRecurso(recursos);
 	}
-
-	// Propiedades de una Persona serian: proyecto rol sector nombre empresa
 
 	public boolean estasOcupadoDurante(final Interval intervalo) {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
@@ -53,7 +56,7 @@ public class Persona extends Recurso {
 	}
 
 	public String getUbicacion() {
-		// TODO fijarse si ubicacion debe ser un string o no
+		// XXX ubicacion seria el edificio.
 		return this.edificio;
 	}
 

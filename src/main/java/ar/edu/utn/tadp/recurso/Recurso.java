@@ -16,20 +16,20 @@ import ar.edu.utn.tadp.costos.CostoPorPersona;
 import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
- * Representa a todos los recursos de la empresa, tanto humanos como no.
+ * Representa a los recursos de la empresa.
  * 
- * @version 29-05-2012
+ * @version 31-05-2012
  */
 public class Recurso implements Costeable {
+	// TODO Ver si se puede mejorar eso.
 	public static final Recurso CATERING = new Recurso(new CostoFijo(
 			BigDecimal.valueOf(400.00)));
 	public static final Recurso TRANSPORTE = new Recurso(new CostoPorPersona(
 			BigDecimal.valueOf(25.0)));
 
 	// Propiedades de un Recurso serian TipoRecurso y Edificio
-	// XXX Tienen que ser publicos para que funcione Reflection
-	public String tipo;
-	public String edificio;
+	protected String tipo;
+	protected String edificio;
 
 	private Agenda agenda = new Agenda();
 
