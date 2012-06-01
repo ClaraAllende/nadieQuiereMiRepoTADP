@@ -10,31 +10,47 @@ import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 
+/**
+ * Representa a una reunion que se acordo a realizar dentro de la empresa.
+ * 
+ * @version 01-06-2012
+ */
 public class Reunion {
+	private final Persona anfitrion;
+	private final List<Recurso> recursos;
+	private final Interval horario;
 
-	private Persona host;
-	private List<Recurso> recursos;
-	private Interval horario;
-
-	public Reunion(Persona anfitrion, ArrayList<Recurso> recursos,
-			Interval horario) {
-		this.host = anfitrion;
+	public Reunion(final Persona anfitrion, final ArrayList<Recurso> recursos,
+			final Interval horario) {
+		this.anfitrion = anfitrion;
 		this.recursos = recursos;
 		this.horario = horario;
 	}
 
-	public long getCantidadDePersonasQueNecesitanTransporte() {
-		return 0;
+	public Persona getAnfitrion() {
+		return anfitrion;
+	}
+
+	public List<Recurso> getRecursos() {
+		return recursos;
+	}
+
+	public Interval getHorario() {
+		return horario;
 	}
 
 	public long getDuracionDeReunion() {
 		return horario.toDuration().getStandardHours();
 	}
 
+	public long getCantidadDePersonasQueNecesitanTransporte() {
+		return 0;
+	}
+
 	public BigDecimal getCostoTotal() {
 		BigDecimal result = BigDecimal.valueOf(0);
 
-		for (Costeable costeable : recursos) {
+		for (final Costeable costeable : recursos) {
 			result = result.add(costeable.dameTuCostoPara(this));
 		}
 
@@ -46,7 +62,8 @@ public class Reunion {
 	}
 
 	public String getUbicacion() {
-		//TODO getUbicacion Hacer que devuelva la ubicacion de la sala, se debe modificar para que la sala se setee primero antes de los candidatos 
+		// TODO getUbicacion Hacer que devuelva la ubicacion de la sala, se debe
+		// modificar para que la sala se setee primero antes de los candidatos
 		return null;
 	}
 }
