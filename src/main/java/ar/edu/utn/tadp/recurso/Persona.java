@@ -24,6 +24,7 @@ public class Persona extends Recurso {
 
 	public Persona(final Rol rol) {
 		this.rol = rol;
+		this.tipo = "Humano";
 	}
 
 	@Override
