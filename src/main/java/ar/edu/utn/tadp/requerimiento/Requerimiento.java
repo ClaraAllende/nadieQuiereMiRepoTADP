@@ -22,15 +22,31 @@ import com.google.common.collect.Sets;
  * Representa un objeto que sabe filtrar a los recursos. Y tiene cargadas las
  * condiciones.
  * 
- * @version 31-05-2012
+ * @version 03-06-2012
  */
 public class Requerimiento {
 
 	private Collection<Propiedad> condiciones;
 	private Collection<Recurso> meSatisfacen;
 
+	/**
+	 * Crea un <code>Requerimiento</code> en base de las propiedades requeridas.
+	 * 
+	 * @param condiciones
+	 * @see Propiedad
+	 */
 	public Requerimiento(final Collection<Propiedad> condiciones) {
 		this.condiciones = condiciones;
+	}
+
+	/**
+	 * Crea un <code>Requerimiento</code> a partir de un <code>Recurso</code>
+	 * 
+	 * @param recurso
+	 * @see Recurso
+	 */
+	public Requerimiento(final Recurso recurso) {
+		this(getPropiedades(recurso));
 	}
 
 	/**
@@ -110,10 +126,10 @@ public class Requerimiento {
 	 * @return Set de <code>Propiedad</code> obtenidas.
 	 * @see Propiedad
 	 */
-	private Set<Propiedad> getPropiedades(final Object objeto) {
+	public static Set<Propiedad> getPropiedades(final Object objeto) {
 		final Set<Propiedad> propiedades = new HashSet<Propiedad>();
 		final ArrayList<Field> lista = new ArrayList<Field>();
-		for (final Field field : this.getAllFields(lista, objeto.getClass())) {
+		for (final Field field : getAllFields(lista, objeto.getClass())) {
 			try {
 				field.setAccessible(true);
 				final String key = field.getName();
@@ -138,7 +154,8 @@ public class Requerimiento {
 	 * @return Lista de <code>Field</code> ontenidos.
 	 * @see Field
 	 */
-	private List<Field> getAllFields(List<Field> fields, final Class<?> type) {
+	private static List<Field> getAllFields(List<Field> fields,
+			final Class<?> type) {
 		// Obtiene atributos propios.
 		for (final Field field : type.getDeclaredFields()) {
 			fields.add(field);
@@ -148,5 +165,9 @@ public class Requerimiento {
 			fields = getAllFields(fields, type.getSuperclass());
 		}
 		return fields;
+	}
+
+	public Collection<Propiedad> getCondiciones() {
+		return condiciones;
 	}
 }

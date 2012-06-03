@@ -14,7 +14,7 @@ import ar.edu.utn.tadp.recurso.Recurso;
 /**
  * Representa a una reunion que se acordo a realizar dentro de la empresa.
  * 
- * @version 01-06-2012
+ * @version 03-06-2012
  */
 public class Reunion {
 	private final Persona anfitrion;
@@ -42,7 +42,7 @@ public class Reunion {
 
 	private Recurso getSala() {
 		for (final Recurso recurso : recursos) {
-			if (recurso.getTipo().equals("sala")) {
+			if (recurso.getTipo().toLowerCase().equals("sala")) {
 				return recurso;
 			}
 		}
@@ -56,7 +56,7 @@ public class Reunion {
 	public long getCantidadDePersonasQueNecesitanTransporte() {
 		int cantidadDePersonasQueNecesitanTransporte = 0;
 		for (final Recurso recurso : recursos) {
-			if (recurso.getTipo().equals("humano")
+			if (recurso.getTipo().toLowerCase().equals("humano")
 					&& (!recurso.getEdificio().equals(this.getUbicacion()))) {
 				cantidadDePersonasQueNecesitanTransporte++;
 			}
