@@ -18,7 +18,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
 /**
  * Representa a los recursos de la empresa.
  * 
- * @version 31-05-2012
+ * @version 03-06-2012
  */
 public class Recurso implements Costeable {
 	// TODO Ver si se puede mejorar eso.
@@ -75,6 +75,15 @@ public class Recurso implements Costeable {
 
 	public void apuntateALaReunion(final ArrayList<Recurso> recursos) {
 		recursos.add(this);
+	}
+
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Recurso: " + tipo + " - " + edificio;
 	}
 
 	public String getTipo() {

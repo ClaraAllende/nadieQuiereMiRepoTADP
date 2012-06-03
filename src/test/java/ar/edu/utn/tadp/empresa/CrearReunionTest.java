@@ -41,6 +41,7 @@ public class CrearReunionTest {
 			"catalinas");
 	private final Propiedad edificioMadero = new Propiedad("edificio", "Madero");
 	private final Propiedad tipoSala = new Propiedad("tipo", "Sala");
+	private final Propiedad tipoProyector = new Propiedad("tipo", "Proyector");
 	private final Propiedad rolProjectLeader = new Propiedad("Rol",
 			"Project Leader");
 	private Persona programador1;
@@ -52,6 +53,8 @@ public class CrearReunionTest {
 	private Persona gerente3;
 	private Persona leader;
 	private Recurso sala;
+	private Recurso proyector1;
+	private Recurso proyector2;
 	private Empresa unaEmpresa;
 
 	/**
@@ -59,7 +62,7 @@ public class CrearReunionTest {
 	 */
 	@Before
 	public void crearContexto() {
-
+		// Personas
 		programador1 = new Persona(Rol.PROGRAMADOR);
 		programador1.setProyecto(proyectoApollo.getValor());
 		programador1.setSector(sectorDesarrollo.getValor());
@@ -91,10 +94,17 @@ public class CrearReunionTest {
 		leader = new Persona(Rol.PROYECT_LEADER);
 		leader.setProyecto(proyectoShuttle.getValor());
 		leader.setEdificio(edificioMadero.getValor());
-
+		// Recursos
 		sala = new Recurso();
 		sala.setTipo(tipoSala.getValor());
 		sala.setEdificio(edificioMadero.getValor());
+		proyector1 = new Recurso();
+		proyector1.setTipo(tipoProyector.getValor());
+		proyector1.setEdificio(edificioMadero.getValor());
+		proyector2 = new Recurso();
+		proyector2.setTipo(tipoProyector.getValor());
+		proyector2.setEdificio(edificioCatalinas.getValor());
+		// Empresa
 		unaEmpresa = new Empresa();
 		unaEmpresa.addRecurso(leader);
 		unaEmpresa.addRecurso(arquitecto1);
@@ -104,6 +114,8 @@ public class CrearReunionTest {
 		unaEmpresa.addRecurso(programador2);
 		unaEmpresa.addRecurso(programador3);
 		unaEmpresa.addRecurso(sala);
+		unaEmpresa.addRecurso(proyector1);
+		unaEmpresa.addRecurso(proyector2);
 	}
 
 	/**
@@ -131,7 +143,6 @@ public class CrearReunionTest {
 	 */
 	@Test(expected = UserException.class)
 	public void fallaCreandoRenionCon3GerentesOcupadosDentroDe2Dias() {
-
 		// Intervalo de ocupacion 5 dias.
 		final Interval ocupado3Dias = new Interval(Agenda.HOY,
 				Agenda.HOY.plusDays(5));
@@ -167,7 +178,6 @@ public class CrearReunionTest {
 	 */
 	@Test
 	public void creaReunionCon3ProgramadoresYProjectLeader() {
-
 		final Collection<Propiedad> propiedadesSala = new ArrayList<Propiedad>();
 		propiedadesSala.add(tipoSala);
 
@@ -246,7 +256,6 @@ public class CrearReunionTest {
 	 */
 	@Test
 	public void creaReunionYValidaQueLaGenteQuedeOcupada() {
-
 		final Interval intervalo = new Interval(Agenda.HOY,
 				Agenda.HOY.plusHours(2));
 		final ArrayList<Propiedad> propiedadesArq = new ArrayList<Propiedad>();
@@ -260,5 +269,52 @@ public class CrearReunionTest {
 						.toStandardHours(), intervalo.getEnd().plusDays(2));
 
 		Assert.assertTrue(arquitecto1.estasOcupadoDurante(intervalo));
+	}
+
+	/**
+	 * Se validan los recursos de una reunion creada.
+	 */
+	@Test
+	public void creaReunionConPocosRecursos() {
+		final ArrayList<Propiedad> condicionesInvitado = new ArrayList<Propiedad>();
+		condicionesInvitado.add(edificioCatalinas);
+		condicionesInvitado.add(rolProgramador);
+		final Requerimiento programador = new Requerimiento(condicionesInvitado);
+
+		final ArrayList<Propiedad> condicionesRecurso = new ArrayList<Propiedad>();
+		condicionesRecurso.add(tipoProyector);
+		final Requerimiento recurso = new Requerimiento(condicionesRecurso);
+
+		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
+		requerimientos.add(programador);
+		requerimientos.add(recurso);
+
+		final Reunion reunion = unaEmpresa.createReunion(gerente1,
+				requerimientos, Hours.SEVEN, DateTime.now().plusDays(2));
+
+		// Recursos deberian ser: anfitrion, invitado, proyector y la sala.
+		Assert.assertEquals(4, reunion.getRecursos().size());
+	}
+
+	/**
+	 * Se crea una reunion donde gerente esta en madero y programador en
+	 * catalinas. Uno de ellos si o si va a pedir transporte.
+	 */
+	@Test
+	public void creaReunionDondeHayQueViajar() {
+		final ArrayList<Propiedad> condiciones1 = new ArrayList<Propiedad>();
+		condiciones1.add(edificioCatalinas);
+		condiciones1.add(rolProgramador);
+		final Requerimiento programador = new Requerimiento(condiciones1);
+
+		final ArrayList<Requerimiento> requerimientos1 = new ArrayList<Requerimiento>();
+		requerimientos1.add(programador);
+
+		final Reunion reunion = unaEmpresa.createReunion(gerente1,
+				requerimientos1, Hours.SEVEN, DateTime.now().plusDays(2));
+
+		// Anfitrion y el invitado estan en edificios distintos
+		Assert.assertEquals(1,
+				reunion.getCantidadDePersonasQueNecesitanTransporte());
 	}
 }
