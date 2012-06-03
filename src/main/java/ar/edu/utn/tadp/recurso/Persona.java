@@ -11,7 +11,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
 /**
  * Representa a los recursos humanos dentro de la empresa.
  * 
- * @version 31-05-2012
+ * @version 03-06-2012
  */
 public class Persona extends Recurso {
 	// Propiedades de una Persona serian: proyecto rol sector nombre
@@ -40,6 +40,16 @@ public class Persona extends Recurso {
 
 	public boolean estasOcupadoDurante(final Interval intervalo) {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
+	}
+
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Persona: " + tipo + " - " + edificio + " - " + nombre + " - "
+				+ sector + " - " + proyecto + " - " + rol;
 	}
 
 	public Estado getEstado() {
