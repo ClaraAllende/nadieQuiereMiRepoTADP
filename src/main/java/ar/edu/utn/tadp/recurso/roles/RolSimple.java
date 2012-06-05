@@ -7,12 +7,12 @@ import ar.edu.utn.tadp.recurso.Recurso;
 
 public class RolSimple extends Rol {
 
-	protected RolSimple(CostoPorHora costoPorHora) {
-		super(costoPorHora);
+	protected RolSimple(final String nombre, final CostoPorHora costoPorHora) {
+		super(nombre, costoPorHora);
 	}
 
 	@Override
-	public void necesitasRecurso(ArrayList<Recurso> asistentes) {
+	public void necesitasRecurso(final ArrayList<Recurso> asistentes) {
+		// TODO Queda asi? Sin nada?
 	}
-
 }

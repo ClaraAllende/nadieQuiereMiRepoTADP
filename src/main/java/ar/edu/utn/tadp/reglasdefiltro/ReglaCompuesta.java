@@ -8,9 +8,9 @@ import ar.edu.utn.tadp.recurso.Persona;
 
 public class ReglaCompuesta implements ReglaDeFiltrado {
 
-	private List<ReglaDeFiltrado> listaDeReglas;
+	private final List<ReglaDeFiltrado> listaDeReglas;
 
-	public ReglaCompuesta(List<ReglaDeFiltrado> listaDeReglas) {
+	public ReglaCompuesta(final List<ReglaDeFiltrado> listaDeReglas) {
 		this.listaDeReglas = listaDeReglas;
 	}
 
@@ -18,7 +18,7 @@ public class ReglaCompuesta implements ReglaDeFiltrado {
 	public Collection<Persona> filtrar(final Collection<Persona> personas) {
 		Collection<Persona> personasFiltradas = personas;
 		
-		for (ReglaDeFiltrado reglaDeFiltrado : listaDeReglas) {
+		for (final ReglaDeFiltrado reglaDeFiltrado : listaDeReglas) {
 			if(personasFiltradas.size() == 1) {
 				return personasFiltradas;
 			} else {
