@@ -26,10 +26,14 @@ public class Persona extends Recurso {
 		this.rol = rol;
 		this.tipo = "Humano";
 	}
+	
+	public boolean esDelMismoProyecto(Persona persona) {
+		return this.proyecto.equals(persona.getProyecto());
+	}
 
 	@Override
 	public BigDecimal dameTuCostoPara(final Reunion reunion) {
-		return this.rol.getCostoPorHora().dameTuCostoPara(reunion);
+		return !this.esDelMismoProyecto(reunion.getAnfitrion()) ? this.rol.getCostoPorHora().dameTuCostoPara(reunion) : BigDecimal.valueOf(0.0);
 	}
 
 	@Override
