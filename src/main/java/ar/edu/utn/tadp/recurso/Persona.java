@@ -33,5 +33,9 @@ public class Persona extends Recurso {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
 	}
 
+	public Rol getRol() {
+		return this.rol;
+	}
+
 	// TODO alguna diferencia de Recurso? Viajar a otro edificio?
 }

@@ -12,7 +12,8 @@ public abstract class Costo implements Costeable {
 		this.costo = costo;
 	}
 	
-	protected BigDecimal getCosto() { 
+	public BigDecimal getCosto() { 
+		//le cambié la visibilidad para usarlo desde las tareas.
 		return costo;
 	}
 
