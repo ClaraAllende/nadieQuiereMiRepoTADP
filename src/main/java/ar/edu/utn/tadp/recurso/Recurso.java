@@ -2,8 +2,6 @@ package ar.edu.utn.tadp.recurso;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -15,75 +13,92 @@ import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorPersona;
-import ar.edu.utn.tadp.empresa.Empresa;
-import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
- * Representa a todos los recursos de la empresa, tanto humanos como no.
+ * Representa a los recursos de la empresa.
  * 
- * @version 18-05-2012
+ * @version 03-06-2012
  */
 public class Recurso implements Costeable {
-	public static final Recurso CATERING = new Recurso(new CostoFijo(BigDecimal.valueOf(400.00)));
-	public static final Recurso TRANSPORTE = new Recurso(new CostoPorPersona(BigDecimal.valueOf(25.0)));
-	
-	private Agenda agenda = new Agenda();
-	// Propiedades de un Recurso serian TipoRecurso y Edificio
-	private Set<Propiedad> propiedades = new HashSet<Propiedad>();
+	// TODO Ver si se puede mejorar eso.
+	public static final Recurso CATERING = new Recurso(new CostoFijo(
+			BigDecimal.valueOf(400.00)));
+	public static final Recurso TRANSPORTE = new Recurso(new CostoPorPersona(
+			BigDecimal.valueOf(25.0)));
 
-	private Costeable costeable;
+	// Propiedades de un Recurso serian TipoRecurso y Edificio
+	protected String tipo;
+	protected String edificio;
+
+	private Agenda agenda = new Agenda();
+
+	private final Costeable costeable;
 
 	public Recurso() {
 		this.costeable = Costo.SIN_COSTO;
 	}
-	
-	public Recurso(Costeable costeable) {
+
+	public Recurso(final Costeable costeable) {
 		this.costeable = costeable;
-	}
-
-	public Set<Propiedad> getPropiedades() {
-		return propiedades;
-	}
-
-	public void setPropiedades(Set<Propiedad> propiedades) {
-		this.propiedades = propiedades;
-	}
-
-	public void addPropiedad(Propiedad propiedad) {
-		this.propiedades.add(propiedad);
 	}
 
 	public Agenda getAgenda() {
 		return agenda;
 	}
 
-	public void setAgenda(Agenda agenda) {
+	public void setAgenda(final Agenda agenda) {
 		this.agenda = agenda;
 	}
 
-	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {
+	public boolean tenesDisponibleAntesDe(final Hours horas,
+			final DateTime vencimiento) {
 		return this.agenda.tenesDisponibleAntesDe(horas, vencimiento);
 	}
 
-	public void ocupateDurante(Interval intervalo) {
+	public void ocupateDurante(final Interval intervalo) {
 		this.agenda.ocupateDurante(intervalo);
 	}
 
-	public boolean disponibleDurante(Interval intervalo) {
+	public boolean disponibleDurante(final Interval intervalo) {
 		return this.agenda.disponibleDurante(intervalo);
 	}
 
-	public Interval intervaloDisponibleDe(Duration standardDuration) {
+	public Interval intervaloDisponibleDe(final Duration standardDuration) {
 		return this.agenda.intervaloDisponibleDe(standardDuration);
 	}
 
 	@Override
-	public BigDecimal dameTuCostoPara(Reunion reunion) {
+	public BigDecimal dameTuCostoPara(final Reunion reunion) {
 		return this.costeable.dameTuCostoPara(reunion);
 	}
 
-	public void apuntateALaReunion(ArrayList<Recurso> recursos) {
+	public void apuntateALaReunion(final ArrayList<Recurso> recursos) {
 		recursos.add(this);
+	}
+
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Recurso: " + tipo + " - " + edificio;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(final String tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getEdificio() {
+		return edificio;
+	}
+
+	public void setEdificio(final String edificio) {
+		this.edificio = edificio;
 	}
 }
