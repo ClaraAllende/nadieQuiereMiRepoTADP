@@ -7,6 +7,7 @@ import java.util.List;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.costos.Costeable;
+import ar.edu.utn.tadp.empresa.Empresa;
 import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
@@ -81,4 +82,11 @@ public class Reunion {
 	public String getUbicacion() {
 		return this.getSala().getEdificio();
 	}
+
+	public void cancelarParticipacion(final Recurso recurso,
+			final Empresa empresa) {
+		// TODO Aca se deberian recorrer las alternativas para tratar la
+		// cancelacion.
+	}
+
 }

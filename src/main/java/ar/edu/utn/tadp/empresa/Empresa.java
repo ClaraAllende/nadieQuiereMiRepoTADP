@@ -57,9 +57,28 @@ public class Empresa {
 		 * condiciones para que no falle nunca.
 		 */
 
-		Interval intervalo = ocuparAsistentes(horas, asistentes);
+		final Interval intervalo = ocuparAsistentes(horas, asistentes);
 
 		return new Reunion(anfitrion, asistentes, intervalo);
+	}
+
+	/**
+	 * Cancela la participacion de un <code>Recurso</code> o
+	 * <code>Persona</code> en una <code>Reunion</code>.
+	 * 
+	 * @param recurso
+	 *            <code>Recurso</code> o <code>Persona</code> cuya participacion
+	 *            se cancela.
+	 * @param reunion
+	 *            <code>Reunion</code> donde se cancela la participacion.
+	 */
+	public void cancelarParticipacion(final Recurso recurso,
+			final Reunion reunion) {
+		reunion.cancelarParticipacion(recurso, this);
+	}
+
+	public void addRecurso(final Recurso recurso) {
+		this.recursos.add(recurso);
 	}
 
 	public void removeRecurso(final Recurso recurso) {
@@ -76,7 +95,7 @@ public class Empresa {
 
 	private boolean todosDisponiblesDurante(
 			final ArrayList<Recurso> asistentes, final Interval intervalo) {
-		Predicate<? super Recurso> predicate = new Predicate<Recurso>() {
+		final Predicate<? super Recurso> predicate = new Predicate<Recurso>() {
 
 			@Override
 			public boolean apply(final Recurso recurso) {
@@ -90,7 +109,7 @@ public class Empresa {
 			final ArrayList<Recurso> asistentes) {
 		Interval intervalo = new Interval(0, 0);
 
-		for (Recurso recurso : asistentes) {
+		for (final Recurso recurso : asistentes) {
 			intervalo = recurso.intervaloDisponibleDe(horas
 					.toStandardDuration());
 			intervalo = intervalo.withEnd(intervalo.getStart().plus(
@@ -98,22 +117,18 @@ public class Empresa {
 			if (todosDisponiblesDurante(asistentes, intervalo))
 				break;
 		}
-		for (Recurso recurso : asistentes) {
+		for (final Recurso recurso : asistentes) {
 			recurso.ocupateDurante(intervalo);
 		}
 		return intervalo;
 	}
 
-	public void addRecurso(final Recurso recurso) {
-		this.recursos.add(recurso);
-	}
-
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
 			final List<Requerimiento> criterios, final Hours horas,
 			final DateTime vencimiento) {
-		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
+		final ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
-		for (Requerimiento requerimiento : criterios) {
+		for (final Requerimiento requerimiento : criterios) {
 			candidatos.add(requerimiento
 					.teSatisfacenDurante(horas, vencimiento));
 		}
@@ -122,7 +137,7 @@ public class Empresa {
 
 	private void satisfaceRequerimientos(
 			final List<Requerimiento> requerimientos) {
-		for (Requerimiento requerimiento : requerimientos) {
+		for (final Requerimiento requerimiento : requerimientos) {
 			requerimiento.buscaLosQueTeSatisfacen(recursos);
 		}
 	}
@@ -130,9 +145,9 @@ public class Empresa {
 	private ArrayList<Recurso> seleccionarCandidatos(
 			final ArrayList<ArrayList<Recurso>> candidatos) {
 
-		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
-		for (ArrayList<Recurso> recursos : candidatos) {
-			Recurso recurso = recursos.get(0);
+		final ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
+		for (final ArrayList<Recurso> recursos : candidatos) {
+			final Recurso recurso = recursos.get(0);
 			recurso.apuntateALaReunion(asistentes);
 		}
 		if (asistentes.isEmpty())
@@ -153,7 +168,7 @@ public class Empresa {
 		requerimientos.add(new Requerimiento(anfitrion));
 		// Si no hay un requerimiento de sala, tambien se agrega.
 		if (!tieneRequerimientoSala(requerimientos)) {
-			ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
+			final ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
 			condiciones.add(new Propiedad("tipo", "sala"));
 			requerimientos.add(new Requerimiento(condiciones));
 		}

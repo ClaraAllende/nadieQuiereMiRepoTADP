@@ -22,12 +22,14 @@ import com.google.common.collect.Sets;
  * Representa un objeto que sabe filtrar a los recursos. Y tiene cargadas las
  * condiciones.
  * 
- * @version 03-06-2012
+ * @version 13-06-2012
  */
 public class Requerimiento {
 
 	private Collection<Propiedad> condiciones;
 	private Collection<Recurso> meSatisfacen;
+	private boolean obligatorio = true;
+	private Requerimiento requerimientoAlternativo = null;
 
 	/**
 	 * Crea un <code>Requerimiento</code> en base de las propiedades requeridas.
@@ -169,5 +171,21 @@ public class Requerimiento {
 
 	public Collection<Propiedad> getCondiciones() {
 		return condiciones;
+	}
+
+	public boolean isObligatorio() {
+		return obligatorio;
+	}
+
+	public void setObligatorio(final boolean obligatorio) {
+		this.obligatorio = obligatorio;
+	}
+
+	public Requerimiento getRequerimientoAlternativo() {
+		return requerimientoAlternativo;
+	}
+
+	public void setRequerimientoAlternativo(final Requerimiento requerimiento) {
+		this.requerimientoAlternativo = requerimiento;
 	}
 }
