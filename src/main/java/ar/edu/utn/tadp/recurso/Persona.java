@@ -26,18 +26,16 @@ public class Persona extends Recurso {
 		this.rol = rol;
 		this.tipo = "Humano";
 	}
-	
-	public boolean esDelMismoProyecto(Persona persona) {
-		return this.proyecto.equals(persona.getProyecto());
-	}
-	
-	public boolean esDelMismoProyecto(Persona persona) {
+
+	public boolean esDelMismoProyecto(final Persona persona) {
 		return this.proyecto.equals(persona.getProyecto());
 	}
 
 	@Override
 	public BigDecimal dameTuCostoPara(final Reunion reunion) {
-		return !this.esDelMismoProyecto(reunion.getAnfitrion()) ? this.rol.getCostoPorHora().dameTuCostoPara(reunion) : BigDecimal.valueOf(0.0);
+		return !this.esDelMismoProyecto(reunion.getAnfitrion()) ? this.rol
+				.getCostoPorHora().dameTuCostoPara(reunion) : BigDecimal
+				.valueOf(0.0);
 	}
 
 	@Override
@@ -45,6 +43,7 @@ public class Persona extends Recurso {
 		super.apuntateALaReunion(recursos);
 		this.rol.necesitasRecurso(recursos);
 	}
+
 	public boolean estasOcupadoDurante(final Interval intervalo) {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
 	}
@@ -94,56 +93,8 @@ public class Persona extends Recurso {
 		this.sector = sector;
 	}
 
-
 	public Rol getRol() {
 		return this.rol;
-	public String getProyecto() {
-		return proyecto;
-
-=======
-	/**
-	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
-	 * test.
-	 */
-	@Override
-	public String toString() {
-		return "Persona: " + tipo + " - " + edificio + " - " + nombre + " - "
-				+ sector + " - " + proyecto + " - " + rol;
-	}
-
-	public Estado getEstado() {
-		return this.estado;
-	}
-
-	public void setEstado(final Estado estado) {
-		this.estado = estado;
-	}
-
-	public Long getCantidadDeHorasDeReunionEnLaUltimaSemana() {
-		// TODO getCantidadDeHorasDeReunionEnLaUltimaSemana hacer que devuelva
-		// en base al calendario de horas ocupadas en reuniones
-		return null;
-	}
-
-	public String getUbicacion() {
-		// XXX ubicacion seria el edificio.
-		return this.edificio;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(final String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getSector() {
-		return sector;
-	}
-
-	public void setSector(final String sector) {
-		this.sector = sector;
 	}
 
 	public String getProyecto() {
