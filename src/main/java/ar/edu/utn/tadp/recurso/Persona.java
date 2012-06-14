@@ -48,15 +48,6 @@ public class Persona extends Recurso {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
 	}
 
-	/**
-	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
-	 * test.
-	 */
-	@Override
-	public String toString() {
-		return "Persona: " + tipo + " - " + edificio + " - " + nombre + " - "
-				+ sector + " - " + proyecto + " - " + rol;
-	}
 
 	public Estado getEstado() {
 		return this.estado;
@@ -104,5 +95,16 @@ public class Persona extends Recurso {
 	public void setProyecto(final String proyecto) {
 		this.proyecto = proyecto;
 	}
-
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++ para testing ++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Persona: " + tipo + " - " + edificio + " - " + nombre + " - "
+				+ sector + " - " + proyecto + " - " + rol;
+	}
 }
