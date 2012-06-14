@@ -63,8 +63,24 @@ public class Empresa {
 	}
 
 	/**
+	 * Replanifica una reunion.
+	 * 
+	 * @param reunion
+	 * @return La <code>Reunion</code> replanificada.
+	 */
+	public Reunion replanificarReunion(final Reunion reunion) {
+		return this.createReunion(reunion.getAnfitrion(),
+				reunion.getRequerimientos(),
+				Hours.hours((int) reunion.getDuracionDeReunion()),
+				reunion.getVencimiento());
+	}
+
+	/**
 	 * Cancela la participacion de un <code>Recurso</code> o
 	 * <code>Persona</code> en una <code>Reunion</code>.
+	 * <p>
+	 * Si la persona que cancela es el anfitrion, la reunion directamente queda
+	 * cancelada.
 	 * 
 	 * @param recurso
 	 *            <code>Recurso</code> o <code>Persona</code> cuya participacion
@@ -74,7 +90,13 @@ public class Empresa {
 	 */
 	public void cancelarParticipacion(final Recurso recurso,
 			final Reunion reunion) {
-		reunion.cancelarParticipacion(recurso, this);
+		if (reunion.getAnfitrion().equals(recurso)) {
+			reunion.cancelar();
+		}
+		if (!reunion.tratarCancelacion(recurso, this)) {
+			reunion.cancelar();
+		}
+
 	}
 
 	public void addRecurso(final Recurso recurso) {
