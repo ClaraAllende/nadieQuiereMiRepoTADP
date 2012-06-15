@@ -11,6 +11,7 @@ import org.joda.time.Interval;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.recurso.roles.Rol;
@@ -86,11 +87,10 @@ public class NotificadorTest {
 		recs.add(p2);
 		when(reunion.requiereTransporte()).thenReturn(true);
 		when(reunion.getRecursos()).thenReturn(recs);
-		when(reunion.getHorario()).thenReturn(hoy);
 		DataNotificacionPersonas data= new DataNotificacionPersonas("requiereTransporte", "marcarDiaOcupado",   reunion);
 		notificador.notifyPeople(reunion, data);
-	   assertTrue(!p1.disponibleDurante(reunion.getHorario()));
-	   assertTrue(!p2.disponibleDurante(reunion.getHorario()));
-
+	   p1.getAgenda();
+	   assertTrue(p1.estasOcupadoDurante(new Interval(Agenda.HOY,Agenda.HOY)));
+	   assertTrue(p2.estasOcupadoDurante(new Interval(Agenda.HOY,Agenda.HOY)));
 	}
 }

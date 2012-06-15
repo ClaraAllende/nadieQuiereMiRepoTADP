@@ -5,6 +5,8 @@ import java.lang.reflect.*;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.agenda.Evento;
+import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.excepcion.ProgramException;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.reunion.Reunion;
@@ -66,7 +68,10 @@ public class Notificador {
 		public void marcarDiaOcupado (Reunion reunion){
 			for(Recurso recurso: reunion.getRecursos()){
 				if(recurso.getTipo().equals("humano")){
-					//recurso.ocupateDurante(intervalo)
+					Interval intervalo= new Interval(Agenda.HOY, Agenda.HOY);
+					Evento ev= new Evento(intervalo);
+					ev.setTipo(TipoEvento.DIACOMPLETO);
+					recurso.ocupate(ev);
 				}
 			}
 		}

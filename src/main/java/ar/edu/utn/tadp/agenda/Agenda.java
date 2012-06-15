@@ -24,7 +24,7 @@ public class Agenda {
  	public static DateTime FUTURO = new DateTime(java.lang.Long.MAX_VALUE);
  	public static DateTime HOY = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),0,0);
 	
-	private List<Evento> eventos = new ArrayList<>();
+	private List<Evento> eventos = new ArrayList<Evento>();
 	
 	public void ocupate(Evento evento){
 		this.eventos.add(evento);
