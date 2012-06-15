@@ -14,12 +14,12 @@ import org.junit.Test;
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Prueba la creacion de una reunion.

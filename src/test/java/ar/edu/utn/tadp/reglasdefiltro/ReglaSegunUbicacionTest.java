@@ -10,9 +10,9 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class ReglaSegunUbicacionTest {
 

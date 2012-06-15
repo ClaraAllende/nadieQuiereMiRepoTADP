@@ -2,11 +2,10 @@ package ar.edu.utn.tadp.reglasdefiltro;
 
 import java.util.Collection;
 
+import ar.edu.utn.tadp.recurso.Recurso;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-
-import ar.edu.utn.tadp.recurso.Persona;
-import ar.edu.utn.tadp.recurso.Recurso;
 
 public class ReglaSegunHoras implements ReglaDeFiltrado {
 

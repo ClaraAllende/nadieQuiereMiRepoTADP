@@ -8,8 +8,8 @@ import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.excepcion.ProgramException;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class Notificador {
 	private MailSender mailSender;
@@ -22,7 +22,7 @@ public class Notificador {
 		Method m;
 		m = this.getMethodWithoutParameters(unaReunion, data.getMethodName());
 			if(invokeBooleanMethod(unaReunion, m)){
-				this.mailSender.sendMail(new Mail(data.getSubject(), data.getDestinatarioAsString(), unaReunion.getAnfitrion().toString(), data.getBody(this)));
+				this.mailSender.sendMail(new Mail(data.getSubject(), data.getDestinatarioAsString(), unaReunion.getOrganizador().toString(), data.getBody(this)));
 						}
 	}
 	
@@ -60,7 +60,7 @@ public class Notificador {
 		public void avisarEmpleados(Reunion reunion){
 			for(Recurso recurso: reunion.getRecursos()){  
 				if (recurso.getTipo().equals("humano")){
-			this.mailSender.sendMail(new Mail("Convocatoria a reunion con catering",recurso.toString(), reunion.getAnfitrion().getNombre(), "Para la próxima reunión contratamos catering, manejenloN :P"));
+			this.mailSender.sendMail(new Mail("Convocatoria a reunion con catering",recurso.toString(), reunion.getOrganizador().getNombre(), "Para la próxima reunión contratamos catering, manejenloN :P"));
 					}
 				}				
 			}

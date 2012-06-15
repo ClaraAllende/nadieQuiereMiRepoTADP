@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 
 
 import ar.edu.utn.tadp.excepcion.ProgramException;
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Reunion;
 
 public class DataNotificacionPersonas {
 

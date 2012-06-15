@@ -14,14 +14,14 @@ import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorPersona;
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Organizable;
 
 /**
  * Representa a los recursos de la empresa.
  * 
  * @version 03-06-2012
  */
-public class Recurso implements Costeable {
+public class Recurso {
 	// TODO Ver si se puede mejorar eso.
 	public static final Recurso CATERING = new Recurso(new CostoFijo(
 			BigDecimal.valueOf(400.00)));
@@ -65,8 +65,7 @@ public class Recurso implements Costeable {
 		return this.agenda.tenesDisponible(standardDuration);
 	}
 
-	@Override
-	public BigDecimal dameTuCostoPara(final Reunion reunion) {
+	public BigDecimal dameTuCostoPara(final Organizable reunion) {
 		return this.costeable.dameTuCostoPara(reunion);
 	}
 

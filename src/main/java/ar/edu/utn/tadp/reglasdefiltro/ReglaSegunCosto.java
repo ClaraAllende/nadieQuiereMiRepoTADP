@@ -2,18 +2,18 @@ package ar.edu.utn.tadp.reglasdefiltro;
 
 import java.util.Collection;
 
+import ar.edu.utn.tadp.organizables.Organizable;
 import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 public class ReglaSegunCosto implements ReglaDeFiltrado {
 
-	private Reunion reunion;
+	private Organizable ubicable;
 	
-	public ReglaSegunCosto(Reunion reunion) {
-		this.reunion = reunion;
+	public ReglaSegunCosto(Organizable ubicable) {
+		this.ubicable = ubicable;
 	}
 	
 	@Override
@@ -25,7 +25,7 @@ public class ReglaSegunCosto implements ReglaDeFiltrado {
 
 			@Override
 			public boolean apply(Recurso input) {
-				return personaConMenorCosto.dameTuCostoPara(reunion).equals(input.dameTuCostoPara(reunion));
+				return personaConMenorCosto.dameTuCostoPara(ubicable).equals(input.dameTuCostoPara(ubicable));
 			}
 		});
 	}
@@ -35,7 +35,7 @@ public class ReglaSegunCosto implements ReglaDeFiltrado {
 		Recurso recursoConMenorCosto = null;
 		
 		for (Recurso persona : recursos) {
-			if(recursoConMenorCosto == null || persona.dameTuCostoPara(reunion).compareTo(recursoConMenorCosto.dameTuCostoPara(reunion)) == -1) {
+			if(recursoConMenorCosto == null || persona.dameTuCostoPara(ubicable).compareTo(recursoConMenorCosto.dameTuCostoPara(ubicable)) == -1) {
 				recursoConMenorCosto = persona;
 			}
 		}
