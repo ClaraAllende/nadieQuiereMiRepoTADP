@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
@@ -147,9 +148,10 @@ public class CrearReunionTest {
 		final Interval ocupado3Dias = new Interval(Agenda.HOY,
 				Agenda.HOY.plusDays(5));
 
-		gerente1.ocupateDurante(ocupado3Dias);
-		gerente2.ocupateDurante(ocupado3Dias);
-		gerente3.ocupateDurante(ocupado3Dias);
+		Evento evento = new Evento(ocupado3Dias);
+		gerente1.ocupate(evento);
+		gerente2.ocupate(evento);
+		gerente3.ocupate(evento);
 
 		final ArrayList<Propiedad> pripiedadesSala = new ArrayList<Propiedad>();
 		pripiedadesSala.add(tipoSala);

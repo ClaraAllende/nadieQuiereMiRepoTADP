@@ -29,7 +29,7 @@ public class ReglaCompuestaTest {
 		Persona persona1 = mock(Persona.class);
 		when(persona1.getUbicacion()).thenReturn("Ciudad Gotica");
 		when(persona1.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(50.0));
-		when(persona1.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(20l);
+		when(persona1.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		when(persona1.getEstado()).thenReturn(Estado.POCAS_REUNIONES);
 
 		Persona persona2 = mock(Persona.class);
@@ -65,19 +65,19 @@ public class ReglaCompuestaTest {
 		Persona persona1 = mock(Persona.class);
 		when(persona1.getUbicacion()).thenReturn("Ciudad Gotica");
 		when(persona1.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(20.0));
-		when(persona1.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(20l);
+		when(persona1.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		when(persona1.getEstado()).thenReturn(Estado.EXCESIVAS_REUNIONES);
 
 		Persona persona2 = mock(Persona.class);
 		when(persona2.getUbicacion()).thenReturn("Melmac");
 		when(persona2.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(50.0));
-		when(persona1.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(20l);
+		when(persona1.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		when(persona2.getEstado()).thenReturn(Estado.NORMAL);
 
 		Persona persona3 = mock(Persona.class);
 		when(persona3.getUbicacion()).thenReturn("Melmac");
 		when(persona3.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(50.0));
-		when(persona1.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(20l);
+		when(persona1.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		when(persona3.getEstado()).thenReturn(Estado.NORMAL);
 		
 		List<ReglaDeFiltrado> listaDeReglas = Arrays.asList(new ReglaSegunEstado(), 

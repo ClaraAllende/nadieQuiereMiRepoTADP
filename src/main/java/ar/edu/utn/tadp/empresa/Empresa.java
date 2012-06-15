@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import ar.edu.utn.tadp.agenda.Evento;
+import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
@@ -38,8 +40,7 @@ public class Empresa {
 	 * @see Requerimiento
 	 */
 	public Reunion createReunion(final Persona anfitrion,
-			List<Requerimiento> requerimientos, final Hours horas,
-			final DateTime vencimiento) {
+			List<Requerimiento> requerimientos, final Hours horas, final DateTime vencimiento) {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
 		// Si no hay requerimiento de sala, se agrega.
@@ -86,20 +87,21 @@ public class Empresa {
 		return Iterators.all(asistentes.iterator(), predicate);
 	}
 
-	private Interval ocuparAsistentes(final Hours horas,
-			final ArrayList<Recurso> asistentes) {
+	private Interval ocuparAsistentes(final Hours horas, final ArrayList<Recurso> asistentes) {
 		Interval intervalo = new Interval(0, 0);
 
 		for (Recurso recurso : asistentes) {
-			intervalo = recurso.intervaloDisponibleDe(horas
+			intervalo = recurso.tenesDisponible(horas
 					.toStandardDuration());
 			intervalo = intervalo.withEnd(intervalo.getStart().plus(
 					horas.toStandardDuration()));
 			if (todosDisponiblesDurante(asistentes, intervalo))
 				break;
 		}
+		Evento reunion = new Evento(intervalo);
+		reunion.setTipo(TipoEvento.REUNION);
 		for (Recurso recurso : asistentes) {
-			recurso.ocupateDurante(intervalo);
+			recurso.ocupate(reunion);
 		}
 		return intervalo;
 	}
