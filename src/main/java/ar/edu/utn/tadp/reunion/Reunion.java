@@ -81,4 +81,18 @@ public class Reunion {
 	public String getUbicacion() {
 		return this.getSala().getEdificio();
 	}
+
+	public int getCantidadDePersonas() {
+		int cant= 0;
+		for (final Recurso recurso: this.recursos){
+			if (recurso.getTipo().toLowerCase().equals("humano")){
+				cant++;
+			}
+		}
+		return cant;
+	}
+
+	public boolean requiereTransporte() {
+			return this.recursos.contains(Recurso.TRANSPORTE);
+	}
 }
