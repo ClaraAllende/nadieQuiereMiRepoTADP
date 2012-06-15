@@ -41,7 +41,9 @@ public class AgendaTest {
 		
 		agendaTipada = new Agenda();
 		proyeccion = new Evento(intervalo1);
+		proyeccion.setTipo(TipoEvento.REUNION);
 		reunion = new Evento(intervalo2);
+		reunion.setTipo(TipoEvento.VACACIONES);
 	}
 
 	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -84,6 +86,17 @@ public class AgendaTest {
 	public void testAgendaTenesDisponibleAntesDe(){
 		agendaTipada.ocupate(reunion);
 		assertTrue(agendaTipada.tenesDisponibleAntesDe(Hours.ONE, fecha4));
+	}
+	
+	@Test
+	public void testAgendaHorasEn(){
+		agendaTipada.ocupate(reunion);
+		agendaTipada.ocupate(proyeccion);
+		
+		Hours resultado = agendaTipada.horasEn(TipoEvento.REUNION, new DateTime(2012,10,10,0,00,00));
+		assertEquals(Hours.FOUR, resultado);
+		//deberían de ser 3 y media, pero redondea para arriba :)
+		//para mas precisión, debemos usar la clase Minute
 	}
 
 }

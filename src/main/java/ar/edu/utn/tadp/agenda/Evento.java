@@ -1,6 +1,8 @@
 package ar.edu.utn.tadp.agenda;
 
 import org.joda.time.Interval;
+import org.joda.time.ReadableDuration;
+import org.joda.time.base.AbstractInstant;
 
 public class Evento {
 
@@ -21,10 +23,20 @@ public class Evento {
 		this.intervalo = intervalo;
 	}
 
+	public TipoEvento getTipo() {
+		return tipo;
+	}
+
 	public void setTipo(TipoEvento tipo) {
 		this.tipo = tipo;
 	}
 
-	
+	public AbstractInstant getFechaInicio() {
+		return this.intervalo.getStart();
+	}
+
+	public ReadableDuration getDuracion() {
+		return this.getIntervalo().toDuration();
+	}
 	
 }
