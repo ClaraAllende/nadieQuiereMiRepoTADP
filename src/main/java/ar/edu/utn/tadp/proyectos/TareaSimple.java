@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 
+import ar.edu.utn.tadp.organizables.Organizable;
 import ar.edu.utn.tadp.recurso.Persona;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class TareaSimple extends Tarea {
 	
@@ -22,7 +22,7 @@ public class TareaSimple extends Tarea {
 	}
 
 	@Override
-	public BigDecimal dameTuCostoPara(Reunion unaReunion) {
+	public BigDecimal dameTuCostoPara(Organizable unaReunion) {
 		return this.complejidad.costo(this);
 	}
 

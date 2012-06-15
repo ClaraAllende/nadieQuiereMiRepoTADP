@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import ar.edu.utn.tadp.recurso.Persona;
+import ar.edu.utn.tadp.recurso.Recurso;
 
 public class ReglaCompuesta implements ReglaDeFiltrado {
 
@@ -15,19 +15,19 @@ public class ReglaCompuesta implements ReglaDeFiltrado {
 	}
 
 	@Override
-	public Collection<Persona> filtrar(final Collection<Persona> personas) {
-		Collection<Persona> personasFiltradas = personas;
+	public Collection<Recurso> filtrar(final Collection<Recurso> recursos) {
+		Collection<Recurso> recursosFiltradas = recursos;
 		
 		for (final ReglaDeFiltrado reglaDeFiltrado : listaDeReglas) {
-			if(personasFiltradas.size() == 1) {
-				return personasFiltradas;
+			if(recursosFiltradas.size() == 1) {
+				return recursosFiltradas;
 			} else {
-				personasFiltradas = reglaDeFiltrado.filtrar(personasFiltradas);
+				recursosFiltradas = reglaDeFiltrado.filtrar(recursosFiltradas);
 			}
 		}
 		
 		
-		return Arrays.asList(personasFiltradas.iterator().next());
+		return Arrays.asList(recursosFiltradas.iterator().next());
 	}
 
 }

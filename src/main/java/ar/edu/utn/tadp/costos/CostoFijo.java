@@ -2,7 +2,7 @@ package ar.edu.utn.tadp.costos;
 
 import java.math.BigDecimal;
 
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Organizable;
 
 public class CostoFijo extends Costo {
 
@@ -11,7 +11,7 @@ public class CostoFijo extends Costo {
 	}
 
 	@Override
-	public BigDecimal dameTuCostoPara(Reunion reunion) {
+	public BigDecimal dameTuCostoPara(Organizable reunion) {
 		return this.getCosto();
 	}
 	

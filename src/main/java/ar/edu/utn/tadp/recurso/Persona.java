@@ -4,12 +4,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
-import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.TipoEvento;
+import ar.edu.utn.tadp.organizables.Organizable;
 import ar.edu.utn.tadp.recurso.roles.Rol;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Representa a los recursos humanos dentro de la empresa.
@@ -28,6 +27,7 @@ public class Persona extends Recurso {
 	public Persona(final Rol rol) {
 		this.rol = rol;
 		this.tipo = "Humano";
+		this.estado = Estado.POCAS_REUNIONES;
 	}
 
 	public boolean esDelMismoProyecto(final Persona persona) {
@@ -35,8 +35,8 @@ public class Persona extends Recurso {
 	}
 
 	@Override
-	public BigDecimal dameTuCostoPara(final Reunion reunion) {
-		return !this.esDelMismoProyecto(reunion.getAnfitrion()) ? this.rol
+	public BigDecimal dameTuCostoPara(final Organizable reunion) {
+		return !this.esDelMismoProyecto(reunion.getOrganizador()) ? this.rol
 				.getCostoPorHora().dameTuCostoPara(reunion) : BigDecimal
 				.valueOf(0.0);
 	}

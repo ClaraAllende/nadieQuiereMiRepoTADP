@@ -2,45 +2,45 @@ package ar.edu.utn.tadp.reglasdefiltro;
 
 import java.util.Collection;
 
+import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.recurso.Recurso;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
-import ar.edu.utn.tadp.recurso.Persona;
-import ar.edu.utn.tadp.reunion.Reunion;
-
 public class ReglaSegunCosto implements ReglaDeFiltrado {
 
-	private Reunion reunion;
+	private Organizable ubicable;
 	
-	public ReglaSegunCosto(Reunion reunion) {
-		this.reunion = reunion;
+	public ReglaSegunCosto(Organizable ubicable) {
+		this.ubicable = ubicable;
 	}
 	
 	@Override
-	public Collection<Persona> filtrar(Collection<Persona> personas) {
-		assert personas.size() != 0;
-		final Persona personaConMenorCosto = getPersonaConMenorCost(personas);
+	public Collection<Recurso> filtrar(Collection<Recurso> recursos) {
+		assert recursos.size() != 0;
+		final Recurso personaConMenorCosto = getPersonaConMenorCost(recursos);
 		
-		return Collections2.filter(personas, new Predicate<Persona>() {
+		return Collections2.filter(recursos, new Predicate<Recurso>() {
 
 			@Override
-			public boolean apply(Persona input) {
-				return personaConMenorCosto.dameTuCostoPara(reunion).equals(input.dameTuCostoPara(reunion));
+			public boolean apply(Recurso input) {
+				return personaConMenorCosto.dameTuCostoPara(ubicable).equals(input.dameTuCostoPara(ubicable));
 			}
 		});
 	}
 
-	private Persona getPersonaConMenorCost(Collection<Persona> personas) {
-		assert personas.size() != 0;
-		Persona personaConMenorCosto = null;
+	private Recurso getPersonaConMenorCost(Collection<Recurso> recursos) {
+		assert recursos.size() != 0;
+		Recurso recursoConMenorCosto = null;
 		
-		for (Persona persona : personas) {
-			if(personaConMenorCosto == null || persona.dameTuCostoPara(reunion).compareTo(personaConMenorCosto.dameTuCostoPara(reunion)) == -1) {
-				personaConMenorCosto = persona;
+		for (Recurso persona : recursos) {
+			if(recursoConMenorCosto == null || persona.dameTuCostoPara(ubicable).compareTo(recursoConMenorCosto.dameTuCostoPara(ubicable)) == -1) {
+				recursoConMenorCosto = persona;
 			}
 		}
 		
-		return personaConMenorCosto;
+		return recursoConMenorCosto;
 	}
 
 }

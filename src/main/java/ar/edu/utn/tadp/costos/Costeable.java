@@ -2,9 +2,9 @@ package ar.edu.utn.tadp.costos;
 
 import java.math.BigDecimal;
 
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Organizable;
 
 public interface Costeable {
 
-	BigDecimal dameTuCostoPara(Reunion reunion);
+	BigDecimal dameTuCostoPara(Organizable ubicable);
 }
