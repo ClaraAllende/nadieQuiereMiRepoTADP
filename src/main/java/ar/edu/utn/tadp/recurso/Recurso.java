@@ -9,6 +9,7 @@ import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
@@ -31,7 +32,7 @@ public class Recurso implements Costeable {
 	protected String tipo;
 	protected String edificio;
 
-	private Agenda agenda = new Agenda();
+	private final Agenda agenda = new Agenda();
 
 	private final Costeable costeable;
 
@@ -47,25 +48,21 @@ public class Recurso implements Costeable {
 		return agenda;
 	}
 
-	public void setAgenda(final Agenda agenda) {
-		this.agenda = agenda;
-	}
-
 	public boolean tenesDisponibleAntesDe(final Hours horas,
 			final DateTime vencimiento) {
 		return this.agenda.tenesDisponibleAntesDe(horas, vencimiento);
 	}
 
-	public void ocupateDurante(final Interval intervalo) {
-		this.agenda.ocupateDurante(intervalo);
+	public void ocupate(final Evento evento) {
+		this.agenda.ocupate(evento);
 	}
 
 	public boolean disponibleDurante(final Interval intervalo) {
 		return this.agenda.disponibleDurante(intervalo);
 	}
 
-	public Interval intervaloDisponibleDe(final Duration standardDuration) {
-		return this.agenda.intervaloDisponibleDe(standardDuration);
+	public Interval tenesDisponible(final Duration standardDuration) {
+		return this.agenda.tenesDisponible(standardDuration);
 	}
 
 	@Override

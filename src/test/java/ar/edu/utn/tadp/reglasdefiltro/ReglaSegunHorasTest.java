@@ -18,13 +18,13 @@ public class ReglaSegunHorasTest {
 	@Test
 	public void testFiltrarSegunHoras() {
 		Persona persona1 = mock(Persona.class);
-		when(persona1.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(20l);
+		when(persona1.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		
 		Persona persona2 = mock(Persona.class);
-		when(persona2.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(25l);
+		when(persona2.getHorasEnReunionesDeLaSemana()).thenReturn(25);
 		
 		Persona persona3 = mock(Persona.class);
-		when(persona3.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(100l);
+		when(persona3.getHorasEnReunionesDeLaSemana()).thenReturn(100);
 		
 		reglaDeFiltrado = new ReglaSegunHoras();
 		
@@ -36,13 +36,13 @@ public class ReglaSegunHorasTest {
 	@Test
 	public void testFiltrarSegunHorasIguales() {
 		Persona persona1 = mock(Persona.class);
-		when(persona1.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(6l);
+		when(persona1.getHorasEnReunionesDeLaSemana()).thenReturn(6);
 		
 		Persona persona2 = mock(Persona.class);
-		when(persona2.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(6l);
+		when(persona2.getHorasEnReunionesDeLaSemana()).thenReturn(6);
 		
 		Persona persona3 = mock(Persona.class);
-		when(persona3.getCantidadDeHorasDeReunionEnLaUltimaSemana()).thenReturn(20l);
+		when(persona3.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		
 		reglaDeFiltrado = new ReglaSegunHoras();
 		

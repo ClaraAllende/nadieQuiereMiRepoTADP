@@ -19,7 +19,9 @@ public class ReglaSegunHoras implements ReglaDeFiltrado {
 
 			@Override
 			public boolean apply(Persona input) {
-				return persona.getCantidadDeHorasDeReunionEnLaUltimaSemana().equals(input.getCantidadDeHorasDeReunionEnLaUltimaSemana());
+				int valA = persona.getHorasEnReunionesDeLaSemana();
+				int valB = input.getHorasEnReunionesDeLaSemana();
+				return valA == valB; //no funciona el equals() con ints :o
 			}
 		});
 	}
@@ -30,7 +32,7 @@ public class ReglaSegunHoras implements ReglaDeFiltrado {
 		Persona personaConMenosHoras = null;
 		
 		for (Persona persona : personas) { 
-			if(personaConMenosHoras == null || persona.getCantidadDeHorasDeReunionEnLaUltimaSemana() < personaConMenosHoras.getCantidadDeHorasDeReunionEnLaUltimaSemana()) {
+			if(personaConMenosHoras == null || persona.getHorasEnReunionesDeLaSemana() < personaConMenosHoras.getHorasEnReunionesDeLaSemana()) {
 				personaConMenosHoras = persona;
 			}
 		}

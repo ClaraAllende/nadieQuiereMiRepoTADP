@@ -157,4 +157,18 @@ public class Reunion {
 	public boolean isCancelada() {
 		return cancelada;
 	}
+
+	public int getCantidadDePersonas() {
+		int cant = 0;
+		for (final Recurso recurso : this.recursos) {
+			if (recurso.getTipo().toLowerCase().equals("humano")) {
+				cant++;
+			}
+		}
+		return cant;
+	}
+
+	public boolean requiereTransporte() {
+		return this.recursos.contains(Recurso.TRANSPORTE);
+	}
 }

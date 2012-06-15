@@ -7,6 +7,8 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import ar.edu.utn.tadp.agenda.Evento;
+import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
@@ -20,7 +22,7 @@ import com.google.common.collect.Iterators;
 /**
  * Representa a una Empresa. Contiene todos los recursos.
  * 
- * @version 14-06-2012
+ * @version 15-06-2012
  */
 public class Empresa {
 
@@ -57,10 +59,128 @@ public class Empresa {
 		 * condiciones para que no falle nunca.
 		 */
 
-		final Interval intervalo = ocuparAsistentes(horas, asistentes);
+		Interval intervalo = ocuparAsistentes(horas, asistentes);
 
 		return new Reunion(anfitrion, asistentes, intervalo, requerimientos,
 				vencimiento);
+	}
+
+	public void removeRecurso(final Recurso recurso) {
+		this.recursos.remove(recurso);
+	}
+
+	public void removeAllRecurso() {
+		this.recursos.removeAll(this.recursos);
+	}
+
+	/*
+	 * Metodos privados, auxiliares de generarReunion
+	 */
+
+	private boolean todosDisponiblesDurante(
+			final ArrayList<Recurso> asistentes, final Interval intervalo) {
+		Predicate<? super Recurso> predicate = new Predicate<Recurso>() {
+
+			@Override
+			public boolean apply(final Recurso recurso) {
+				return recurso.getAgenda().disponibleDurante(intervalo);
+			}
+		};
+		return Iterators.all(asistentes.iterator(), predicate);
+	}
+
+	private Interval ocuparAsistentes(final Hours horas,
+			final ArrayList<Recurso> asistentes) {
+		Interval intervalo = new Interval(0, 0);
+
+		for (Recurso recurso : asistentes) {
+			intervalo = recurso.tenesDisponible(horas.toStandardDuration());
+			intervalo = intervalo.withEnd(intervalo.getStart().plus(
+					horas.toStandardDuration()));
+			if (todosDisponiblesDurante(asistentes, intervalo))
+				break;
+		}
+		Evento reunion = new Evento(intervalo);
+		reunion.setTipo(TipoEvento.REUNION);
+		for (Recurso recurso : asistentes) {
+			recurso.ocupate(reunion);
+		}
+		return intervalo;
+	}
+
+	public void addRecurso(final Recurso recurso) {
+		this.recursos.add(recurso);
+	}
+
+	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
+			final List<Requerimiento> criterios, final Hours horas,
+			final DateTime vencimiento) {
+		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
+
+		for (Requerimiento requerimiento : criterios) {
+			candidatos.add(requerimiento
+					.teSatisfacenDurante(horas, vencimiento));
+		}
+		return candidatos;
+	}
+
+	private void satisfaceRequerimientos(
+			final List<Requerimiento> requerimientos) {
+		for (Requerimiento requerimiento : requerimientos) {
+			requerimiento.buscaLosQueTeSatisfacen(recursos);
+		}
+	}
+
+	private ArrayList<Recurso> seleccionarCandidatos(
+			final ArrayList<ArrayList<Recurso>> candidatos) {
+
+		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
+		for (ArrayList<Recurso> recursos : candidatos) {
+			Recurso recurso = recursos.get(0);
+			recurso.apuntateALaReunion(asistentes);
+		}
+		if (asistentes.isEmpty())
+			throw new UserException("No hay candidatos disponibles");
+		return asistentes;
+	}
+
+	/**
+	 * Agrega al anfitrion y otros requerimientos indispensables. Ejemplo: sala.
+	 * 
+	 * @param anfitrion
+	 * @param requerimientos
+	 * @return
+	 */
+	private List<Requerimiento> agregarIndispensables(final Persona anfitrion,
+			final List<Requerimiento> requerimientos) {
+		// Se agregan todas las propiedades de afintrion como un requerimiento.
+		requerimientos.add(new Requerimiento(anfitrion));
+		// Si no hay un requerimiento de sala, tambien se agrega.
+		if (!tieneRequerimientoSala(requerimientos)) {
+			ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
+			condiciones.add(new Propiedad("tipo", "sala"));
+			requerimientos.add(new Requerimiento(condiciones));
+		}
+		// XXX podemos pedir aca el catering para gerente y project leader?
+		return requerimientos;
+	}
+
+	/**
+	 * Se fija si la sala ya fue pedida.
+	 * 
+	 * @param requerimientos
+	 * @return
+	 */
+	private boolean tieneRequerimientoSala(
+			final List<Requerimiento> requerimientos) {
+		for (final Requerimiento requerimiento : requerimientos) {
+			for (final Propiedad propiedad : requerimiento.getCondiciones()) {
+				if (propiedad.getTipo().equals("sala")) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -100,123 +220,5 @@ public class Empresa {
 		if (!reunion.tratarCancelacion(recurso, this)) {
 			reunion.cancelar();
 		}
-
-	}
-
-	public void addRecurso(final Recurso recurso) {
-		this.recursos.add(recurso);
-	}
-
-	public void removeRecurso(final Recurso recurso) {
-		this.recursos.remove(recurso);
-	}
-
-	public void removeAllRecurso() {
-		this.recursos.removeAll(this.recursos);
-	}
-
-	/*
-	 * Metodos privados, auxiliares de generarReunion
-	 */
-
-	private boolean todosDisponiblesDurante(
-			final ArrayList<Recurso> asistentes, final Interval intervalo) {
-		final Predicate<? super Recurso> predicate = new Predicate<Recurso>() {
-
-			@Override
-			public boolean apply(final Recurso recurso) {
-				return recurso.getAgenda().disponibleDurante(intervalo);
-			}
-		};
-		return Iterators.all(asistentes.iterator(), predicate);
-	}
-
-	private Interval ocuparAsistentes(final Hours horas,
-			final ArrayList<Recurso> asistentes) {
-		Interval intervalo = new Interval(0, 0);
-
-		for (final Recurso recurso : asistentes) {
-			intervalo = recurso.intervaloDisponibleDe(horas
-					.toStandardDuration());
-			intervalo = intervalo.withEnd(intervalo.getStart().plus(
-					horas.toStandardDuration()));
-			if (todosDisponiblesDurante(asistentes, intervalo))
-				break;
-		}
-		for (final Recurso recurso : asistentes) {
-			recurso.ocupateDurante(intervalo);
-		}
-		return intervalo;
-	}
-
-	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
-			final List<Requerimiento> criterios, final Hours horas,
-			final DateTime vencimiento) {
-		final ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
-
-		for (final Requerimiento requerimiento : criterios) {
-			candidatos.add(requerimiento
-					.teSatisfacenDurante(horas, vencimiento));
-		}
-		return candidatos;
-	}
-
-	private void satisfaceRequerimientos(
-			final List<Requerimiento> requerimientos) {
-		for (final Requerimiento requerimiento : requerimientos) {
-			requerimiento.buscaLosQueTeSatisfacen(recursos);
-		}
-	}
-
-	private ArrayList<Recurso> seleccionarCandidatos(
-			final ArrayList<ArrayList<Recurso>> candidatos) {
-
-		final ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
-		for (final ArrayList<Recurso> recursos : candidatos) {
-			final Recurso recurso = recursos.get(0);
-			recurso.apuntateALaReunion(asistentes);
-		}
-		if (asistentes.isEmpty())
-			throw new UserException("No hay candidatos disponibles");
-		return asistentes;
-	}
-
-	/**
-	 * Agrega al anfitrion y otros requerimientos indispensables. Ejemplo: sala.
-	 * 
-	 * @param anfitrion
-	 * @param requerimientos
-	 * @return
-	 */
-	private List<Requerimiento> agregarIndispensables(final Persona anfitrion,
-			final List<Requerimiento> requerimientos) {
-		// Se agregan todas las propiedades de afintrion como un requerimiento.
-		requerimientos.add(new Requerimiento(anfitrion));
-		// Si no hay un requerimiento de sala, tambien se agrega.
-		if (!tieneRequerimientoSala(requerimientos)) {
-			final ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
-			condiciones.add(new Propiedad("tipo", "sala"));
-			requerimientos.add(new Requerimiento(condiciones));
-		}
-		// XXX podemos pedir aca el catering para gerente y project leader?
-		return requerimientos;
-	}
-
-	/**
-	 * Se fija si la sala ya fue pedida.
-	 * 
-	 * @param requerimientos
-	 * @return
-	 */
-	private boolean tieneRequerimientoSala(
-			final List<Requerimiento> requerimientos) {
-		for (final Requerimiento requerimiento : requerimientos) {
-			for (final Propiedad propiedad : requerimiento.getCondiciones()) {
-				if (propiedad.getTipo().equals("sala")) {
-					return true;
-				}
-			}
-		}
-		return false;
 	}
 }
