@@ -137,12 +137,13 @@ public class Reunion {
 	 * Indica a la reunion que se debe cancelar.
 	 */
 	public void cancelar() {
-		// TODO Falta hacerlo. Aca deberia avisar a los recursos para que se
-		// liberen.
+		// Avisa a los recursos para que se liberen.
 		for (Recurso recurso : this.getRecursos()) {
 			recurso.cancelarReunion(this);
 		}
-		this.setCancelada(true);
+		// Se quita los recursos.
+		this.getRecursos().removeAll(this.getRecursos());
+		cancelada = true;
 	}
 
 	public List<Requerimiento> getRequerimientos() {
@@ -155,9 +156,5 @@ public class Reunion {
 
 	public boolean isCancelada() {
 		return cancelada;
-	}
-
-	public void setCancelada(final boolean cancelada) {
-		this.cancelada = cancelada;
 	}
 }
