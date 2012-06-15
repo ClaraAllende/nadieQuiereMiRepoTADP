@@ -22,22 +22,25 @@ import ar.edu.utn.tadp.reunion.tratamiento.TratamientoCancelacion;
 /**
  * Representa a una reunion que se acordo a realizar dentro de la empresa.
  * 
- * @version 03-06-2012
+ * @version 14-06-2012
  */
 public class Reunion {
 	private final Persona anfitrion;
 	private final List<Recurso> recursos;
 	private final Interval horario;
+	private final List<Requerimiento> requerimientos;
+	private final DateTime vencimiento;
+	private boolean cancelada = false;
 	private final List<TratamientoCancelacion> tratamientos = new ArrayList<TratamientoCancelacion>();
-	private List<Requerimiento> requerimientos;
-	private DateTime vencimiento;
-	private boolean cancelada;
 
 	public Reunion(final Persona anfitrion, final ArrayList<Recurso> recursos,
-			final Interval horario) {
+			final Interval horario, final List<Requerimiento> requerimientos,
+			final DateTime vencimiento) {
 		this.anfitrion = anfitrion;
 		this.recursos = recursos;
 		this.horario = horario;
+		this.requerimientos = requerimientos;
+		this.vencimiento = vencimiento;
 	}
 
 	public Persona getAnfitrion() {
@@ -136,6 +139,9 @@ public class Reunion {
 	public void cancelar() {
 		// TODO Falta hacerlo. Aca deberia avisar a los recursos para que se
 		// liberen.
+		for (Recurso recurso : this.getRecursos()) {
+			recurso.cancelarReunion(this);
+		}
 		this.setCancelada(true);
 	}
 

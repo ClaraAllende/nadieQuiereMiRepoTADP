@@ -101,4 +101,15 @@ public class Recurso implements Costeable {
 	public void setEdificio(final String edificio) {
 		this.edificio = edificio;
 	}
+
+	/**
+	 * Libera la agenda ya que se cancelo una reunion.
+	 * 
+	 * @param reunion
+	 *            <code>Reunion</code> que se cancelo.
+	 */
+	public void cancelarReunion(Reunion reunion) {
+		// TODO Auto-generated method stub
+		agenda.desocupateDurante(reunion.getHorario());
+	}
 }

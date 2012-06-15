@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.reunion.tratamiento;
 
 import ar.edu.utn.tadp.empresa.Empresa;
+import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.reunion.Reunion;
 
@@ -16,8 +17,11 @@ public class Replanificacion implements TratamientoCancelacion {
 	public boolean evitarCancelacion(final Recurso recurso,
 			final Reunion reunion, final Empresa empresa) {
 		// Este tratamiento no hace la remocion de recurso.
-		empresa.replanificarReunion(reunion);
-		return false;
+		try {
+			empresa.replanificarReunion(reunion);
+			return true;
+		} catch (final UserException e) {
+			return false;
+		}
 	}
-
 }

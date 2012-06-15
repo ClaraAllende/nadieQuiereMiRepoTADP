@@ -20,7 +20,7 @@ import com.google.common.collect.Iterators;
 /**
  * Representa a una Empresa. Contiene todos los recursos.
  * 
- * @version 03-06-2012
+ * @version 14-06-2012
  */
 public class Empresa {
 
@@ -59,7 +59,8 @@ public class Empresa {
 
 		final Interval intervalo = ocuparAsistentes(horas, asistentes);
 
-		return new Reunion(anfitrion, asistentes, intervalo);
+		return new Reunion(anfitrion, asistentes, intervalo, requerimientos,
+				vencimiento);
 	}
 
 	/**
@@ -69,10 +70,13 @@ public class Empresa {
 	 * @return La <code>Reunion</code> replanificada.
 	 */
 	public Reunion replanificarReunion(final Reunion reunion) {
-		return this.createReunion(reunion.getAnfitrion(),
-				reunion.getRequerimientos(),
+		Reunion reunionReplanificada = this.createReunion(
+				reunion.getAnfitrion(), reunion.getRequerimientos(),
 				Hours.hours((int) reunion.getDuracionDeReunion()),
 				reunion.getVencimiento());
+		// Se cancela la reunion original.
+		reunion.cancelar();
+		return reunionReplanificada;
 	}
 
 	/**
