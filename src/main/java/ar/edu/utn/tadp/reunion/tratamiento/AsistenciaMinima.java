@@ -26,9 +26,14 @@ public class AsistenciaMinima implements TratamientoCancelacion {
 	@Override
 	public boolean evitarCancelacion(final Recurso recurso,
 			final Reunion reunion, final Empresa empresa) {
-		// TODO falta hacerlo.
-
-		return false;
+		if (recurso.getTipo().toLowerCase().equals("humano")) {
+			Integer division = new Integer(
+					((reunion.getCantidadRequeridaDePersonas() - 1) * 100)
+							/ reunion.getCantidadRequeridaDePersonas());
+			return division > porcentaje;
+		} else {
+			// Si no es persona, no hace falta evaluar.
+			return true;
+		}
 	}
-
 }

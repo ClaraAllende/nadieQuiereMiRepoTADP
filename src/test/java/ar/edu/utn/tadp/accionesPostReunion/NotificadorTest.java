@@ -39,7 +39,7 @@ public class NotificadorTest {
 		mets.add("getCantidadDePersonas");
 		when(reunion.tieneCatering()).thenReturn(true);
 		when(reunion.getHorario()).thenReturn(hoy);
-		when(reunion.getCantidadDePersonas()).thenReturn(5);
+		when(reunion.getCantidadRequeridaDePersonas()).thenReturn(5);
 		DataServicioANotificar dataCatering= new DataServicioANotificar("tieneCatering", dest, reunion,mets, "Solicitud de servicio de catering" );
 		notificador.notifyService(reunion, dataCatering);
 		assertEquals((hoy.toString() + "5"), mailSender.ultimoMailEnviado().getBody());

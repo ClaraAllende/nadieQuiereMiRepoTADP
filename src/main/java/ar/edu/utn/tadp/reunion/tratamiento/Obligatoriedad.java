@@ -13,10 +13,9 @@ import ar.edu.utn.tadp.reunion.Reunion;
 public class Obligatoriedad implements TratamientoCancelacion {
 
 	@Override
-	public boolean evitarCancelacion(final Recurso recurso, final Reunion reunion,
-			final Empresa empresa) {
+	public boolean evitarCancelacion(final Recurso recurso,
+			final Reunion reunion, final Empresa empresa) {
 		// TODO falta hacerlo.
 		return false;
 	}
-
 }

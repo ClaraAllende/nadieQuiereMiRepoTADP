@@ -10,6 +10,7 @@ import org.joda.time.Interval;
 import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.empresa.Empresa;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
@@ -68,6 +69,21 @@ public class Reunion {
 		return horario.toDuration().getStandardHours();
 	}
 
+	public int getCantidadRequeridaDePersonas() {
+		int cant = getRequerimientos().size() + 1; // total de req + anfintrion
+		for (final Requerimiento requerimiento : this.requerimientos) {
+			for (Propiedad condicion : requerimiento.getCondiciones()) {
+				// XXX mejorar eso. Pregunta si req que no es persona.
+				if (condicion.getTipo().toLowerCase().equals("tipo")
+						&& (!condicion.getValor().toLowerCase()
+								.equals("humano"))) {
+					cant--;
+				}
+			}
+		}
+		return cant;
+	}
+
 	public long getCantidadDePersonasQueNecesitanTransporte() {
 		int cantidadDePersonasQueNecesitanTransporte = 0;
 		for (final Recurso recurso : recursos) {
@@ -77,6 +93,10 @@ public class Reunion {
 			}
 		}
 		return cantidadDePersonasQueNecesitanTransporte;
+	}
+
+	public boolean requiereTransporte() {
+		return this.recursos.contains(Recurso.TRANSPORTE);
 	}
 
 	public BigDecimal getCostoTotal() {
@@ -156,19 +176,5 @@ public class Reunion {
 
 	public boolean isCancelada() {
 		return cancelada;
-	}
-
-	public int getCantidadDePersonas() {
-		int cant = 0;
-		for (final Recurso recurso : this.recursos) {
-			if (recurso.getTipo().toLowerCase().equals("humano")) {
-				cant++;
-			}
-		}
-		return cant;
-	}
-
-	public boolean requiereTransporte() {
-		return this.recursos.contains(Recurso.TRANSPORTE);
 	}
 }

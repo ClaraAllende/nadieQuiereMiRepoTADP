@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
-import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.TipoEvento;
@@ -51,7 +50,6 @@ public class Persona extends Recurso {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
 	}
 
-
 	public Estado getEstado() {
 		return this.estado;
 	}
@@ -62,7 +60,8 @@ public class Persona extends Recurso {
 
 	public int getHorasEnReunionesDeLaSemana() {
 		DateTime unaSemanaAtras = new DateTime().minusWeeks(1);
-		return this.getAgenda().horasEn(TipoEvento.REUNION, unaSemanaAtras).getHours();
+		return this.getAgenda().horasEn(TipoEvento.REUNION, unaSemanaAtras)
+				.getHours();
 	}
 
 	public String getUbicacion() {
@@ -97,9 +96,10 @@ public class Persona extends Recurso {
 	public void setProyecto(final String proyecto) {
 		this.proyecto = proyecto;
 	}
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++
-//++ para testing ++++++++++++++++++++++++++++++++++++++
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// ++ para testing ++++++++++++++++++++++++++++++++++++++
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	/**
 	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
 	 * test.
