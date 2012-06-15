@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.joda.time.DateTime;
-import org.joda.time.Hours;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.TipoEvento;

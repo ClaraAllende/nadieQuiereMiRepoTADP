@@ -6,38 +6,37 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 import ar.edu.utn.tadp.recurso.Persona;
+import ar.edu.utn.tadp.recurso.Recurso;
 
 public class ReglaSegunHoras implements ReglaDeFiltrado {
 
 	@Override
-	public Collection<Persona> filtrar(Collection<Persona> personas) {
+	public Collection<Recurso> filtrar(Collection<Recurso> personas) {
 		assert personas.size() != 0;
 		
-		final Persona persona = dameAlQueTengaMenosHoras(personas);
+		final Recurso persona = dameAlQueTengaMenosHoras(personas);
 		
-		return Collections2.filter(personas, new Predicate<Persona>() {
+		return Collections2.filter(personas, new Predicate<Recurso>() {
 
 			@Override
-			public boolean apply(Persona input) {
-				int valA = persona.getHorasEnReunionesDeLaSemana();
-				int valB = input.getHorasEnReunionesDeLaSemana();
-				return valA == valB; //no funciona el equals() con ints :o
+			public boolean apply(Recurso otraRecurso) {
+				return persona.getHorasEnReunionesDeLaSemana() == otraRecurso.getHorasEnReunionesDeLaSemana();
 			}
 		});
 	}
 
-	private Persona dameAlQueTengaMenosHoras(Collection<Persona> personas) {
-		assert personas.size() != 0;
+	private Recurso dameAlQueTengaMenosHoras(Collection<Recurso> recursos) {
+		assert recursos.size() != 0;
 		
-		Persona personaConMenosHoras = null;
+		Recurso recursoConMenosHoras = null;
 		
-		for (Persona persona : personas) { 
-			if(personaConMenosHoras == null || persona.getHorasEnReunionesDeLaSemana() < personaConMenosHoras.getHorasEnReunionesDeLaSemana()) {
-				personaConMenosHoras = persona;
+		for (Recurso persona : recursos) { 
+			if(recursoConMenosHoras == null || persona.getHorasEnReunionesDeLaSemana() < recursoConMenosHoras.getHorasEnReunionesDeLaSemana()) {
+				recursoConMenosHoras = persona;
 			}
 		}
 		
-		return personaConMenosHoras;
+		return recursoConMenosHoras;
 	}
 
 }

@@ -6,6 +6,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 import ar.edu.utn.tadp.recurso.Persona;
+import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.reunion.Reunion;
 
 public class ReglaSegunUbicacion implements ReglaDeFiltrado {
@@ -17,11 +18,11 @@ public class ReglaSegunUbicacion implements ReglaDeFiltrado {
 	}
 
 	@Override
-	public Collection<Persona> filtrar(Collection<Persona> personas) {
-		return Collections2.filter(personas, new Predicate<Persona>() {
+	public Collection<Recurso> filtrar(Collection<Recurso> recursos) {
+		return Collections2.filter(recursos, new Predicate<Recurso>() {
 
 			@Override
-			public boolean apply(Persona input) {
+			public boolean apply(Recurso input) {
 				return input.getUbicacion().equals(reunion.getUbicacion());
 			}
 			

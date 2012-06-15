@@ -2,6 +2,10 @@ package ar.edu.utn.tadp.reglasdefiltro;
 
 public class NoSeFiltroCompletamenteException extends RuntimeException {
 
+	public NoSeFiltroCompletamenteException(String message) {
+		super(message);
+	}
+
 	/**
 	 * 
 	 */

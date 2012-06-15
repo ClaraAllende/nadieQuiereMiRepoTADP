@@ -98,4 +98,17 @@ public class Recurso implements Costeable {
 	public void setEdificio(final String edificio) {
 		this.edificio = edificio;
 	}
+
+	public Estado getEstado() {
+		return Estado.POCAS_REUNIONES;
+	}
+
+	public String getUbicacion() {
+		return this.edificio;
+	}
+
+	public int getHorasEnReunionesDeLaSemana() {
+		//Los recursos siempre están disponibles
+		return 0;
+	}
 }

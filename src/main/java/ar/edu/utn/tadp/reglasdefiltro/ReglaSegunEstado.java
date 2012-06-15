@@ -6,33 +6,34 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 
 import ar.edu.utn.tadp.recurso.Persona;
+import ar.edu.utn.tadp.recurso.Recurso;
 
 public class ReglaSegunEstado implements ReglaDeFiltrado {
 
 	@Override
-	public Collection<Persona> filtrar(Collection<Persona> personas) {
-		final Persona personaConMasPrioridad = getPersonaConMasPrioridad(personas);
+	public Collection<Recurso> filtrar(Collection<Recurso> personas) {
+		final Recurso recursoConMasPrioridad = getRecursoConMasPrioridad(personas);
 		
-		return Collections2.filter(personas, new Predicate<Persona>() {
+		return Collections2.filter(personas, new Predicate<Recurso>() {
 
 			@Override
-			public boolean apply(Persona input) {
-				return personaConMasPrioridad.getEstado().equals(input.getEstado());
+			public boolean apply(Recurso input) {
+				return recursoConMasPrioridad.getEstado().equals(input.getEstado());
 			}
 		});
 		
 	}
 
-	private Persona getPersonaConMasPrioridad(Collection<Persona> personas) {
-		Persona personaConMasPrioridad = null;
+	private Recurso getRecursoConMasPrioridad(Collection<Recurso> recursos) {
+		Recurso recursoConMasPrioridad = null;
 		
-		for (Persona persona : personas) {
-			if(personaConMasPrioridad == null || persona.getEstado().esMasPrioritarioQue(personaConMasPrioridad.getEstado())) {
-				personaConMasPrioridad = persona; 
+		for (Recurso recurso : recursos) {
+			if(recursoConMasPrioridad == null || recurso.getEstado().esMasPrioritarioQue(recursoConMasPrioridad.getEstado())) {
+				recursoConMasPrioridad = recurso; 
 			} 
 		}
 		
-		return personaConMasPrioridad;
+		return recursoConMasPrioridad;
 	}
 
 }
