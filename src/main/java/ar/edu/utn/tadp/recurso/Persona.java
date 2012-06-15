@@ -3,8 +3,11 @@ package ar.edu.utn.tadp.recurso;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import org.joda.time.DateTime;
+import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.reunion.Reunion;
 
@@ -48,15 +51,6 @@ public class Persona extends Recurso {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
 	}
 
-	/**
-	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
-	 * test.
-	 */
-	@Override
-	public String toString() {
-		return "Persona: " + tipo + " - " + edificio + " - " + nombre + " - "
-				+ sector + " - " + proyecto + " - " + rol;
-	}
 
 	public Estado getEstado() {
 		return this.estado;
@@ -66,10 +60,9 @@ public class Persona extends Recurso {
 		this.estado = estado;
 	}
 
-	public Long getCantidadDeHorasDeReunionEnLaUltimaSemana() {
-		// TODO getCantidadDeHorasDeReunionEnLaUltimaSemana hacer que devuelva
-		// en base al calendario de horas ocupadas en reuniones
-		return null;
+	public int getHorasEnReunionesDeLaSemana() {
+		DateTime unaSemanaAtras = new DateTime().minusWeeks(1);
+		return this.getAgenda().horasEn(TipoEvento.REUNION, unaSemanaAtras).getHours();
 	}
 
 	public String getUbicacion() {
@@ -104,5 +97,16 @@ public class Persona extends Recurso {
 	public void setProyecto(final String proyecto) {
 		this.proyecto = proyecto;
 	}
-
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++ para testing ++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Persona: " + tipo + " - " + edificio + " - " + nombre + " - "
+				+ sector + " - " + proyecto + " - " + rol;
+	}
 }

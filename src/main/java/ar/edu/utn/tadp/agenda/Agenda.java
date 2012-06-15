@@ -7,10 +7,16 @@ import org.joda.time.DateTime;
 import org.joda.time.Duration;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
+import org.joda.time.ReadableDuration;
 
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.reunion.Reunion;
 
-public class Agenda{
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.*;
+
+public class Agenda {
 
 	/*
 	 * Constantes 
@@ -18,15 +24,12 @@ public class Agenda{
  	public static DateTime FUTURO = new DateTime(java.lang.Long.MAX_VALUE);
  	public static DateTime HOY = new DateTime(DateTime.now().getYear(), DateTime.now().getMonthOfYear(),DateTime.now().getDayOfMonth(),0,0);
 	
-	private List<Interval> horariosOcupados = new ArrayList<Interval>();
+	private List<Evento> eventos = new ArrayList<>();
 	
-	public List<Interval> getHorariosOcupados() {
-		return horariosOcupados;
+	public void ocupate(Evento evento){
+		this.eventos.add(evento);
 	}
-	
-	public void ocupateDurante(Interval unIntervalo) {
-		this.getHorariosOcupados().add(unIntervalo);
-	}
+
 	
 	public boolean disponibleDurante (Interval unIntervalo) {
 		for (Interval intervalo : this.getHorariosOcupados()) {
@@ -34,15 +37,27 @@ public class Agenda{
 		}
 		return true;
 	}
+
+	
+	public List<Interval> getHorariosOcupados() {
+		Function<Evento, Interval> function = new Function<Evento, Interval>() {
+
+			@Override
+			public Interval apply(Evento evento) {
+				return evento.getIntervalo();
+			}
+		};
+		return Lists.transform(this.eventos, function );
+	}
 	
 	public List<Interval> horariosDisponibles(){
 		List<Interval> disponibles = new ArrayList<Interval>();
 		Interval intDisponible = new Interval(Agenda.HOY , Agenda.FUTURO);
 		disponibles.add(intDisponible);
 		
-		if (this.horariosOcupados.isEmpty()) return disponibles;
+		if (this.getHorariosOcupados().isEmpty()) return disponibles;
 		
-		for(Interval intOcupado : this.horariosOcupados){
+		for(Interval intOcupado : this.getHorariosOcupados()){
 			Interval intAuxiliar = new Interval(intDisponible.getStart(), intOcupado.getStart());
 			disponibles.remove(intDisponible);
 			disponibles.add(intAuxiliar);
@@ -52,7 +67,7 @@ public class Agenda{
 		return disponibles;
 	}
 	
-	public Interval intervaloDisponibleDe(Duration unaDuracion){
+	public Interval tenesDisponible(Duration unaDuracion){
 		for (Interval intervalo : this.horariosDisponibles()){
 			if(intervalo.toDuration().isLongerThan(unaDuracion)) {
 				return intervalo;
@@ -62,13 +77,57 @@ public class Agenda{
 	}
 
 	public boolean tenesDisponibleAntesDe(Hours horas, DateTime vencimiento) {
-		Interval interval = this.intervaloDisponibleDe(horas.toStandardDuration());
+		Interval interval = this.tenesDisponible(horas.toStandardDuration());
 		interval = interval.withEnd(interval.getStart().plus(horas.toStandardDuration()));
 		return interval.isBefore(vencimiento);
 	}
 
 	public boolean estasOcupadoDurante(Interval intervalo) {
-		return horariosOcupados.contains(intervalo);
+		return getHorariosOcupados().contains(intervalo);
+	}
+
+
+	public Hours horasEn(TipoEvento reunion, DateTime fechaLimite) {
+		Iterable<Evento> todasLasReuniones = eventosDeTipo(reunion, this.eventos);
+		Iterable<Evento> reunionesDeLaSemana = eventosAntesDe(fechaLimite, todasLasReuniones);
+		ArrayList<Evento> arrayList = Lists.newArrayList(reunionesDeLaSemana);
+		return cantidadDeHoras(arrayList);
+	}
+
+
+	private Hours cantidadDeHoras(Iterable<Evento> reunionesDeLaSemana) {
+		Duration duracion = new Duration(0);
+		for (Evento evento: reunionesDeLaSemana){
+			ReadableDuration unaDuracion = evento.getDuracion();
+			Duration d2 = duracion.plus(unaDuracion);
+			duracion = d2;
+		}
+		return duracion.toStandardHours();
+	}
+
+
+	private Iterable<Evento> eventosAntesDe(final DateTime fechaLimite, Iterable<Evento> eventos) {
+		Predicate<Evento> entreLimiteYHoy = new Predicate<Evento>() {
+
+			@Override
+			public boolean apply(Evento evento) {
+				return fechaLimite.isBefore(evento.getFechaInicio());
+			}
+		};
+		return Iterables.filter(eventos, entreLimiteYHoy );
+	}
+
+
+	private Iterable<Evento> eventosDeTipo(final TipoEvento tipoEvento, Iterable<Evento> eventos) {
+		Predicate<Evento> predicate = new Predicate<Evento>(){
+
+			@Override
+			public boolean apply(Evento evento) {
+				return evento.getTipo().equals(tipoEvento);
+			}
+			
+		};
+		return Iterables.filter(eventos, predicate);
 	}
 
 
