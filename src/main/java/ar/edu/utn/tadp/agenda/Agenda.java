@@ -10,7 +10,7 @@ import org.joda.time.Interval;
 import org.joda.time.ReadableDuration;
 
 import ar.edu.utn.tadp.excepcion.UserException;
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Reunion;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;

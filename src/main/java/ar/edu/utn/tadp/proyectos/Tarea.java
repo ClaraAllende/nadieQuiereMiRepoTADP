@@ -3,8 +3,8 @@ package ar.edu.utn.tadp.proyectos;
 import java.math.BigDecimal;
 
 import ar.edu.utn.tadp.costos.Costeable;
+import ar.edu.utn.tadp.organizables.Organizable;
 import ar.edu.utn.tadp.recurso.Persona;
-import ar.edu.utn.tadp.reunion.Reunion;
 /**
  * El composite de tareas :)
  * @author clari
@@ -12,7 +12,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
  */
 public abstract class Tarea implements Costeable {
 
-	public abstract BigDecimal dameTuCostoPara(Reunion unaReunion);
+	public abstract BigDecimal dameTuCostoPara(Organizable unaReunion);
 
 	public abstract BigDecimal tiempo();
 

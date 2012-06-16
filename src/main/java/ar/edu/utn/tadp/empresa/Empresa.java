@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.empresa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -10,11 +11,19 @@ import org.joda.time.Interval;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.organizables.Reunion;
+import ar.edu.utn.tadp.organizables.OrganizableSimple;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
+import ar.edu.utn.tadp.reglasdefiltro.ManejadorDeReglas;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaCompuesta;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunCosto;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunEstado;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunHoras;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunUbicacion;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
@@ -50,7 +59,7 @@ public class Empresa {
 		candidatos = seleccionarCandidatos(requerimientos, horas, vencimiento);
 
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
-		asistentes = this.seleccionarCandidatos(candidatos);
+		asistentes = this.seleccionarCandidatos(candidatos, new OrganizableSimple(anfitrion, horas));
 
 		/*
 		 * Se supone que ocuparAsistente no puede fallar, por eso no va con
@@ -130,11 +139,13 @@ public class Empresa {
 	}
 
 	private ArrayList<Recurso> seleccionarCandidatos(
-			final ArrayList<ArrayList<Recurso>> candidatos) {
+			final ArrayList<ArrayList<Recurso>> candidatos, Organizable ubicable) {
 
+		ManejadorDeReglas manejadorDeReglas = new ManejadorDeReglas(new ReglaCompuesta(Arrays.asList(new ReglaSegunEstado(), new ReglaSegunCosto(ubicable), new ReglaSegunHoras(), new ReglaSegunUbicacion(ubicable))));
+		
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		for (ArrayList<Recurso> recursos : candidatos) {
-			Recurso recurso = recursos.get(0);
+			Recurso recurso = manejadorDeReglas.filtra(recursos);
 			recurso.apuntateALaReunion(asistentes);
 		}
 		if (asistentes.isEmpty())
