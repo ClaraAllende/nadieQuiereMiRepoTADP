@@ -26,10 +26,11 @@ import com.google.common.collect.Sets;
  */
 public class Requerimiento {
 
-	private Collection<Propiedad> condiciones;
+	private final Collection<Propiedad> condiciones;
 	private Collection<Recurso> meSatisfacen;
 	private boolean obligatorio = true;
 	private Requerimiento requerimientoAlternativo = null;
+	private Recurso recursoQueSatisface;
 
 	/**
 	 * Crea un <code>Requerimiento</code> en base de las propiedades requeridas.
@@ -38,7 +39,21 @@ public class Requerimiento {
 	 * @see Propiedad
 	 */
 	public Requerimiento(final Collection<Propiedad> condiciones) {
+		this(condiciones, true);
+	}
+
+	/**
+	 * Crea un <code>Requerimiento</code> en base de las propiedades requeridas
+	 * estableciendo si es o no obligatorio. Por defecto es obligatorio.
+	 * 
+	 * @param condiciones
+	 * @param obligatorio
+	 * @see Propiedad
+	 */
+	public Requerimiento(final Collection<Propiedad> condiciones,
+			boolean obligatorio) {
 		this.condiciones = condiciones;
+		this.obligatorio = obligatorio;
 	}
 
 	/**
@@ -98,13 +113,9 @@ public class Requerimiento {
 		return Iterables.all(this.condiciones, p);
 	}
 
-	public void agregarCondiciones(final Set<Propiedad> unasCondiciones) {
-		this.condiciones = unasCondiciones;
-	}
-
-	public void buscaLosQueTeSatisfacen(final List<Recurso> recursos) {
-		meSatisfacen = this.filtrarConjunto(recursos);
-
+	public Collection<Recurso> buscaLosQueTeSatisfacen(
+			final List<Recurso> recursos) {
+		return meSatisfacen = this.filtrarConjunto(recursos);
 	}
 
 	public ArrayList<Recurso> teSatisfacenDurante(final Hours horas,
@@ -177,15 +188,19 @@ public class Requerimiento {
 		return obligatorio;
 	}
 
-	public void setObligatorio(final boolean obligatorio) {
-		this.obligatorio = obligatorio;
-	}
-
 	public Requerimiento getRequerimientoAlternativo() {
 		return requerimientoAlternativo;
 	}
 
 	public void setRequerimientoAlternativo(final Requerimiento requerimiento) {
 		this.requerimientoAlternativo = requerimiento;
+	}
+
+	public Recurso getRecursoQueSatisface() {
+		return recursoQueSatisface;
+	}
+
+	public void setRecursoQueSatisface(Recurso recurso) {
+		this.recursoQueSatisface = recurso;
 	}
 }

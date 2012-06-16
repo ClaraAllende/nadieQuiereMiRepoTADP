@@ -21,6 +21,7 @@ public class Replanificacion implements TratamientoCancelacion {
 			empresa.replanificarReunion(reunion);
 			return true;
 		} catch (final UserException e) {
+			// Si tira excepcion es por que no se puede replanificar.
 			return false;
 		}
 	}

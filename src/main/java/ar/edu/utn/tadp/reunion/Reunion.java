@@ -99,6 +99,24 @@ public class Reunion {
 		return this.recursos.contains(Recurso.TRANSPORTE);
 	}
 
+	public int getCantidadDePersonas() {
+
+		int cant = 0;
+
+		for (final Recurso recurso : this.recursos) {
+
+			if (recurso.getTipo().toLowerCase().equals("humano")) {
+
+				cant++;
+
+			}
+
+		}
+
+		return cant;
+
+	}
+
 	public BigDecimal getCostoTotal() {
 		BigDecimal result = BigDecimal.valueOf(0);
 
@@ -176,5 +194,43 @@ public class Reunion {
 
 	public boolean isCancelada() {
 		return cancelada;
+	}
+
+	/**
+	 * Remueve un recurso asignado a la reunion.
+	 * 
+	 * @param recurso
+	 */
+	public void quitar(Recurso recurso) {
+		// Se quita de los recursos
+		recursos.remove(recurso);
+		Requerimiento requerimiento = getRequerimientoQueSatiface(recurso);
+		if (requerimiento != null) {
+			requerimiento.setRecursoQueSatisface(null);
+		}
+		// Se le libera la agenda.
+		recurso.cancelarReunion(this);
+	}
+
+	public boolean isObligatorio(Recurso recurso) {
+		Requerimiento requerimiento = getRequerimientoQueSatiface(recurso);
+		if (requerimiento != null) {
+			return requerimiento.isObligatorio();
+		} else {
+			// Si llega aca es por que es Anfitron, Sala, etc.. que son
+			// obligatorios.
+			return true;
+		}
+	}
+
+	private Requerimiento getRequerimientoQueSatiface(Recurso recurso) {
+		for (Requerimiento requerimiento : requerimientos) {
+			if (requerimiento.getRecursoQueSatisface().equals(recurso)) {
+				return requerimiento;
+			}
+		}
+		// Si llega aca es por que es Anfitron, Sala, etc.. que son
+		// obligatorios.
+		return null;
 	}
 }

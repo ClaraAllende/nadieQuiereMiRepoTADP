@@ -15,7 +15,12 @@ public class Obligatoriedad implements TratamientoCancelacion {
 	@Override
 	public boolean evitarCancelacion(final Recurso recurso,
 			final Reunion reunion, final Empresa empresa) {
-		// TODO falta hacerlo.
-		return false;
+		if (reunion.isObligatorio(recurso)) {
+			return false;
+		} else {
+			// Ya que es opcional lo quita y reporta que lo soluciono.
+			reunion.quitar(recurso);
+			return true;
+		}
 	}
 }

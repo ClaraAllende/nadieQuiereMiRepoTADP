@@ -61,6 +61,9 @@ public class Empresa {
 
 		Interval intervalo = ocuparAsistentes(horas, asistentes);
 
+		// Se asocian los asistentes con sus respectivos requerimientos.
+		this.asociar(asistentes, requerimientos);
+
 		return new Reunion(anfitrion, asistentes, intervalo, requerimientos,
 				vencimiento);
 	}
@@ -219,6 +222,22 @@ public class Empresa {
 		}
 		if (!reunion.tratarCancelacion(recurso, this)) {
 			reunion.cancelar();
+		}
+	}
+
+	private void asociar(final ArrayList<Recurso> recursos,
+			final List<Requerimiento> requerimientos) {
+		// Una copia de lista que se va a modificar.
+		List<Recurso> copiaRecursos = new ArrayList<Recurso>();
+		copiaRecursos.addAll(recursos);
+		// Recorre los requerimientos y les asocia los recursos. Asi sabremos
+		// cuales son los opcionales y cuales no.
+		for (Requerimiento requerimiento : requerimientos) {
+			List<Recurso> ganadores = (List<Recurso>) requerimiento
+					.buscaLosQueTeSatisfacen(copiaRecursos);
+			// XXX eso de tomar primero podria romper todo!
+			requerimiento.setRecursoQueSatisface(ganadores.get(0));
+			copiaRecursos.remove(0);
 		}
 	}
 }
