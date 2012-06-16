@@ -8,6 +8,7 @@ import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.organizables.Organizable;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 
@@ -16,7 +17,7 @@ import ar.edu.utn.tadp.recurso.Recurso;
  * 
  * @version 03-06-2012
  */
-public class Reunion {
+public class Reunion implements Organizable {
 	private final Persona anfitrion;
 	private final List<Recurso> recursos;
 	private final Interval horario;
@@ -27,8 +28,8 @@ public class Reunion {
 		this.recursos = recursos;
 		this.horario = horario;
 	}
-
-	public Persona getAnfitrion() {
+ @Override
+	public Persona getOrganizador() {
 		return anfitrion;
 	}
 
@@ -48,8 +49,8 @@ public class Reunion {
 		}
 		throw new UserException("Reunion no tiene una sala asignada!");
 	}
-
-	public long getDuracionDeReunion() {
+ @Override
+	public long getDuracion() {
 		return horario.toDuration().getStandardHours();
 	}
 
@@ -67,7 +68,7 @@ public class Reunion {
 	public BigDecimal getCostoTotal() {
 		BigDecimal result = BigDecimal.valueOf(0);
 
-		for (final Costeable costeable : recursos) {
+		for (final Recurso costeable : recursos) {
 			result = result.add(costeable.dameTuCostoPara(this));
 		}
 
@@ -95,4 +96,11 @@ public class Reunion {
 	public boolean requiereTransporte() {
 			return this.recursos.contains(Recurso.TRANSPORTE);
 	}
+
+	@Override
+	public long getCantidad() {
+		return this.getCantidadDePersonasQueNecesitanTransporte();
+	}
+
+
 }
