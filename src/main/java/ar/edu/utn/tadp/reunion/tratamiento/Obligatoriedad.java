@@ -8,7 +8,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
  * Trata de evitar cancelar la reunion a menos que se dio de baja alguna de las
  * personas o recursos obligatorios.
  * 
- * @version 13-06-2012
+ * @version 15-06-2012
  */
 public class Obligatoriedad implements TratamientoCancelacion {
 

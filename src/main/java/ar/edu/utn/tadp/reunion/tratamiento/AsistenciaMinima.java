@@ -8,7 +8,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
  * Para no cancelar la reunion valida si hay menos de un porcentaje de
  * asistencia elegido por el usuario.
  * 
- * @version 13-06-2012
+ * @version 15-06-2012
  */
 public class AsistenciaMinima implements TratamientoCancelacion {
 

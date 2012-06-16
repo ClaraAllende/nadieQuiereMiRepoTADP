@@ -9,7 +9,7 @@ import ar.edu.utn.tadp.reunion.Reunion;
  * Trata de replaniﬁcar la reunion con todos sus requerimientos para mas
  * adelante.
  * 
- * @version 13-06-2012
+ * @version 15-06-2012
  */
 public class Replanificacion implements TratamientoCancelacion {
 

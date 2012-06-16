@@ -240,4 +240,8 @@ public class Empresa {
 			copiaRecursos.remove(0);
 		}
 	}
+
+	public List<Recurso> gerRecursos() {
+		return recursos;
+	}
 }

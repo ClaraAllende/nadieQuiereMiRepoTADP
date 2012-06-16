@@ -223,7 +223,7 @@ public class Reunion {
 		}
 	}
 
-	private Requerimiento getRequerimientoQueSatiface(Recurso recurso) {
+	public Requerimiento getRequerimientoQueSatiface(Recurso recurso) {
 		for (Requerimiento requerimiento : requerimientos) {
 			if (requerimiento.getRecursoQueSatisface().equals(recurso)) {
 				return requerimiento;
@@ -232,5 +232,17 @@ public class Reunion {
 		// Si llega aca es por que es Anfitron, Sala, etc.. que son
 		// obligatorios.
 		return null;
+	}
+
+	/**
+	 * Reemplaza un recurso por otro.
+	 * 
+	 * @param recurso
+	 * @param reemplazo
+	 */
+	public void reemplazarPorAlternativo(Recurso recurso, Recurso reemplazo) {
+		recursos.add(reemplazo);
+		// TODO Falta quitar el requerimiento y reemplazarlo por el alternativo.
+		quitar(recurso);
 	}
 }
