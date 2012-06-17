@@ -87,11 +87,21 @@ public class Agenda {
 	}
 
 
-	public Hours horasEn(TipoEvento reunion, DateTime fechaLimite) {
-		Iterable<Evento> todasLasReuniones = eventosDeTipo(reunion, this.eventos);
+	public Hours horasEn(TipoEvento evento, DateTime fechaLimite) {
+		Iterable<Evento> todasLasReuniones = eventosDeTipo(evento, this.eventos);
 		Iterable<Evento> reunionesDeLaSemana = eventosAntesDe(fechaLimite, todasLasReuniones);
 		ArrayList<Evento> arrayList = Lists.newArrayList(reunionesDeLaSemana);
 		return cantidadDeHoras(arrayList);
+	}
+	
+	public Hours horasEn(List<TipoEvento> unosEventos, final DateTime fechaLimite){
+	//TODO averiguar si tengo que devolver la suma de horas o una lista de horas, 1 hora por tipo de evento
+	//opcion: Se puede devolver un map, cuyo key sea el tipo de evento y el value sea la cant de horas.	
+		Hours acumHoras = Hours.ZERO;
+		for(TipoEvento unEvento : unosEventos){
+			acumHoras.plus(this.horasEn(unEvento, fechaLimite));
+		}
+		return acumHoras;
 	}
 
 
