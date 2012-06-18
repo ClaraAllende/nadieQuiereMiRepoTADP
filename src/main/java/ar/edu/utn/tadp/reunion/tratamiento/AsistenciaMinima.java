@@ -20,19 +20,24 @@ public class AsistenciaMinima implements TratamientoCancelacion {
 	}
 
 	/**
-	 * Trata de evitar la cancelacion replanificando la reunion, de este modo no
-	 * hay que quitar el recurso que cancelo.
+	 * Verifica que se cumpla la asistencia minima al cancelar.
 	 */
 	@Override
 	public boolean evitarCancelacion(final Recurso recurso,
 			final Reunion reunion, final Empresa empresa) {
 		if (recurso.getTipo().toLowerCase().equals("humano")) {
 			Integer division = new Integer(
-					((reunion.getCantidadRequeridaDePersonas() - 1) * 100)
+					((reunion.getCantidadDePersonas() - 1) * 100)
 							/ reunion.getCantidadRequeridaDePersonas());
-			return division > porcentaje;
+			boolean cumpleAsistencia = division > porcentaje;
+			// Si se cumple la asistencia, quita el recurso.
+			if (cumpleAsistencia) {
+				reunion.quitar(recurso);
+			}
+			return cumpleAsistencia;
 		} else {
-			// Si no es persona, no hace falta evaluar.
+			// Si no es persona no hace falta evaluar, lo quita directamente.
+			reunion.quitar(recurso);
 			return true;
 		}
 	}

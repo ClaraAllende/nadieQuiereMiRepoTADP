@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.empresa;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -197,9 +198,20 @@ public class Empresa {
 				reunion.getAnfitrion(), reunion.getRequerimientos(),
 				Hours.hours((int) reunion.getDuracionDeReunion()),
 				reunion.getVencimiento());
+		// Nos van a faltar los tratamientos.
+		reunionReplanificada.setTratamientos(reunion.getTratamientos());
 		// Se cancela la reunion original.
 		reunion.cancelar();
-		return reunionReplanificada;
+		// XXX Esto es sucio: pisamos el etado de la vieja reunion con estado de
+		// la nueva.
+		reunion.setAnfitrion(reunionReplanificada.getAnfitrion());
+		reunion.setCancelada(reunionReplanificada.isCancelada());
+		reunion.setHorario(reunionReplanificada.getHorario());
+		reunion.setRecursos(reunionReplanificada.getRecursos());
+		reunion.setRequerimientos(reunionReplanificada.getRequerimientos());
+		reunion.setTratamientos(reunionReplanificada.getTratamientos());
+		reunion.setVencimiento(reunionReplanificada.getVencimiento());
+		return reunion;
 	}
 
 	/**
@@ -233,11 +245,19 @@ public class Empresa {
 		// Recorre los requerimientos y les asocia los recursos. Asi sabremos
 		// cuales son los opcionales y cuales no.
 		for (Requerimiento requerimiento : requerimientos) {
-			List<Recurso> ganadores = (List<Recurso>) requerimiento
+			Collection<Recurso> ganadores = requerimiento
 					.buscaLosQueTeSatisfacen(copiaRecursos);
-			// XXX eso de tomar primero podria romper todo!
-			requerimiento.setRecursoQueSatisface(ganadores.get(0));
-			copiaRecursos.remove(0);
+			Recurso ganador = null;
+			for (Recurso recurso : ganadores) {
+				ganador = recurso;
+			}
+			if (ganador == null) {
+				throw new UserException(
+						"No se puede asociar un requerimiento con ningun recurso!");
+			} else {
+				requerimiento.setRecursoQueSatisface(ganador);
+				copiaRecursos.remove(ganador);
+			}
 		}
 	}
 

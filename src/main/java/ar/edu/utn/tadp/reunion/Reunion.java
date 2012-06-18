@@ -26,13 +26,14 @@ import ar.edu.utn.tadp.reunion.tratamiento.TratamientoCancelacion;
  * @version 14-06-2012
  */
 public class Reunion {
-	private final Persona anfitrion;
-	private final List<Recurso> recursos;
-	private final Interval horario;
-	private final List<Requerimiento> requerimientos;
-	private final DateTime vencimiento;
+
+	private Persona anfitrion;
+	private List<Recurso> recursos;
+	private Interval horario;
+	private List<Requerimiento> requerimientos;
+	private DateTime vencimiento;
 	private boolean cancelada = false;
-	private final List<TratamientoCancelacion> tratamientos = new ArrayList<TratamientoCancelacion>();
+	private List<TratamientoCancelacion> tratamientos = new ArrayList<TratamientoCancelacion>();
 
 	public Reunion(final Persona anfitrion, final ArrayList<Recurso> recursos,
 			final Interval horario, final List<Requerimiento> requerimientos,
@@ -70,14 +71,14 @@ public class Reunion {
 	}
 
 	public int getCantidadRequeridaDePersonas() {
-		int cant = getRequerimientos().size() + 1; // total de req + anfintrion
-		for (final Requerimiento requerimiento : this.requerimientos) {
+		int cant = getRequerimientos().size();
+		for (final Requerimiento requerimiento : getRequerimientos()) {
 			for (Propiedad condicion : requerimiento.getCondiciones()) {
 				// XXX mejorar eso. Pregunta si req que no es persona.
 				if (condicion.getTipo().toLowerCase().equals("tipo")
 						&& (!condicion.getValor().toLowerCase()
 								.equals("humano"))) {
-					cant--;
+					--cant;
 				}
 			}
 		}
@@ -100,21 +101,13 @@ public class Reunion {
 	}
 
 	public int getCantidadDePersonas() {
-
 		int cant = 0;
-
 		for (final Recurso recurso : this.recursos) {
-
 			if (recurso.getTipo().toLowerCase().equals("humano")) {
-
 				cant++;
-
 			}
-
 		}
-
 		return cant;
-
 	}
 
 	public BigDecimal getCostoTotal() {
@@ -146,7 +139,7 @@ public class Reunion {
 	 * */
 	public boolean tratarCancelacion(final Recurso recurso,
 			final Empresa empresa) {
-		for (final TratamientoCancelacion tratamiento : this.tratamientos) {
+		for (final TratamientoCancelacion tratamiento : this.getTratamientos()) {
 			if (tratamiento.evitarCancelacion(recurso, this, empresa)) {
 				return true;
 			}
@@ -196,6 +189,10 @@ public class Reunion {
 		return cancelada;
 	}
 
+	public void setCancelada(boolean cancelada) {
+		this.cancelada = cancelada;
+	}
+
 	/**
 	 * Remueve un recurso asignado a la reunion.
 	 * 
@@ -224,7 +221,11 @@ public class Reunion {
 	}
 
 	public Requerimiento getRequerimientoQueSatiface(Recurso recurso) {
-		for (Requerimiento requerimiento : requerimientos) {
+		for (Requerimiento requerimiento : getRequerimientos()) {
+			if (requerimiento.getRecursoQueSatisface() == null) {
+				// Si pasa por aca es por que el recurso cancelo.
+				return null;
+			}
 			if (requerimiento.getRecursoQueSatisface().equals(recurso)) {
 				return requerimiento;
 			}
@@ -244,5 +245,33 @@ public class Reunion {
 		recursos.add(reemplazo);
 		// TODO Falta quitar el requerimiento y reemplazarlo por el alternativo.
 		quitar(recurso);
+	}
+
+	public List<TratamientoCancelacion> getTratamientos() {
+		return tratamientos;
+	}
+
+	public void setTratamientos(List<TratamientoCancelacion> tratamientos) {
+		this.tratamientos = tratamientos;
+	}
+
+	public void setAnfitrion(Persona anfitrion) {
+		this.anfitrion = anfitrion;
+	}
+
+	public void setRecursos(List<Recurso> recursos) {
+		this.recursos = recursos;
+	}
+
+	public void setHorario(Interval horario) {
+		this.horario = horario;
+	}
+
+	public void setRequerimientos(List<Requerimiento> requerimientos) {
+		this.requerimientos = requerimientos;
+	}
+
+	public void setVencimiento(DateTime vencimiento) {
+		this.vencimiento = vencimiento;
 	}
 }
