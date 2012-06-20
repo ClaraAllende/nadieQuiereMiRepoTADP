@@ -9,6 +9,9 @@ import org.joda.time.Duration;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.agenda.TipoEvento;
@@ -17,6 +20,7 @@ import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorPersona;
 import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.propiedad.Propiedad;
 
 /**
  * Representa a los recursos de la empresa.
@@ -114,7 +118,20 @@ public class Recurso {
 	}
 
 	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite) {
-		return Hours.ZERO;
+		return this.agenda.horasEn(unosEventos, fechaLimite);
 		//un recurso no lleva el tiempo ocupado...
+	}
+
+	public boolean tenesLaPropiedad(final Propiedad propiedad) {
+
+		Predicate<? super Propiedad> mismaPropiedad = new Predicate<Propiedad>(){
+
+			@Override
+			public boolean apply(Propiedad unaPropiedad) {
+				return propiedad.equals(unaPropiedad);
+			}
+			
+		};
+		return Iterables.any(RecursoIntrospector.getPropiedadesDe(this), mismaPropiedad );
 	}
 }

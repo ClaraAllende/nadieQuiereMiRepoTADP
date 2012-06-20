@@ -18,6 +18,7 @@ import ar.edu.utn.tadp.organizables.OrganizableSimple;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
+import ar.edu.utn.tadp.recurso.RecursoIntrospector;
 import ar.edu.utn.tadp.reglasdefiltro.ManejadorDeReglas;
 import ar.edu.utn.tadp.reglasdefiltro.ReglaCompuesta;
 import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunCosto;
@@ -196,39 +197,26 @@ public class Empresa {
 		return false;
 	}
 	
-	//TODO test!!!
-	public Hours horasEn(List<TipoEvento> unosEventos,  DateTime fechaLimite, final Propiedad propiedad){
-		Predicate<Recurso> recursoDePropiedad = chequeaRecurso(propiedad);
+	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite, final Propiedad propiedad){
+		Predicate<Recurso> cumplenPropiedad = new Predicate<Recurso>(){
+
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.tenesLaPropiedad(propiedad);
+			}
+		};
+		;
 		
-		Iterable<Recurso> unasPersonas = Iterables.filter(this.recursos, recursoDePropiedad);
-		ImmutableList<Recurso> perss = ImmutableList.copyOf(unasPersonas);
+		return obtenerTotalHoras(Iterables.filter(this.recursos,cumplenPropiedad), unosEventos, fechaLimite) ;
+	}
+
+	private Hours obtenerTotalHoras(Iterable<Recurso> recursos, List<TipoEvento> unosEventos, DateTime fechaLimite) {
 		Hours horas = Hours.ZERO;
-		
-		for(Recurso unaPersona : perss){
-			Hours unasHoras = unaPersona.horasEn(unosEventos, fechaLimite).plus(horas);
-			horas = unasHoras;
+		for (Recurso recurso : recursos) {
+			horas = recurso.horasEn(unosEventos, fechaLimite).plus(horas);
 		}
-		
 		return horas;
 	}
 
-	private Predicate<Recurso> chequeaRecurso(final Propiedad propiedad) {
-		Predicate<Recurso> recursoDePropiedad = new Predicate<Recurso>() {
-			
-			@Override
-			public boolean apply(Recurso recurso) {
-				Predicate<Propiedad> tienePropiedadIgual = new Predicate<Propiedad>() {
-
-					@Override
-					public boolean apply(Propiedad propiedadDelRecurso) {
-						return propiedad.equals(propiedadDelRecurso);
-					}
-				};
-				Set<Propiedad> propiedades = Requerimiento.getPropiedades(recurso);
-				boolean bool = Iterables.any(propiedades, tienePropiedadIgual);
-				return bool;
-			}
-		};
-		return recursoDePropiedad;
-	}
+	
 }
