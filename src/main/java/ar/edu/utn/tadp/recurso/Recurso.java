@@ -2,6 +2,7 @@ package ar.edu.utn.tadp.recurso;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -10,6 +11,7 @@ import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
+import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
@@ -109,5 +111,10 @@ public class Recurso {
 	public int getHorasEnReunionesDeLaSemana() {
 		//Los recursos siempre están disponibles
 		return 0;
+	}
+
+	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite) {
+		return Hours.ZERO;
+		//un recurso no lleva el tiempo ocupado...
 	}
 }

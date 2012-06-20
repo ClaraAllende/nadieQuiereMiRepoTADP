@@ -3,6 +3,7 @@ package ar.edu.utn.tadp.empresa;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
@@ -26,7 +27,10 @@ import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunUbicacion;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
@@ -190,5 +194,41 @@ public class Empresa {
 			}
 		}
 		return false;
+	}
+	
+	//TODO test!!!
+	public Hours horasEn(List<TipoEvento> unosEventos,  DateTime fechaLimite, final Propiedad propiedad){
+		Predicate<Recurso> recursoDePropiedad = chequeaRecurso(propiedad);
+		
+		Iterable<Recurso> unasPersonas = Iterables.filter(this.recursos, recursoDePropiedad);
+		ImmutableList<Recurso> perss = ImmutableList.copyOf(unasPersonas);
+		Hours horas = Hours.ZERO;
+		
+		for(Recurso unaPersona : perss){
+			Hours unasHoras = unaPersona.horasEn(unosEventos, fechaLimite).plus(horas);
+			horas = unasHoras;
+		}
+		
+		return horas;
+	}
+
+	private Predicate<Recurso> chequeaRecurso(final Propiedad propiedad) {
+		Predicate<Recurso> recursoDePropiedad = new Predicate<Recurso>() {
+			
+			@Override
+			public boolean apply(Recurso recurso) {
+				Predicate<Propiedad> tienePropiedadIgual = new Predicate<Propiedad>() {
+
+					@Override
+					public boolean apply(Propiedad propiedadDelRecurso) {
+						return propiedad.equals(propiedadDelRecurso);
+					}
+				};
+				Set<Propiedad> propiedades = Requerimiento.getPropiedades(recurso);
+				boolean bool = Iterables.any(propiedades, tienePropiedadIgual);
+				return bool;
+			}
+		};
+		return recursoDePropiedad;
 	}
 }
