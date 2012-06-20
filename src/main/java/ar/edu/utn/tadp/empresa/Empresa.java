@@ -3,6 +3,7 @@ package ar.edu.utn.tadp.empresa;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
@@ -17,6 +18,7 @@ import ar.edu.utn.tadp.organizables.OrganizableSimple;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
+import ar.edu.utn.tadp.recurso.RecursoIntrospector;
 import ar.edu.utn.tadp.reglasdefiltro.ManejadorDeReglas;
 import ar.edu.utn.tadp.reglasdefiltro.ReglaCompuesta;
 import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunCosto;
@@ -26,7 +28,10 @@ import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunUbicacion;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
+import com.google.common.collect.Lists;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
@@ -191,4 +196,27 @@ public class Empresa {
 		}
 		return false;
 	}
+	
+	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite, final Propiedad propiedad){
+		Predicate<Recurso> cumplenPropiedad = new Predicate<Recurso>(){
+
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.tenesLaPropiedad(propiedad);
+			}
+		};
+		;
+		
+		return obtenerTotalHoras(Iterables.filter(this.recursos,cumplenPropiedad), unosEventos, fechaLimite) ;
+	}
+
+	private Hours obtenerTotalHoras(Iterable<Recurso> recursos, List<TipoEvento> unosEventos, DateTime fechaLimite) {
+		Hours horas = Hours.ZERO;
+		for (Recurso recurso : recursos) {
+			horas = recurso.horasEn(unosEventos, fechaLimite).plus(horas);
+		}
+		return horas;
+	}
+
+	
 }
