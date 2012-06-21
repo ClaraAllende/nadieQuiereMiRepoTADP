@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.empresa;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -11,19 +12,28 @@ import org.joda.time.Interval;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.organizables.OrganizableSimple;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
+import ar.edu.utn.tadp.reglasdefiltro.ManejadorDeReglas;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaCompuesta;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunCosto;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunEstado;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunHoras;
+import ar.edu.utn.tadp.reglasdefiltro.ReglaSegunUbicacion;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 
 /**
  * Representa a una Empresa. Contiene todos los recursos.
  * 
- * @version 15-06-2012
+ * @version 21-06-2012
  */
 public class Empresa {
 
@@ -43,16 +53,23 @@ public class Empresa {
 	public Reunion createReunion(final Persona anfitrion,
 			List<Requerimiento> requerimientos, final Hours horas,
 			final DateTime vencimiento) {
-		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
+		// Agrega a los requerimientos al anfitrion.
+		Requerimiento reqAnfitrion = new Requerimiento(anfitrion);
+		requerimientos.add(reqAnfitrion);
 
-		// Si no hay requerimiento de sala, se agrega.
-		requerimientos = this.agregarIndispensables(anfitrion, requerimientos);
+		// Si no hay requerimiento de sala, se agrega, etc...
+		List<Requerimiento> indespensables = this
+				.obtenerIndispensables(requerimientos);
+		requerimientos.addAll(indespensables);
 
 		this.satisfaceRequerimientos(requerimientos);
+
+		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 		candidatos = seleccionarCandidatos(requerimientos, horas, vencimiento);
 
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
-		asistentes = this.seleccionarCandidatos(candidatos);
+		asistentes = this.seleccionarCandidatos(candidatos,
+				new OrganizableSimple(anfitrion, horas));
 
 		/*
 		 * Se supone que ocuparAsistente no puede fallar, por eso no va con
@@ -61,6 +78,10 @@ public class Empresa {
 		 */
 
 		Interval intervalo = ocuparAsistentes(horas, asistentes);
+
+		// Se quitan los requerimientos indispensables.
+		requerimientos.remove(reqAnfitrion);
+		requerimientos.removeAll(indespensables);
 
 		// Se asocian los asistentes con sus respectivos requerimientos.
 		this.asociar(asistentes, requerimientos);
@@ -136,11 +157,16 @@ public class Empresa {
 	}
 
 	private ArrayList<Recurso> seleccionarCandidatos(
-			final ArrayList<ArrayList<Recurso>> candidatos) {
+			final ArrayList<ArrayList<Recurso>> candidatos, Organizable ubicable) {
+
+		ManejadorDeReglas manejadorDeReglas = new ManejadorDeReglas(
+				new ReglaCompuesta(Arrays.asList(new ReglaSegunEstado(),
+						new ReglaSegunCosto(ubicable), new ReglaSegunHoras(),
+						new ReglaSegunUbicacion(ubicable))));
 
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		for (ArrayList<Recurso> recursos : candidatos) {
-			Recurso recurso = recursos.get(0);
+			Recurso recurso = manejadorDeReglas.filtra(recursos);
 			recurso.apuntateALaReunion(asistentes);
 		}
 		if (asistentes.isEmpty())
@@ -149,24 +175,25 @@ public class Empresa {
 	}
 
 	/**
-	 * Agrega al anfitrion y otros requerimientos indispensables. Ejemplo: sala.
+	 * Busca requerimientos indispensables. Ejemplo: sala.
 	 * 
-	 * @param anfitrion
 	 * @param requerimientos
-	 * @return
+	 *            requerimientos a analizar.
+	 * @return Requerimientos indispensables
+	 * @see Requerimiento
 	 */
-	private List<Requerimiento> agregarIndispensables(final Persona anfitrion,
+	private List<Requerimiento> obtenerIndispensables(
 			final List<Requerimiento> requerimientos) {
-		// Se agregan todas las propiedades de afintrion como un requerimiento.
-		requerimientos.add(new Requerimiento(anfitrion));
+		List<Requerimiento> indespensables = new ArrayList<Requerimiento>();
+
 		// Si no hay un requerimiento de sala, tambien se agrega.
 		if (!tieneRequerimientoSala(requerimientos)) {
 			ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
 			condiciones.add(new Propiedad("tipo", "sala"));
-			requerimientos.add(new Requerimiento(condiciones));
+			indespensables.add(new Requerimiento(condiciones, true));
 		}
 		// XXX podemos pedir aca el catering para gerente y project leader?
-		return requerimientos;
+		return indespensables;
 	}
 
 	/**
@@ -187,6 +214,31 @@ public class Empresa {
 		return false;
 	}
 
+	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite,
+			final Propiedad propiedad) {
+		Predicate<Recurso> cumplenPropiedad = new Predicate<Recurso>() {
+
+			@Override
+			public boolean apply(Recurso recurso) {
+				return recurso.tenesLaPropiedad(propiedad);
+			}
+		};
+		;
+
+		return obtenerTotalHoras(
+				Iterables.filter(this.recursos, cumplenPropiedad), unosEventos,
+				fechaLimite);
+	}
+
+	private Hours obtenerTotalHoras(Iterable<Recurso> recursos,
+			List<TipoEvento> unosEventos, DateTime fechaLimite) {
+		Hours horas = Hours.ZERO;
+		for (Recurso recurso : recursos) {
+			horas = recurso.horasEn(unosEventos, fechaLimite).plus(horas);
+		}
+		return horas;
+	}
+
 	/**
 	 * Replanifica una reunion.
 	 * 
@@ -196,21 +248,13 @@ public class Empresa {
 	public Reunion replanificarReunion(final Reunion reunion) {
 		Reunion reunionReplanificada = this.createReunion(
 				reunion.getAnfitrion(), reunion.getRequerimientos(),
-				Hours.hours((int) reunion.getDuracionDeReunion()),
+				Hours.hours((int) reunion.getDuracion()),
 				reunion.getVencimiento());
 		// Nos van a faltar los tratamientos.
 		reunionReplanificada.setTratamientos(reunion.getTratamientos());
 		// Se cancela la reunion original.
 		reunion.cancelar();
-		// XXX Esto es sucio: pisamos el etado de la vieja reunion con estado de
-		// la nueva.
-		reunion.setAnfitrion(reunionReplanificada.getAnfitrion());
-		reunion.setCancelada(reunionReplanificada.isCancelada());
-		reunion.setHorario(reunionReplanificada.getHorario());
-		reunion.setRecursos(reunionReplanificada.getRecursos());
-		reunion.setRequerimientos(reunionReplanificada.getRequerimientos());
-		reunion.setTratamientos(reunionReplanificada.getTratamientos());
-		reunion.setVencimiento(reunionReplanificada.getVencimiento());
+		reunion.copiar(reunionReplanificada);
 		return reunion;
 	}
 
@@ -264,4 +308,5 @@ public class Empresa {
 	public List<Recurso> gerRecursos() {
 		return recursos;
 	}
+
 }

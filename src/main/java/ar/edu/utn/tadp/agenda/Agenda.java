@@ -91,13 +91,20 @@ public class Agenda {
 		return getHorariosOcupados().contains(intervalo);
 	}
 
-	public Hours horasEn(TipoEvento reunion, DateTime fechaLimite) {
-		Iterable<Evento> todasLasReuniones = eventosDeTipo(reunion,
-				this.eventos);
+	public Hours horasEn(TipoEvento evento, DateTime fechaLimite) {
+		Iterable<Evento> todosLosEventos = eventosDeTipo(evento, this.eventos);
 		Iterable<Evento> reunionesDeLaSemana = eventosAntesDe(fechaLimite,
-				todasLasReuniones);
-		ArrayList<Evento> arrayList = Lists.newArrayList(reunionesDeLaSemana);
-		return cantidadDeHoras(arrayList);
+				todosLosEventos);
+		return cantidadDeHoras(Lists.newArrayList(reunionesDeLaSemana));
+	}
+
+	public Hours horasEn(List<TipoEvento> unosEventos,
+			final DateTime fechaLimite) {
+		Hours acumHoras = Hours.ZERO;
+		for (TipoEvento unEvento : unosEventos) {
+			acumHoras = acumHoras.plus(this.horasEn(unEvento, fechaLimite));
+		}
+		return acumHoras;
 	}
 
 	private Hours cantidadDeHoras(Iterable<Evento> reunionesDeLaSemana) {
@@ -132,17 +139,12 @@ public class Agenda {
 			}
 
 		};
-		return Iterables.filter(eventos, predicate);
+		Iterable<Evento> eventosFiltradosPorTipo = Iterables.filter(eventos,
+				predicate);
+		return eventosFiltradosPorTipo;
 	}
 
-	/**
-	 * Quita un horario de los horarios ocupados.
-	 * 
-	 * @param horario
-	 *            <code>Interval</code> de tiempo que se libera.
-	 * @see Interval
-	 */
-	public void desocupateDurante(Interval horario) {
-		this.getHorariosOcupados().remove(horario);
+	public void desocupate(Evento evento) {
+		this.eventos.remove(evento);
 	}
 }

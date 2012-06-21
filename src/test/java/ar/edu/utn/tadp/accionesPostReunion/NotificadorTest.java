@@ -15,10 +15,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.recurso.roles.Rol;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class NotificadorTest {
 	private final Reunion reunion = mock(Reunion.class);
@@ -31,7 +31,7 @@ public class NotificadorTest {
 
 	@Before
 	public void setUp() {
-		when(reunion.getAnfitrion()).thenReturn(host);
+		when(reunion.getOrganizador()).thenReturn(host);
 		hoy = new Interval(new DateTime(2012, 6, 15, 0, 0, 0, 0), new DateTime(
 				2012, 6, 16, 0, 0, 0, 0));
 		dest = mock(Persona.class);

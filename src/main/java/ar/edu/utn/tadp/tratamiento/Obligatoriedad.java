@@ -1,8 +1,8 @@
-package ar.edu.utn.tadp.reunion.tratamiento;
+package ar.edu.utn.tadp.tratamiento;
 
 import ar.edu.utn.tadp.empresa.Empresa;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Trata de evitar cancelar la reunion a menos que se dio de baja alguna de las

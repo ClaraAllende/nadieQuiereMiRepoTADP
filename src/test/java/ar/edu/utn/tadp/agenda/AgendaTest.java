@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.agenda;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -87,11 +87,15 @@ public class AgendaTest {
 	}
 
 	@Test
-	public void desocupateDurante() {
+	public void testAgendaDesocupate() {
+		// Ocupamos.
 		agendaTipada.ocupate(proyeccion);
-		Assert.assertTrue(agendaTipada.estasOcupadoDurante(intervalo1));
-		agendaTipada.desocupateDurante(intervalo1);
-		Assert.assertFalse(agendaTipada.estasOcupadoDurante(intervalo1));
+		assertTrue(agendaTipada.estasOcupadoDurante(proyeccion.getIntervalo()));
+		// Desocupamos.
+		Evento evento = new Evento(proyeccion.getIntervalo());
+		evento.setTipo(TipoEvento.REUNION);
+		agendaTipada.desocupate(evento);
+		assertFalse(agendaTipada.estasOcupadoDurante(proyeccion.getIntervalo()));
 	}
 
 	@Test

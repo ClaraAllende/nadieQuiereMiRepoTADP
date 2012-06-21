@@ -2,6 +2,7 @@ package ar.edu.utn.tadp.recurso;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -10,18 +11,24 @@ import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
+import ar.edu.utn.tadp.agenda.TipoEvento;
 import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorPersona;
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.organizables.Reunion;
+import ar.edu.utn.tadp.propiedad.Propiedad;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 /**
  * Representa a los recursos de la empresa.
  * 
  * @version 03-06-2012
  */
-public class Recurso implements Costeable {
+public class Recurso {
 	// TODO Ver si se puede mejorar eso.
 	public static final Recurso CATERING = new Recurso(new CostoFijo(
 			BigDecimal.valueOf(400.00)));
@@ -65,8 +72,7 @@ public class Recurso implements Costeable {
 		return this.agenda.tenesDisponible(standardDuration);
 	}
 
-	@Override
-	public BigDecimal dameTuCostoPara(final Reunion reunion) {
+	public BigDecimal dameTuCostoPara(final Organizable reunion) {
 		return this.costeable.dameTuCostoPara(reunion);
 	}
 
@@ -99,6 +105,38 @@ public class Recurso implements Costeable {
 		this.edificio = edificio;
 	}
 
+	public Estado getEstado() {
+		return Estado.POCAS_REUNIONES;
+	}
+
+	public String getUbicacion() {
+		return this.edificio;
+	}
+
+	public int getHorasEnReunionesDeLaSemana() {
+		// Los recursos siempre están disponibles
+		return 0;
+	}
+
+	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite) {
+		return this.agenda.horasEn(unosEventos, fechaLimite);
+		// un recurso no lleva el tiempo ocupado...
+	}
+
+	public boolean tenesLaPropiedad(final Propiedad propiedad) {
+
+		Predicate<? super Propiedad> mismaPropiedad = new Predicate<Propiedad>() {
+
+			@Override
+			public boolean apply(Propiedad unaPropiedad) {
+				return propiedad.equals(unaPropiedad);
+			}
+
+		};
+		return Iterables.any(RecursoIntrospector.getPropiedadesDe(this),
+				mismaPropiedad);
+	}
+
 	/**
 	 * Libera la agenda ya que se cancelo una reunion.
 	 * 
@@ -106,7 +144,6 @@ public class Recurso implements Costeable {
 	 *            <code>Reunion</code> que se cancelo.
 	 */
 	public void cancelarReunion(Reunion reunion) {
-		// TODO Auto-generated method stub
-		agenda.desocupateDurante(reunion.getHorario());
+		agenda.desocupate(new Evento(reunion.getHorario()));
 	}
 }

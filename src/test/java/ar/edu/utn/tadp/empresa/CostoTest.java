@@ -13,17 +13,18 @@ import ar.edu.utn.tadp.costos.Costeable;
 import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorHora;
 import ar.edu.utn.tadp.costos.CostoPorPersona;
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.organizables.Reunion;
 
 public class CostoTest {
 
-	private Reunion reunion;
+	private Organizable reunion;
 
 	@Before 
 	public void setUp() {
 		reunion = mock(Reunion.class);
-		when(reunion.getCantidadDePersonasQueNecesitanTransporte()).thenReturn(7l);
-		when(reunion.getDuracionDeReunion()).thenReturn(4l);
+		when(reunion.getCantidad()).thenReturn(7l);
+		when(reunion.getDuracion()).thenReturn(4l);
 	}
 	
 	@Test

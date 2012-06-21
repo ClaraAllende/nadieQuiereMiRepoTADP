@@ -1,9 +1,9 @@
-package ar.edu.utn.tadp.reunion.tratamiento;
+package ar.edu.utn.tadp.tratamiento;
 
 import ar.edu.utn.tadp.empresa.Empresa;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Trata de replaniﬁcar la reunion con todos sus requerimientos para mas

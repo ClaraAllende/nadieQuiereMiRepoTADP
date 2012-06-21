@@ -9,12 +9,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class TratarCancelacionTest {
 	private final Propiedad proyectoApollo = new Propiedad("proyecto", "Apollo");
@@ -338,7 +338,6 @@ public class TratarCancelacionTest {
 		final Reunion reunion = unaEmpresa.createReunion(arquitecto1,
 				requerimientos, Hours.hours(22), DateTime.now().plusDays(1));
 		Assert.assertFalse(reunion.isCancelada());
-		final Interval horarioOriginal = reunion.getHorario();
 
 		// Se agregan los tratamientos.
 		reunion.addTratamientoPorAsistenciaMinima(99); // Esta va a fallar

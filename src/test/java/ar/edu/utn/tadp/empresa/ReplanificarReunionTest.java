@@ -9,12 +9,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class ReplanificarReunionTest {
 	private final Propiedad proyectoApollo = new Propiedad("proyecto", "Apollo");
@@ -89,22 +89,24 @@ public class ReplanificarReunionTest {
 				requerimientos, Hours.hours(2), DateTime.now().plusDays(1));
 
 		final Interval horarioOriginal = reunion.getHorario();
-		// Valida que la reunion no este cancelada y tenga 3 recursos (2
-		// participantes y la sala).
+		// La reunion no esta cancelada
 		Assert.assertFalse(reunion.isCancelada());
+		// Tiene 3 recursos (2 participantes y la sala).
 		Assert.assertEquals(3, reunion.getRecursos().size());
+		// Tiene 1 requerimiento (programador).
+		Assert.assertEquals(1, reunion.getRequerimientos().size());
 		// Valida que todos los recursos esten ocupados.
 		Assert.assertTrue(programador1.estasOcupadoDurante(reunion.getHorario()));
 		Assert.assertTrue(arquitecto1.estasOcupadoDurante(reunion.getHorario()));
 		Assert.assertFalse(sala.disponibleDurante(reunion.getHorario()));
 
 		unaEmpresa.replanificarReunion(reunion);
-		// Valida que la reunion nueva no este cancelada y tenga los mismos
-		// recursos.
+		// Valida que la reunion nueva no este cancelada
 		Assert.assertFalse(reunion.isCancelada());
-
-		// TODO ver que pasa aca?
-		// Assert.assertEquals(3, reunion.getRecursos().size());
+		// Tiene 3 recursos (2 participantes y la sala).
+		Assert.assertEquals(3, reunion.getRecursos().size());
+		// Tiene 1 requerimiento (programador).
+		Assert.assertEquals(1, reunion.getRequerimientos().size());
 
 		// Valida que los recursos esten desocupados para la reunion original.
 		Assert.assertFalse(programador1.estasOcupadoDurante(horarioOriginal));

@@ -1,4 +1,4 @@
-package ar.edu.utn.tadp.reunion.tratamiento;
+package ar.edu.utn.tadp.tratamiento;
 
 import java.util.ArrayList;
 
@@ -9,12 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.empresa.Empresa;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class TratarXAsistenciaMinimaTest {
 	private final Propiedad proyectoApollo = new Propiedad("proyecto", "Apollo");

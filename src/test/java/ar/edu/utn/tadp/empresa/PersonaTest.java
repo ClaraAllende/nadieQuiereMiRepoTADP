@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 import org.junit.Before;
 import org.junit.Test;
 
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.roles.Rol;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 public class PersonaTest {
 
@@ -34,8 +34,8 @@ public class PersonaTest {
 	@Test
 	public void testDameTuCostoParaReunionDelMismoProyecto() {
 		Reunion reunionDelMismoProyecto = mock(Reunion.class);
-		when(reunionDelMismoProyecto.getDuracionDeReunion()).thenReturn(3l);
-		when(reunionDelMismoProyecto.getAnfitrion()).thenReturn(personaDelMismoProyecto);
+		when(reunionDelMismoProyecto.getDuracion()).thenReturn(3l);
+		when(reunionDelMismoProyecto.getOrganizador()).thenReturn(personaDelMismoProyecto);
 		
 		assertEquals(BigDecimal.valueOf(0.0), persona.dameTuCostoPara(reunionDelMismoProyecto));
 	}
@@ -43,8 +43,8 @@ public class PersonaTest {
 	@Test
 	public void testDameTuCostoParaReunionDeDistintoProyecto() {
 		Reunion reunionDelMismoProyecto = mock(Reunion.class);
-		when(reunionDelMismoProyecto.getDuracionDeReunion()).thenReturn(3l);
-		when(reunionDelMismoProyecto.getAnfitrion()).thenReturn(personaDeOtroProyecto);
+		when(reunionDelMismoProyecto.getDuracion()).thenReturn(3l);
+		when(reunionDelMismoProyecto.getOrganizador()).thenReturn(personaDeOtroProyecto);
 		
 		assertEquals(BigDecimal.valueOf(450.0), persona.dameTuCostoPara(reunionDelMismoProyecto));
 	}

@@ -2,9 +2,9 @@ package ar.edu.utn.tadp.reglasdefiltro;
 
 import java.util.Collection;
 
-import ar.edu.utn.tadp.recurso.Persona;
+import ar.edu.utn.tadp.recurso.Recurso;
 
 public interface ReglaDeFiltrado {
 
-	Collection<Persona> filtrar(Collection<Persona> personas);
+	Collection<Recurso> filtrar(Collection<Recurso> personas);
 }

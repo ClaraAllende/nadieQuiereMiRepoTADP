@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -22,7 +23,7 @@ import com.google.common.collect.Sets;
  * Representa un objeto que sabe filtrar a los recursos. Y tiene cargadas las
  * condiciones.
  * 
- * @version 13-06-2012
+ * @version 21-06-2012
  */
 public class Requerimiento {
 
@@ -202,5 +203,24 @@ public class Requerimiento {
 
 	public void setRecursoQueSatisface(Recurso recurso) {
 		this.recursoQueSatisface = recurso;
+	}
+
+	public boolean isRecurso() {
+		Predicate<Propiedad> pidePersona = new Predicate<Propiedad>() {
+			@Override
+			public boolean apply(Propiedad cond) {
+				// Es de recurso si tiene un "tipo" distinto de "humano"
+				return cond.getTipo().toString().toLowerCase().equals("tipo")
+						&& !cond.getValor().toString().toLowerCase()
+								.equals("humano");
+			};
+		};
+
+		try {
+			Iterables.find(this.getCondiciones(), pidePersona);
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return true;
 	}
 }

@@ -2,7 +2,7 @@ package ar.edu.utn.tadp.costos;
 
 import java.math.BigDecimal;
 
-import ar.edu.utn.tadp.reunion.Reunion;
+import ar.edu.utn.tadp.organizables.Organizable;
 
 public class CostoPorHora extends Costo {
 
@@ -11,8 +11,8 @@ public class CostoPorHora extends Costo {
 	}
 
 	@Override
-	public BigDecimal dameTuCostoPara(Reunion reunion) {
-		return getCosto().multiply(BigDecimal.valueOf(reunion.getDuracionDeReunion()));
+	public BigDecimal dameTuCostoPara(Organizable reunion) {
+		return getCosto().multiply(BigDecimal.valueOf(reunion.getDuracion()));
 	}
 
 }

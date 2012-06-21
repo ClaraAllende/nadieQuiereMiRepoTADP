@@ -6,7 +6,8 @@ import java.util.Collection;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import ar.edu.utn.tadp.reunion.Reunion;
+
+import ar.edu.utn.tadp.organizables.Organizable;
 
 public class TareaCompuesta extends Tarea {
 	
@@ -21,7 +22,7 @@ public class TareaCompuesta extends Tarea {
 	 * El costo de una tarea compuesta es la suma de los costos de sus subtareas (que pueden ser simples o compuestas.
 	 */
 	@Override
-	public BigDecimal dameTuCostoPara(Reunion unaReunion) {
+	public BigDecimal dameTuCostoPara(Organizable unaReunion) {
 		BigDecimal costoTotal = new BigDecimal(0);
 		for(Tarea tarea:this.tareas){
 		costoTotal= costoTotal.add(tarea.dameTuCostoPara(unaReunion));

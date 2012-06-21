@@ -1,12 +1,12 @@
-package ar.edu.utn.tadp.reunion.tratamiento;
+package ar.edu.utn.tadp.tratamiento;
 
 import java.util.Collection;
 
 import ar.edu.utn.tadp.empresa.Empresa;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Asociar otro criterio de seleccion para el criterio de seleccion orignal.

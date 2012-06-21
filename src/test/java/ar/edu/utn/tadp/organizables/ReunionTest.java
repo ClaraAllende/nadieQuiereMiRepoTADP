@@ -1,4 +1,4 @@
-package ar.edu.utn.tadp.reunion;
+package ar.edu.utn.tadp.organizables;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.agenda.Agenda;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
@@ -82,7 +83,7 @@ public class ReunionTest {
 		recursos.add(proyector1);
 		recursos.add(proyector2);
 
-		// Requerimientos son 3 programadores y 1 proyector.
+		// Requerimientos son 3 programadores y 2 proyectores.
 		ArrayList<Propiedad> condiciones;
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolProgramador);
@@ -105,7 +106,7 @@ public class ReunionTest {
 
 		Assert.assertEquals(7, reunion.getRecursos().size());
 		Assert.assertEquals(5, reunion.getRequerimientos().size());
-		// 3 programadores y el anfitrion.
-		Assert.assertEquals(3 + 1, reunion.getCantidadRequeridaDePersonas());
+		// 3 programadores.
+		Assert.assertEquals(3, reunion.getCantidadRequeridaDePersonas());
 	}
 }

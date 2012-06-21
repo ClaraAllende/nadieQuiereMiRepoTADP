@@ -2,8 +2,8 @@ package ar.edu.utn.tadp.accionesPostReunion;
 
 import java.util.Collection;
 
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Persona;
-import ar.edu.utn.tadp.reunion.Reunion;
 
 /**
  * Este es un data object que tiene la información necesaria para notificar por catering o transporte.

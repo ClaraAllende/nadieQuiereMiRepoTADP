@@ -6,7 +6,7 @@ package ar.edu.utn.tadp.propiedad;
  * Contiene Tipo->Valor. Ejemplo: "Edificio"->"Catalinas",
  * "Nombre"->"Pepe Argento"
  * 
- * @version 29-05-2012
+ * @version 21-06-2012
  */
 public class Propiedad {
 	String tipo;
@@ -29,14 +29,17 @@ public class Propiedad {
 	 */
 	@Override
 	public boolean equals(Object unObjeto) {
-		Propiedad otraPropiedad = (Propiedad) unObjeto;
 		if (!(unObjeto instanceof Propiedad)) {
 			return false;
 		}
-		return this.getTipo().toLowerCase()
-				.equals(otraPropiedad.getTipo().toLowerCase())
-				&& this.getValor().toLowerCase()
-						.equals(otraPropiedad.getValor().toLowerCase());
+		Propiedad otraPropiedad = (Propiedad) unObjeto;
+		return this.getTipo().toString().toLowerCase()
+				.equals(otraPropiedad.getTipo().toString().toLowerCase())
+				&& this.getValor()
+						.toString()
+						.toLowerCase()
+						.equals(otraPropiedad.getValor().toString()
+								.toLowerCase());
 	}
 
 	public String getTipo() {
