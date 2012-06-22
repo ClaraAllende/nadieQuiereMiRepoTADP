@@ -1,9 +1,12 @@
 package ar.edu.utn.tadp.requerimiento;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -134,6 +137,7 @@ public class RequerimientoTest {
 		recursos.add(gerente3);
 		recursos.add(graficDesigner);
 		recursos.add(systemDesigner);
+
 	}
 
 	@Test
@@ -143,7 +147,7 @@ public class RequerimientoTest {
 		condiciones.add(tipoProyector);
 		condiciones.add(edificioCatalinas);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertTrue(requerimiento.cumpleCondiciones(proyector1));
+		assertTrue(requerimiento.cumpleCondiciones(proyector1));
 	}
 
 	@Test
@@ -153,13 +157,13 @@ public class RequerimientoTest {
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(edificioCatalinas);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(5, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(5, requerimiento.filtrarConjunto(recursos).size());
 
 		// Recursos de Madero.
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(edificioMadero);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(9, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(9, requerimiento.filtrarConjunto(recursos).size());
 	}
 
 	@Test
@@ -169,37 +173,37 @@ public class RequerimientoTest {
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolProgramador);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(3, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(3, requerimiento.filtrarConjunto(recursos).size());
 
 		// Requerimiento de un Arquitecto.
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolArquitecto);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
 
 		// Requerimiento de un Poject Leader.
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolProjectLeader);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
 
 		// Requerimiento de un Gerente.
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolGerente);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(3, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(3, requerimiento.filtrarConjunto(recursos).size());
 
 		// Requerimiento de un Disen~ador de Sistema.
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolSystemDesigner);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
 
 		// Requerimiento de un Disen~ador Grafico.
 		condiciones = new ArrayList<Propiedad>();
 		condiciones.add(rolGraficDesigner);
 		requerimiento = new Requerimiento(condiciones);
-		Assert.assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
+		assertEquals(1, requerimiento.filtrarConjunto(recursos).size());
 	}
 
 	@Test
@@ -214,7 +218,7 @@ public class RequerimientoTest {
 				requerimiento.filtrarConjunto(recursos));
 
 		// Existen en total 3 proyectores.
-		Assert.assertEquals(3, resultado.size());
+		assertEquals(3, resultado.size());
 	}
 
 	@Test
@@ -230,7 +234,7 @@ public class RequerimientoTest {
 				requerimiento.filtrarConjunto(recursos));
 
 		// Valida el resultado. Solo hay 1 proyector en el edificio Madero.
-		Assert.assertEquals(1, resultado.size());
+		assertEquals(1, resultado.size());
 	}
 
 	@Test
@@ -245,6 +249,26 @@ public class RequerimientoTest {
 				requerimiento.filtrarConjunto(recursos));
 
 		// Valida el resultado.
-		Assert.assertTrue(resultado.isEmpty());
+		assertTrue(resultado.isEmpty());
+	}
+
+	@Test
+	public void isRecurso() {
+		final ArrayList<Propiedad> condiciones = new ArrayList<Propiedad>();
+
+		// Crea requerimiento de un Proyector.
+		condiciones.add(edificioX);
+		condiciones.add(tipoProyector);
+		requerimiento = new Requerimiento(condiciones);
+
+		assertTrue(requerimiento.isRecurso());
+
+		// Crea requerimiento de un Arquitecto.
+		condiciones.removeAll(condiciones);
+		condiciones.add(rolArquitecto);
+		condiciones.add(edificioX);
+		requerimiento = new Requerimiento(condiciones);
+
+		assertFalse(requerimiento.isRecurso());
 	}
 }

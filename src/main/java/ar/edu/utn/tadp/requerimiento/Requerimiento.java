@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.joda.time.DateTime;
@@ -22,12 +23,15 @@ import com.google.common.collect.Sets;
  * Representa un objeto que sabe filtrar a los recursos. Y tiene cargadas las
  * condiciones.
  * 
- * @version 03-06-2012
+ * @version 21-06-2012
  */
 public class Requerimiento {
 
-	private Collection<Propiedad> condiciones;
+	private final Collection<Propiedad> condiciones;
 	private Collection<Recurso> meSatisfacen;
+	private boolean obligatorio = true;
+	private Requerimiento requerimientoAlternativo = null;
+	private Recurso recursoQueSatisface;
 
 	/**
 	 * Crea un <code>Requerimiento</code> en base de las propiedades requeridas.
@@ -36,7 +40,21 @@ public class Requerimiento {
 	 * @see Propiedad
 	 */
 	public Requerimiento(final Collection<Propiedad> condiciones) {
+		this(condiciones, true);
+	}
+
+	/**
+	 * Crea un <code>Requerimiento</code> en base de las propiedades requeridas
+	 * estableciendo si es o no obligatorio. Por defecto es obligatorio.
+	 * 
+	 * @param condiciones
+	 * @param obligatorio
+	 * @see Propiedad
+	 */
+	public Requerimiento(final Collection<Propiedad> condiciones,
+			boolean obligatorio) {
 		this.condiciones = condiciones;
+		this.obligatorio = obligatorio;
 	}
 
 	/**
@@ -96,13 +114,9 @@ public class Requerimiento {
 		return Iterables.all(this.condiciones, p);
 	}
 
-	public void agregarCondiciones(final Set<Propiedad> unasCondiciones) {
-		this.condiciones = unasCondiciones;
-	}
-
-	public void buscaLosQueTeSatisfacen(final List<Recurso> recursos) {
-		meSatisfacen = this.filtrarConjunto(recursos);
-
+	public Collection<Recurso> buscaLosQueTeSatisfacen(
+			final List<Recurso> recursos) {
+		return meSatisfacen = this.filtrarConjunto(recursos);
 	}
 
 	public ArrayList<Recurso> teSatisfacenDurante(final Hours horas,
@@ -169,5 +183,57 @@ public class Requerimiento {
 
 	public Collection<Propiedad> getCondiciones() {
 		return condiciones;
+	}
+
+	public boolean isObligatorio() {
+		return obligatorio;
+	}
+
+	public Requerimiento getRequerimientoAlternativo() {
+		return requerimientoAlternativo;
+	}
+
+	public void setRequerimientoAlternativo(final Requerimiento requerimiento) {
+		this.requerimientoAlternativo = requerimiento;
+	}
+
+	public Recurso getRecursoQueSatisface() {
+		return recursoQueSatisface;
+	}
+
+	public void setRecursoQueSatisface(Recurso recurso) {
+		this.recursoQueSatisface = recurso;
+	}
+
+	public boolean isRecurso() {
+		Predicate<Propiedad> pidePersona = new Predicate<Propiedad>() {
+			@Override
+			public boolean apply(Propiedad cond) {
+				// Es de recurso si tiene un "tipo" distinto de "humano"
+				return cond.getTipo().toString().toLowerCase().equals("tipo")
+						&& !cond.getValor().toString().toLowerCase()
+								.equals("humano");
+			};
+		};
+
+		try {
+			Iterables.find(this.getCondiciones(), pidePersona);
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return true;
+	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// ++ para testing ++++++++++++++++++++++++++++++++++++++
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Requerimiento: " + " - obligatorio(" + obligatorio + ") - "
+				+ condiciones;
 	}
 }
