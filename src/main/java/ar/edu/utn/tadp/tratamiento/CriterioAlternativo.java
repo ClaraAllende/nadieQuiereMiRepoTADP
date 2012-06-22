@@ -2,6 +2,8 @@ package ar.edu.utn.tadp.tratamiento;
 
 import java.util.Collection;
 
+import org.joda.time.Interval;
+
 import ar.edu.utn.tadp.empresa.Empresa;
 import ar.edu.utn.tadp.excepcion.UserException;
 import ar.edu.utn.tadp.organizables.Reunion;
@@ -21,50 +23,43 @@ public class CriterioAlternativo implements TratamientoCancelacion {
 		try {
 			Requerimiento requerimiento = reunion
 					.getRequerimientoQueSatiface(recurso);
-			return reemplazarPorAlternativo(requerimiento, recurso, reunion,
-					empresa);
+			reemplazarPorAlternativo(requerimiento, recurso, reunion, empresa);
+			return true;
 		} catch (Exception e) {
-			// No se pudo tratar la cancelacion.
+			// No se pudo evitar la cancelacion.
 			return false;
 		}
 	}
 
-	private boolean reemplazarPorAlternativo(Requerimiento requerimiento,
+	private void reemplazarPorAlternativo(Requerimiento requerimiento,
 			final Recurso recurso, final Reunion reunion, final Empresa empresa) {
-		if (requerimiento != null) {
-			Requerimiento alternativa = requerimiento
+		try {
+			Requerimiento requerimientoAlternativo = requerimiento
 					.getRequerimientoAlternativo();
-			if (alternativa != null) {
-				try {
-					Collection<Recurso> candidatos = alternativa
-							.buscaLosQueTeSatisfacen(empresa.gerRecursos());
-					Recurso ganador = null;
-					for (Recurso candidato : candidatos) {
-						if (candidato.disponibleDurante(reunion.getHorario())) {
-							ganador = candidato;
-							break;
-						}
-					}
-					if (ganador != null) {
-						reunion.reemplazarPorAlternativo(requerimiento,
-								recurso, alternativa, ganador);
-						return true;
-					} else {
-						return false;
-					}
-				} catch (UserException e) {
-					// No se encontro el candidato.
-					return false;
-				}
-			} else {
-				// No hay alternativa, hasta aca llegamos.
-				return false;
-			}
-		} else {
-			// Si llega aca es por que es Anfitron, Sala, etc.. que son
-			// obligatorios. Esos no tienen criterio alternatico y no se puede
-			// quitar.
-			return false;
+			Collection<Recurso> candidatos = requerimiento
+					.getRequerimientoAlternativo().buscaLosQueTeSatisfacen(
+							empresa.gerRecursos());
+			Recurso reemplazo = getRecursoDisponible(reunion.getHorario(),
+					candidatos);
+			reunion.reemplazarPorAlternativo(requerimiento, recurso,
+					requerimientoAlternativo, reemplazo);
+		} catch (NullPointerException e) {
+			// Si llega aca es por que es Anfitron, Sala, etc.. sin alternativa.
+			throw new UserException("No hay reemplazo para el recurso: "
+					+ recurso);
+		} catch (UserException e) {
+			// No hay alternativa, hasta aca llegamos.
+			throw new UserException("No hay reemplazo para el recurso: "
+					+ recurso);
 		}
+	}
+
+	private Recurso getRecursoDisponible(final Interval intervalo,
+			Collection<Recurso> candidatos) {
+		for (Recurso candidato : candidatos)
+			if (candidato.disponibleDurante(intervalo))
+				return candidato;
+		throw new UserException("No hay recurso disponible para el horario: "
+				+ intervalo);
 	}
 }
