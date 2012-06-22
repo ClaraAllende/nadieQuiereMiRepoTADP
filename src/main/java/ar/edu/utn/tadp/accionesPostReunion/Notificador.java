@@ -1,6 +1,5 @@
 package ar.edu.utn.tadp.accionesPostReunion;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.joda.time.Interval;
@@ -8,7 +7,6 @@ import org.joda.time.Interval;
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.agenda.TipoEvento;
-import ar.edu.utn.tadp.excepcion.ProgramException;
 import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Recurso;
 
@@ -19,43 +17,21 @@ public class Notificador {
 		this.mailSender = mailSender;
 	}
 
-	public void notifyService(Reunion unaReunion, DataServicioANotificar data) {
+	public void notifyService(DataServicioANotificar data) {
 		Method m;
-		m = this.getMethodWithoutParameters(unaReunion, data.getMethodName());
-		if (invokeBooleanMethod(unaReunion, m)) {
-			this.mailSender.sendMail(new Mail(data.getSubject(), data
-					.getDestinatarioAsString(), unaReunion.getOrganizador()
-					.toString(), data.getBody(this)));
-		}
-	}
-
-	public String generateBody(DataServicioANotificar dataServicioANotificar) {
-		// eventualmente quizás estaría bueno tener un builder para hacer esto
-		String body = new String();
-		for (String methodName : dataServicioANotificar.getMethodNamesForBody()) {
-			Method m = this.getMethodWithoutParameters(
-					dataServicioANotificar.getReunion(), methodName);
-			body = body
-					+ this.invokeMethodAndReturnString(
-							dataServicioANotificar.getReunion(), m);
-		}
-		return body;
-	}
-
-	private String invokeMethodAndReturnString(Reunion reunion, Method m) {
-		try {
-			return m.invoke(reunion).toString();
-		} catch (IllegalAccessException e) {
-			throw new ProgramException("Acceso inválido", e);
-		} catch (InvocationTargetException e1) {
-			throw new ProgramException("Objeto receptor no válido", e1);
-		}
-	}
-
-	public void notifyPeople(Reunion unaReunion, DataNotificacionPersonas data) {
-		Method m = this.getMethodWithoutParameters(unaReunion,
+		m = data.getMethodWithoutParameters(data.getReunion(),
 				data.getMethodName());
-		if (this.invokeBooleanMethod(unaReunion, m)) {
+		if (data.invokeBooleanMethod(data.getReunion(), m)) {
+			this.mailSender.sendMail(new Mail(data.getSubject(), data
+					.getDestinatarioAsString(), data.getReunion()
+					.getOrganizador().toString(), data.getBody(this)));
+		}
+	}
+
+	public void notifyPeople(DataNotificacionPersonas data) {
+		Method m = data.getMethodWithoutParameters(data.getReunion(),
+				data.getMethodName());
+		if (data.invokeBooleanMethod(data.getReunion(), m)) {
 			data.getAction(this);
 		}
 	}
@@ -81,46 +57,6 @@ public class Notificador {
 				ev.setTipo(TipoEvento.DIACOMPLETO);
 				recurso.ocupate(ev);
 			}
-		}
-	}
-
-	/**
-	 * Método extraído para evitar manejar las excepciones chequeadas en el if
-	 * de la funcion notifyService()
-	 * 
-	 * @param unaReunion
-	 * @param m
-	 * @return
-	 */
-	public Boolean invokeBooleanMethod(Reunion unaReunion, Method m) {
-		try {
-			return (Boolean) m.invoke(unaReunion);
-		} catch (IllegalAccessException e) {
-			throw new ProgramException("Acceso inválido", e);
-		} catch (InvocationTargetException e1) {
-			throw new ProgramException("Objeto receptor no válido", e1);
-		}
-	}
-
-	/**
-	 * Método extraído para que no quedara todo el manejo de las excpeciones
-	 * chequeadas en la función principal
-	 * 
-	 * @param unaReunion
-	 * @param aMethodName
-	 * @return El método (que retorna un boolean) que hay que usar como
-	 *         condicion para notificar.
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
-	 */
-	public Method getMethodWithoutParameters(Reunion unaReunion,
-			String aMethodName) {
-		try {
-			return unaReunion.getClass().getMethod(aMethodName);
-		} catch (SecurityException e) {
-			throw new ProgramException(e);
-		} catch (NoSuchMethodException e1) {
-			throw new ProgramException("El método no está definido", e1);
 		}
 	}
 }

@@ -47,7 +47,7 @@ public class NotificadorTest {
 		DataServicioANotificar dataCatering = new DataServicioANotificar(
 				"tieneCatering", dest, reunion, mets,
 				"Solicitud de servicio de catering");
-		notificador.notifyService(reunion, dataCatering);
+		notificador.notifyService(dataCatering);
 		assertEquals((hoy.toString() + "5"), mailSender.ultimoMailEnviado()
 				.getBody());
 	}
@@ -65,7 +65,7 @@ public class NotificadorTest {
 		DataServicioANotificar dataTransporte = new DataServicioANotificar(
 				"requiereTransporte", dest, reunion, mets,
 				"Solicitud de servicio de transporte");
-		notificador.notifyService(reunion, dataTransporte);
+		notificador.notifyService(dataTransporte);
 		assertEquals((hoy.toString() + "6" + "Catalinas"), mailSender
 				.ultimoMailEnviado().getBody());
 
@@ -84,7 +84,7 @@ public class NotificadorTest {
 		when(reunion.getRecursos()).thenReturn(recs);
 		DataNotificacionPersonas data = new DataNotificacionPersonas(
 				"tieneCatering", "avisarEmpleados", reunion);
-		notificador.notifyPeople(reunion, data);
+		notificador.notifyPeople(data);
 		assertEquals(2, mailSender.mailsEnviados.size());
 	}
 
@@ -101,7 +101,7 @@ public class NotificadorTest {
 		when(reunion.getRecursos()).thenReturn(recs);
 		DataNotificacionPersonas data = new DataNotificacionPersonas(
 				"requiereTransporte", "marcarDiaOcupado", reunion);
-		notificador.notifyPeople(reunion, data);
+		notificador.notifyPeople(data);
 		p1.getAgenda();
 		assertTrue(p1.estasOcupadoDurante(new Interval(Agenda.HOY, Agenda.HOY)));
 		assertTrue(p2.estasOcupadoDurante(new Interval(Agenda.HOY, Agenda.HOY)));
