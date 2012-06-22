@@ -18,8 +18,19 @@ public class CriterioAlternativo implements TratamientoCancelacion {
 	@Override
 	public boolean evitarCancelacion(final Recurso recurso,
 			final Reunion reunion, final Empresa empresa) {
-		Requerimiento requerimiento = reunion
-				.getRequerimientoQueSatiface(recurso);
+		try {
+			Requerimiento requerimiento = reunion
+					.getRequerimientoQueSatiface(recurso);
+			return reemplazarPorAlternativo(requerimiento, recurso, reunion,
+					empresa);
+		} catch (Exception e) {
+			// No se pudo tratar la cancelacion.
+			return false;
+		}
+	}
+
+	private boolean reemplazarPorAlternativo(Requerimiento requerimiento,
+			final Recurso recurso, final Reunion reunion, final Empresa empresa) {
 		if (requerimiento != null) {
 			Requerimiento alternativa = requerimiento
 					.getRequerimientoAlternativo();

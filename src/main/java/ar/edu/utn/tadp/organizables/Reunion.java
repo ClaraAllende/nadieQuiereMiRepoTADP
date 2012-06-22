@@ -223,34 +223,36 @@ public class Reunion implements Organizable {
 	public void quitar(Recurso recurso) {
 		// Se quita de los recursos
 		recursos.remove(recurso);
-		Requerimiento requerimiento = getRequerimientoQueSatiface(recurso);
-		if (requerimiento != null) {
-			requerimiento.setRecursoQueSatisface(null);
+		try {
+			getRequerimientoQueSatiface(recurso).setRecursoQueSatisface(null);
+		} catch (UserException e) {
+			// No pasa nada.
 		}
 		// Se le libera la agenda.
 		recurso.cancelarReunion(this);
 	}
 
 	public Requerimiento getRequerimientoQueSatiface(Recurso recurso) {
-		for (Requerimiento requerimiento : getRequerimientos()) {
-			if (requerimiento.getRecursoQueSatisface() == null) {
-				// Si pasa por aca es por que el recurso cancelo.
-				return null;
+		try {
+			for (Requerimiento requerimiento : getRequerimientos()) {
+				if (requerimiento.getRecursoQueSatisface().equals(recurso)) {
+					return requerimiento;
+				}
 			}
-			if (requerimiento.getRecursoQueSatisface().equals(recurso)) {
-				return requerimiento;
-			}
+		} catch (NullPointerException e) {
+			// Se ve que el recurso cancelo su participacion.
 		}
 		// Si llega aca es por que es Anfitron, Sala, etc.. que son
 		// obligatorios.
-		return null;
+		throw new UserException(
+				"No se encuentra RequerimientoQueSatiface el recurso: "
+						+ recurso);
 	}
 
 	public boolean isObligatorio(Recurso recurso) {
-		Requerimiento requerimiento = getRequerimientoQueSatiface(recurso);
-		if (requerimiento != null) {
-			return requerimiento.isObligatorio();
-		} else {
+		try {
+			return getRequerimientoQueSatiface(recurso).isObligatorio();
+		} catch (Exception e) {
 			// Si llega aca es por que es Anfitron, Sala, etc.. que son
 			// obligatorios.
 			return true;
