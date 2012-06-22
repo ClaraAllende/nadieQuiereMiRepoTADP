@@ -8,7 +8,7 @@ import ar.edu.utn.tadp.recurso.Recurso;
  * Para no cancelar la reunion valida si hay menos de un porcentaje de
  * asistencia elegido por el usuario.
  * 
- * @version 15-06-2012
+ * @version 22-06-2012
  */
 public class AsistenciaMinima implements TratamientoCancelacion {
 
@@ -25,10 +25,12 @@ public class AsistenciaMinima implements TratamientoCancelacion {
 	@Override
 	public boolean evitarCancelacion(final Recurso recurso,
 			final Reunion reunion, final Empresa empresa) {
-		if (recurso.getTipo().toLowerCase().equals("humano")) {
+		if (recurso.esPersona()) {
 			Integer division = new Integer(
+			// Personas que estan menos la personas que se va.
 					((reunion.getCantidadDePersonas() - 1) * 100)
-							/ reunion.getCantidadRequeridaDePersonas());
+					// Requerimientos + el anfitrion.
+							/ (reunion.getCantidadRequeridaDePersonas() + 1));
 			boolean cumpleAsistencia = division > porcentaje;
 			// Si se cumple la asistencia, quita el recurso.
 			if (cumpleAsistencia) {

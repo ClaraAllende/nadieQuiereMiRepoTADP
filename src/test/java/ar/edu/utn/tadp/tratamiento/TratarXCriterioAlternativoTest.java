@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.empresa.Empresa;
@@ -108,8 +109,10 @@ public class TratarXCriterioAlternativoTest {
 	/**
 	 * Se quita un recurso que es opcional y la reunion no se cancela.
 	 */
+	@Ignore
 	@Test
-	public void quitaRecursosHastaNoCumplirAsistencia() {
+	public void queNombreVa() {
+
 		// Deberia obtener un Programador1
 		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
 		condicionesInvitado1.add(proyectoApollo);

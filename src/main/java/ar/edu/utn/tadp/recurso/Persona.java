@@ -51,6 +51,7 @@ public class Persona extends Recurso {
 		return this.getAgenda().estasOcupadoDurante(intervalo);
 	}
 
+	@Override
 	public Estado getEstado() {
 		return this.estado;
 	}
@@ -59,12 +60,14 @@ public class Persona extends Recurso {
 		this.estado = estado;
 	}
 
+	@Override
 	public int getHorasEnReunionesDeLaSemana() {
 		DateTime unaSemanaAtras = new DateTime().minusWeeks(1);
 		return this.getAgenda().horasEn(TipoEvento.REUNION, unaSemanaAtras)
 				.getHours();
 	}
 
+	@Override
 	public String getUbicacion() {
 		// XXX ubicacion seria el edificio.
 		return this.edificio;

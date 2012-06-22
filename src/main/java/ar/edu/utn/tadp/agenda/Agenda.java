@@ -1,6 +1,7 @@
 package ar.edu.utn.tadp.agenda;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -145,6 +146,27 @@ public class Agenda {
 	}
 
 	public void desocupate(Evento evento) {
-		this.eventos.remove(evento);
+		if (this.eventos.contains(evento)) {
+			// Lo encontramos facil.
+			this.eventos.remove(evento);
+		} else {
+			// Hay que buscarlo y luego borrarlo.
+			this.desocupate(evento.getIntervalo());
+		}
+	}
+
+	private void desocupate(final Interval intervalo) {
+		Predicate<Evento> superpuestos = new Predicate<Evento>() {
+			@Override
+			public boolean apply(Evento evento) {
+				return intervalo.contains(evento.getIntervalo());
+			}
+		};
+		Collection<Evento> borrables = new ArrayList<Evento>();
+		for (Evento eventoABorrar : Iterables
+				.filter(this.eventos, superpuestos)) {
+			borrables.add(eventoABorrar);
+		}
+		this.eventos.removeAll(borrables);
 	}
 }

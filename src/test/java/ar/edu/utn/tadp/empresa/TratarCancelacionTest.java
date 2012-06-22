@@ -211,7 +211,7 @@ public class TratarCancelacionTest {
 
 		// Se crea la reunion.
 		final Reunion reunion = unaEmpresa.createReunion(arquitecto1,
-				requerimientos, Hours.hours(2), DateTime.now().plusDays(1));
+				requerimientos, Hours.hours(20), DateTime.now().plusDays(1));
 		Assert.assertFalse(reunion.isCancelada());
 		final Interval horarioOriginal = reunion.getHorario();
 
@@ -225,9 +225,9 @@ public class TratarCancelacionTest {
 
 		// Valida que la reunion se cancela, Mentira! Asi no tendria logica.
 		// Assert.assertTrue(reunion.isCancelada());
-
 		// TODO Putear el TP que esta mal redactado. Esto anda!
 		Assert.assertFalse(reunion.isCancelada());
+
 		// NO Se aplico la replanificacion.
 		Assert.assertEquals(horarioOriginal, reunion.getHorario());
 	}
@@ -287,7 +287,7 @@ public class TratarCancelacionTest {
 		// Se va un asistente.
 		unaEmpresa.cancelarParticipacion(programador1, reunion);
 
-		// Valida que la reunion np se cancela
+		// Valida que la reunion no se cancela
 		Assert.assertFalse(reunion.isCancelada());
 		// Se aplico la replanificacion.
 		Assert.assertNotSame(horarioOriginal, reunion.getHorario());

@@ -26,7 +26,7 @@ import com.google.common.collect.Iterables;
 /**
  * Representa a los recursos de la empresa.
  * 
- * @version 03-06-2012
+ * @version 22-06-2012
  */
 public class Recurso {
 	// TODO Ver si se puede mejorar eso.
@@ -145,5 +145,10 @@ public class Recurso {
 	 */
 	public void cancelarReunion(Reunion reunion) {
 		agenda.desocupate(new Evento(reunion.getHorario()));
+	}
+
+	public boolean esPersona() {
+		// TODO ver si podemos hacer algo mas feliz.
+		return getTipo().toLowerCase().equals("humano");
 	}
 }

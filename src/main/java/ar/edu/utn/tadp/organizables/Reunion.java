@@ -88,7 +88,7 @@ public class Reunion implements Organizable {
 	public long getCantidadDePersonasQueNecesitanTransporte() {
 		int cantidadDePersonasQueNecesitanTransporte = 0;
 		for (final Recurso recurso : recursos) {
-			if (recurso.getTipo().toLowerCase().equals("humano")
+			if (recurso.esPersona()
 					&& (!recurso.getEdificio().equals(this.getUbicacion()))) {
 				cantidadDePersonasQueNecesitanTransporte++;
 			}
@@ -118,7 +118,7 @@ public class Reunion implements Organizable {
 	public int getCantidadDePersonas() {
 		int cant = 0;
 		for (final Recurso recurso : this.recursos) {
-			if (recurso.getTipo().toLowerCase().equals("humano")) {
+			if (recurso.esPersona()) {
 				cant++;
 			}
 		}
