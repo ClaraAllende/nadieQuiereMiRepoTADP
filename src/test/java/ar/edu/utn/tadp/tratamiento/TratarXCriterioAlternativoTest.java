@@ -6,7 +6,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import ar.edu.utn.tadp.empresa.Empresa;
@@ -20,11 +19,8 @@ import ar.edu.utn.tadp.requerimiento.Requerimiento;
 public class TratarXCriterioAlternativoTest {
 	private final Propiedad proyectoApollo = new Propiedad("proyecto", "Apollo");
 	private final Propiedad proyectoMir = new Propiedad("Proyecto", "Mir");
-	private final Propiedad proyectoShuttle = new Propiedad("Proyecto",
-			"shuttle");
 	private final Propiedad sectorDesarrollo = new Propiedad("Sector",
 			"Desarrollo");
-	private final Propiedad sectorGerencia = new Propiedad("sector", "gerencia");
 	private final Propiedad rolProgramador = new Propiedad("rol", "programador");
 	private final Propiedad edificioCatalinas = new Propiedad("edificio",
 			"catalinas");
@@ -36,10 +32,6 @@ public class TratarXCriterioAlternativoTest {
 	private Persona programador2;
 	private Persona programador3;
 	private Persona arquitecto1;
-	private Persona gerente1;
-	private Persona gerente2;
-	private Persona gerente3;
-	private Persona leader;
 	private Recurso sala;
 	private Recurso proyector1;
 	private Recurso proyector2;
@@ -67,21 +59,7 @@ public class TratarXCriterioAlternativoTest {
 		arquitecto1.setProyecto(proyectoApollo.getValor());
 		arquitecto1.setSector(sectorDesarrollo.getValor());
 		arquitecto1.setEdificio(edificioCatalinas.getValor());
-		gerente1 = new Persona(Rol.GERENTE);
-		gerente1.setProyecto(proyectoApollo.getValor());
-		gerente1.setSector(sectorGerencia.getValor());
-		gerente1.setEdificio(edificioMadero.getValor());
-		gerente2 = new Persona(Rol.GERENTE);
-		gerente2.setProyecto(proyectoMir.getValor());
-		gerente2.setSector(sectorGerencia.getValor());
-		gerente2.setEdificio(edificioMadero.getValor());
-		gerente3 = new Persona(Rol.GERENTE);
-		gerente3.setProyecto(proyectoShuttle.getValor());
-		gerente3.setSector(sectorGerencia.getValor());
-		gerente3.setEdificio(edificioMadero.getValor());
-		leader = new Persona(Rol.PROYECT_LEADER);
-		leader.setProyecto(proyectoShuttle.getValor());
-		leader.setEdificio(edificioMadero.getValor());
+
 		// Recursos
 		sala = new Recurso();
 		sala.setTipo(tipoSala.getValor());
@@ -94,10 +72,7 @@ public class TratarXCriterioAlternativoTest {
 		proyector2.setEdificio(edificioCatalinas.getValor());
 		// Empresa
 		unaEmpresa = new Empresa();
-		unaEmpresa.addRecurso(leader);
 		unaEmpresa.addRecurso(arquitecto1);
-		unaEmpresa.addRecurso(gerente1);
-		unaEmpresa.addRecurso(gerente2);
 		unaEmpresa.addRecurso(programador1);
 		unaEmpresa.addRecurso(programador2);
 		unaEmpresa.addRecurso(programador3);
@@ -109,9 +84,8 @@ public class TratarXCriterioAlternativoTest {
 	/**
 	 * Se quita un recurso que es opcional y la reunion no se cancela.
 	 */
-	@Ignore
 	@Test
-	public void queNombreVa() {
+	public void buscaAlternativaMientrasHaya() {
 
 		// Deberia obtener un Programador1
 		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
@@ -129,13 +103,7 @@ public class TratarXCriterioAlternativoTest {
 		final Requerimiento reqProgramador2 = new Requerimiento(
 				condicionesInvitado2);
 
-		// Deberia obtener un Programador3
-		final ArrayList<Propiedad> condicionesInvitado3 = new ArrayList<Propiedad>();
-		condicionesInvitado3.add(proyectoMir);
-		condicionesInvitado3.add(edificioMadero);
-		condicionesInvitado3.add(rolProgramador);
-		final Requerimiento reqProgramador3 = new Requerimiento(
-				condicionesInvitado3);
+		reqProgramador1.setRequerimientoAlternativo(reqProgramador2);
 
 		// Deberia obtener Proyector2. Se define que es opcional.
 		final ArrayList<Propiedad> condicionesRecurso = new ArrayList<Propiedad>();
@@ -146,21 +114,17 @@ public class TratarXCriterioAlternativoTest {
 
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
 		requerimientos.add(reqProgramador1);
-		requerimientos.add(reqProgramador2);
-		requerimientos.add(reqProgramador3);
 		requerimientos.add(reqProyector2);
 
 		// Se crea la reunion.
 		final Reunion reunion = unaEmpresa.createReunion(arquitecto1,
 				requerimientos, Hours.SEVEN, DateTime.now().plusDays(2));
 
-		// Recursos que deberian ser: anfitrion, 3 invitados, proyector y la
+		// Recursos que deberian ser: anfitrion, 1 invitado, proyector y la
 		// sala.
-		Assert.assertEquals(6, reunion.getRecursos().size());
+		Assert.assertEquals(4, reunion.getRecursos().size());
 		Assert.assertTrue(reunion.getRecursos().contains(arquitecto1));
 		Assert.assertTrue(reunion.getRecursos().contains(programador1));
-		Assert.assertTrue(reunion.getRecursos().contains(programador2));
-		Assert.assertTrue(reunion.getRecursos().contains(programador3));
 		Assert.assertTrue(reunion.getRecursos().contains(proyector2));
 		Assert.assertTrue(reunion.getRecursos().contains(sala));
 
@@ -175,52 +139,21 @@ public class TratarXCriterioAlternativoTest {
 
 		// Recursos que deberian quedar: anfitrion, 2 invitados, proyector y la
 		// sala.
-		Assert.assertEquals(5, reunion.getRecursos().size());
+		Assert.assertEquals(4, reunion.getRecursos().size());
 		Assert.assertTrue(reunion.getRecursos().contains(arquitecto1));
 		Assert.assertTrue(reunion.getRecursos().contains(programador2));
-		Assert.assertTrue(reunion.getRecursos().contains(programador3));
 		Assert.assertTrue(reunion.getRecursos().contains(proyector2));
 		Assert.assertTrue(reunion.getRecursos().contains(sala));
 		// Pero no esta mas el programador1.
 		Assert.assertFalse(reunion.getRecursos().contains(programador1));
 
-		// Se cancela una asistencia.
+		// Se cancela una asistencia. Que no tiene alternativas.
 		unaEmpresa.cancelarParticipacion(programador2, reunion);
 
-		// La reunion no se cancelo.
-		Assert.assertFalse(reunion.isCancelada());
-
-		// Recursos que deberian quedar: anfitrion, invitado, proyector y la
-		// sala.
-		Assert.assertEquals(4, reunion.getRecursos().size());
-		Assert.assertTrue(reunion.getRecursos().contains(arquitecto1));
-		Assert.assertTrue(reunion.getRecursos().contains(programador3));
-		Assert.assertTrue(reunion.getRecursos().contains(proyector2));
-		Assert.assertTrue(reunion.getRecursos().contains(sala));
-		// Pero no esta mas el programador2.
-		Assert.assertFalse(reunion.getRecursos().contains(programador2));
-
-		// Se cancela un Proyector, no deberia afectar la asistencia.
-		unaEmpresa.cancelarParticipacion(proyector2, reunion);
-
-		// La reunion no se cancelo.
-		Assert.assertFalse(reunion.isCancelada());
-
-		// Recursos que deberian quedar: anfitrion, invitado y la sala.
-		Assert.assertEquals(3, reunion.getRecursos().size());
-		Assert.assertTrue(reunion.getRecursos().contains(arquitecto1));
-		Assert.assertTrue(reunion.getRecursos().contains(programador3));
-		Assert.assertTrue(reunion.getRecursos().contains(sala));
-		// Pero no esta mas el programador2.
-		Assert.assertFalse(reunion.getRecursos().contains(proyector2));
-
-		// Se cancela una asistencia mas, que debe provocar la cancelacion.
-		unaEmpresa.cancelarParticipacion(programador3, reunion);
-
-		// La reunion se cancelo.
+		// La reunion se cancela.
 		Assert.assertTrue(reunion.isCancelada());
 
-		// No deberia tener recursos.
+		// No deberia quedar ningun recurso
 		Assert.assertEquals(0, reunion.getRecursos().size());
 	}
 }

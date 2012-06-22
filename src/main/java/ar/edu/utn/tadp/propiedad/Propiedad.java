@@ -49,4 +49,16 @@ public class Propiedad {
 	public String getValor() {
 		return valor;
 	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// ++ para testing ++++++++++++++++++++++++++++++++++++++
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Propiedad(" + tipo + "->" + valor + ") ";
+	}
 }

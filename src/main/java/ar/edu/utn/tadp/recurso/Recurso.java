@@ -30,10 +30,8 @@ import com.google.common.collect.Iterables;
  */
 public class Recurso {
 	// TODO Ver si se puede mejorar eso.
-	public static final Recurso CATERING = new Recurso(new CostoFijo(
-			BigDecimal.valueOf(400.00)));
-	public static final Recurso TRANSPORTE = new Recurso(new CostoPorPersona(
-			BigDecimal.valueOf(25.0)));
+	public static final Recurso CATERING = crearCatering();
+	public static final Recurso TRANSPORTE = crearTransporte();
 
 	// Propiedades de un Recurso serian TipoRecurso y Edificio
 	protected String tipo;
@@ -149,6 +147,20 @@ public class Recurso {
 
 	public boolean esPersona() {
 		// TODO ver si podemos hacer algo mas feliz.
-		return getTipo().toLowerCase().equals("humano");
+		return "Humano".equals(getTipo());
+	}
+
+	private static Recurso crearCatering() {
+		Recurso catering = new Recurso(
+				new CostoFijo(BigDecimal.valueOf(400.00)));
+		catering.setTipo("Catering");
+		return catering;
+	}
+
+	private static Recurso crearTransporte() {
+		Recurso transporte = new Recurso(new CostoPorPersona(
+				BigDecimal.valueOf(25.0)));
+		transporte.setTipo("Transporte");
+		return transporte;
 	}
 }

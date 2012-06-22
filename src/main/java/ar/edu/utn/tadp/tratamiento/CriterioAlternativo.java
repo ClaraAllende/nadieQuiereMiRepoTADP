@@ -35,7 +35,8 @@ public class CriterioAlternativo implements TratamientoCancelacion {
 						}
 					}
 					if (ganador != null) {
-						reunion.reemplazarPorAlternativo(recurso, ganador);
+						reunion.reemplazarPorAlternativo(requerimiento,
+								recurso, alternativa, ganador);
 						return true;
 					} else {
 						return false;

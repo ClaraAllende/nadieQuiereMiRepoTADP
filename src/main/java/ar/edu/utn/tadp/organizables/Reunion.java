@@ -259,13 +259,13 @@ public class Reunion implements Organizable {
 
 	/**
 	 * Reemplaza un recurso por otro.
-	 * 
-	 * @param recurso
-	 * @param reemplazo
 	 */
-	public void reemplazarPorAlternativo(Recurso recurso, Recurso reemplazo) {
+	public void reemplazarPorAlternativo(Requerimiento original,
+			Recurso recurso, Requerimiento alternativo, Recurso reemplazo) {
+		alternativo.setRecursoQueSatisface(reemplazo);
+		requerimientos.add(alternativo);
 		recursos.add(reemplazo);
-		// TODO Falta quitar el requerimiento y reemplazarlo por el alternativo.
+		requerimientos.remove(original);
 		quitar(recurso);
 	}
 

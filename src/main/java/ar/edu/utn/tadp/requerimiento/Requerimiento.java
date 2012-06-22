@@ -223,4 +223,17 @@ public class Requerimiento {
 		}
 		return true;
 	}
+
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// ++ para testing ++++++++++++++++++++++++++++++++++++++
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/**
+	 * Devuelve los atributos en formato de <code>String</code>. Se usara en los
+	 * test.
+	 */
+	@Override
+	public String toString() {
+		return "Requerimiento: " + " - obligatorio(" + obligatorio + ") - "
+				+ condiciones;
+	}
 }
