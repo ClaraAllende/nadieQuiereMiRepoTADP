@@ -35,8 +35,7 @@ public class Propiedad {
 		}
 		return this.getTipo().toLowerCase()
 				.equals(otraPropiedad.getTipo().toLowerCase())
-				&& this.getValor().toLowerCase()
-						.equals(otraPropiedad.getValor().toLowerCase());
+				&& this.getValor().equals(otraPropiedad.getValor());
 	}
 
 	public String getTipo() {
