@@ -12,7 +12,7 @@ public class RecursoIntrospector {
 		
 		try{
 			Field[] fields = recurso.getClass().getDeclaredFields();
-		List<Propiedad> propiedades = new ArrayList<>();
+		List<Propiedad> propiedades = new ArrayList<Propiedad>();
 		for (Field field : fields){
 			field.setAccessible(true);
 			if (field.get(recurso)!= null){
