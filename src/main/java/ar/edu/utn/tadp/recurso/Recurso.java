@@ -9,9 +9,6 @@ import org.joda.time.Duration;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.agenda.TipoEvento;
@@ -20,25 +17,27 @@ import ar.edu.utn.tadp.costos.Costo;
 import ar.edu.utn.tadp.costos.CostoFijo;
 import ar.edu.utn.tadp.costos.CostoPorPersona;
 import ar.edu.utn.tadp.organizables.Organizable;
+import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 
 /**
  * Representa a los recursos de la empresa.
  * 
- * @version 03-06-2012
+ * @version 22-06-2012
  */
 public class Recurso {
 	// TODO Ver si se puede mejorar eso.
-	public static final Recurso CATERING = new Recurso(new CostoFijo(
-			BigDecimal.valueOf(400.00)));
-	public static final Recurso TRANSPORTE = new Recurso(new CostoPorPersona(
-			BigDecimal.valueOf(25.0)));
+	public static final Recurso CATERING = crearCatering();
+	public static final Recurso TRANSPORTE = crearTransporte();
 
 	// Propiedades de un Recurso serian TipoRecurso y Edificio
 	protected String tipo;
 	protected String edificio;
 
-	private Agenda agenda = new Agenda();
+	private final Agenda agenda = new Agenda();
 
 	private final Costeable costeable;
 
@@ -119,6 +118,7 @@ public class Recurso {
 
 	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite) {
 		return this.agenda.horasEn(unosEventos, fechaLimite);
+		// un recurso no lleva el tiempo ocupado...
 	}
 
 	public boolean tenesLaPropiedad(final Propiedad propiedad) {
@@ -131,6 +131,36 @@ public class Recurso {
 			}
 			
 		};
-		return Iterables.any(RecursoIntrospector.getPropiedadesDe(this), mismaPropiedad );
+		return Iterables.any(RecursoIntrospector.getPropiedadesDe(this),
+				mismaPropiedad);
+	}
+
+	/**
+	 * Libera la agenda ya que se cancelo una reunion.
+	 * 
+	 * @param reunion
+	 *            <code>Reunion</code> que se cancelo.
+	 */
+	public void cancelarReunion(Reunion reunion) {
+		agenda.desocupate(new Evento(reunion.getHorario()));
+	}
+
+	public boolean esPersona() {
+		// TODO ver si podemos hacer algo mas feliz.
+		return "Humano".equals(getTipo());
+	}
+
+	private static Recurso crearCatering() {
+		Recurso catering = new Recurso(
+				new CostoFijo(BigDecimal.valueOf(400.00)));
+		catering.setTipo("Catering");
+		return catering;
+	}
+
+	private static Recurso crearTransporte() {
+		Recurso transporte = new Recurso(new CostoPorPersona(
+				BigDecimal.valueOf(25.0)));
+		transporte.setTipo("Transporte");
+		return transporte;
 	}
 }

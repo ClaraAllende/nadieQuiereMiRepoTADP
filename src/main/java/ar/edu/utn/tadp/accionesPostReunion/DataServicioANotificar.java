@@ -1,7 +1,10 @@
 package ar.edu.utn.tadp.accionesPostReunion;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 
+import ar.edu.utn.tadp.excepcion.ProgramException;
 import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Persona;
 
@@ -10,7 +13,7 @@ import ar.edu.utn.tadp.recurso.Persona;
  * @author clari
  *
  */
-public class DataServicioANotificar {
+public class DataServicioANotificar extends DataNotificacion {
 
 	private String methodName;
 	private Persona destinatario;
@@ -46,7 +49,7 @@ public class DataServicioANotificar {
 		return this.destinatario.toString();
 	}
 	public String getBody(Notificador notificador) {
-		return notificador.generateBody(this);
+		return this.generateBody();
 	}
 
 	public Collection<String> getMethodNamesForBody(){
@@ -58,5 +61,27 @@ public class DataServicioANotificar {
 	public Reunion getReunion() {
 		return this.reunion;
 	}
+	
+	public String generateBody() {
+
+		String body = new String();
+		for (String methodName: this.getMethodNamesForBody()){
+			Method m= this.getMethodWithoutParameters(this.getReunion(), methodName);
+			body= body + this.invokeMethodAndReturnString(this.getReunion(), m);
+		}
+			return body;
+		}
+
+	private String invokeMethodAndReturnString(Reunion reunion, Method m) {
+	    try{
+	    	 return m.invoke(reunion).toString();
+	    }
+		catch  (IllegalAccessException e){
+			throw new ProgramException ("Acceso inválido", e);
+		}
+		catch (InvocationTargetException e1){
+			throw new ProgramException("Objeto receptor no válido", e1);
+		}
+}
 	
 }

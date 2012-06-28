@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 import ar.edu.utn.tadp.excepcion.ProgramException;
 import ar.edu.utn.tadp.organizables.Reunion;
 
-public class DataNotificacionPersonas {
+public class DataNotificacionPersonas extends DataNotificacion {
 
 	private String methodName;
 	private String action;
@@ -19,8 +19,8 @@ public class DataNotificacionPersonas {
 		this.reunion= reunion;
 	}
 	public void getAction(Notificador notificador) {
-		Method m = notificador.getMethodWithoutParameters(reunion, this.methodName);
-		if (notificador.invokeBooleanMethod(reunion, m)){
+		Method m = this.getMethodWithoutParameters(reunion, this.methodName);
+		if (this.invokeBooleanMethod(reunion, m)){
 		Method action= getMethodWithVarArgs(reunion, this.action, notificador);
 		this.invokeMethod(notificador, action,reunion);
 		}
@@ -48,6 +48,9 @@ public class DataNotificacionPersonas {
 }
 	public String getMethodName(){
 		return this.methodName;
+	}
+	public Reunion getReunion() {
+		return this.reunion;
 	}
 
 }

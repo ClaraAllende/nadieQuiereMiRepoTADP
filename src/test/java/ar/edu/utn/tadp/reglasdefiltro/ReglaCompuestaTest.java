@@ -37,13 +37,13 @@ public class ReglaCompuestaTest {
 		Persona persona2 = mock(Persona.class);
 		when(persona2.getUbicacion()).thenReturn("Cripton");
 		when(persona2.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(20.0));
-		when(persona2.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(20.0));
+		when(persona2.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		when(persona2.getEstado()).thenReturn(Estado.NORMAL);
 
 		Persona persona3 = mock(Persona.class);
 		when(persona3.getUbicacion()).thenReturn("Melmac");
 		when(persona3.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(50.0));
-		when(persona3.dameTuCostoPara(Mockito.any(Reunion.class))).thenReturn(new BigDecimal(15.0));
+		when(persona3.getHorasEnReunionesDeLaSemana()).thenReturn(20);
 		when(persona3.getEstado()).thenReturn(Estado.EXCESIVAS_REUNIONES);
 
 		List<ReglaDeFiltrado> listaDeReglas = Arrays.asList(new ReglaSegunEstado(), 
