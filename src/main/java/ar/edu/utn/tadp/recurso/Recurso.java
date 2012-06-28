@@ -119,7 +119,6 @@ public class Recurso {
 
 	public Hours horasEn(List<TipoEvento> unosEventos, DateTime fechaLimite) {
 		return this.agenda.horasEn(unosEventos, fechaLimite);
-		//un recurso no lleva el tiempo ocupado...
 	}
 
 	public boolean tenesLaPropiedad(final Propiedad propiedad) {
