@@ -50,9 +50,11 @@ public class Empresa {
 	 * @see Reunion
 	 * @see Requerimiento
 	 */
-	public Reunion createReunion(final Persona anfitrion,
-			List<Requerimiento> requerimientos, final Hours horas,
-			final DateTime vencimiento) {
+	public Reunion createReunion(final Persona anfitrion, 
+								List<Requerimiento> requerimientos, 
+								final Hours horas,
+								final DateTime vencimiento) {
+		
 		// Agrega a los requerimientos al anfitrion.
 		Requerimiento reqAnfitrion = new Requerimiento(anfitrion);
 		requerimientos.add(reqAnfitrion);

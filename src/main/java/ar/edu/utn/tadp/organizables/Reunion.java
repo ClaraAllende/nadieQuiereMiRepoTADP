@@ -8,7 +8,9 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.empresa.Empresa;
+import ar.edu.utn.tadp.empresa.GeneradorDeContexto;
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
@@ -36,7 +38,8 @@ public class Reunion implements Organizable {
 	private DateTime vencimiento;
 	private boolean cancelada = false;
 	private List<TratamientoCancelacion> tratamientos = new ArrayList<TratamientoCancelacion>();
-
+	
+		
 	public Reunion(final Persona anfitrion, final ArrayList<Recurso> recursos,
 			final Interval horario, final List<Requerimiento> requerimientos,
 			final DateTime vencimiento) {
@@ -302,4 +305,5 @@ public class Reunion implements Organizable {
 		this.setTratamientos(reunion.getTratamientos());
 		this.setVencimiento(reunion.getVencimiento());
 	}
+	
 }
