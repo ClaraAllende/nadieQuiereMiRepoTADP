@@ -8,10 +8,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Hours;
 import org.joda.time.Interval;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-
-import com.google.common.collect.Lists;
 
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
@@ -21,6 +18,8 @@ import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
+
+import com.google.common.collect.Lists;
 
 /**
  * Prueba la creacion de una reunion.
@@ -56,17 +55,7 @@ public class CrearReunionTest {
 	private Recurso sala = generador.newSala(edificioMadero);
 	private Recurso proyector1 = generador.newProyector(edificioMadero);
 	private Recurso proyector2 = generador.newProyector(edificioCatalinas);
-	private Empresa unaEmpresa;
-
-	/**
-	 * Crea la empresa y carga todos los recursos necesarios para test.
-	 */
-	@Before
-	public void crearContexto() {
-
-		unaEmpresa = generador.newEmpresa(Lists.newArrayList(leader,arquitecto1,gerente1,gerente2,programador1,programador2,programador3,sala,proyector1,proyector2));
-
-	}
+	private Empresa unaEmpresa = generador.newEmpresa(Lists.newArrayList(leader,arquitecto1,gerente1,gerente2,programador1,programador2,programador3,sala,proyector1,proyector2));
 
 	/**
 	 * Se reserva una sala para todos los integrantes de un proyecto

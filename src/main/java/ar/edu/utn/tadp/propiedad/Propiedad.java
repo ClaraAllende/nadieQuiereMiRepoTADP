@@ -12,11 +12,24 @@ public class Propiedad {
 	String tipo;
 	String valor;
 
+
 	public Propiedad(String tipo, String valor) {
 		this.tipo = tipo;
 		this.valor = valor;
 	}
-
+	
+	/**
+	 * Para no tener que pasar null cuando no nos interesa una propiedad,
+	 * se genera esta propiedad vacía.
+	 * 
+	 * @return una <code>Propiedad</code> vacía
+	 */
+	//TODO mejorar esto, se me ocurre subclassear propiedad para hacer la vacía de cada una, donde el 
+	//tipo sea el tipo correspondiente y el value vacío, y poder hacer que el getValor() lanze excepción
+	public static Propiedad empty(){
+		return new Propiedad("vacio","vacio");
+	}
+	
 	/**
 	 * Redefine el metodo teniendo en cuenta que los <code>String</code> no son
 	 * inmutables y podrian generar errores de comparacion.

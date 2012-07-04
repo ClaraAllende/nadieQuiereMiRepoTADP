@@ -9,6 +9,10 @@ import ar.edu.utn.tadp.recurso.roles.Rol;
 
 public class GeneradorDeContexto {
 
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++ Personas ++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	public Persona newProgramador(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
 		return this.newPersona(Rol.PROGRAMADOR, proyecto, sector, edificio);
 	}
@@ -21,6 +25,9 @@ public class GeneradorDeContexto {
 		return this.newPersona(Rol.GERENTE, proyecto, sector, edificio);
 	}
 	
+	public Persona newProjectLeader(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
+		return this.newPersona(Rol.PROYECT_LEADER, proyecto, sector, edificio);
+	}
 	
 	private Persona newPersona(Rol rol, Propiedad proyecto, Propiedad sector, Propiedad edificio) {
 		Persona persona = new Persona(rol);
@@ -31,27 +38,29 @@ public class GeneradorDeContexto {
 		return persona;
 	}
 
-	public Persona newProjectLeader(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
-		return this.newPersona(Rol.PROYECT_LEADER, proyecto, sector, edificio);
-	}
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++ Recursos ++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	public Recurso newSala(Propiedad edificio) {
 		return this.newRecurso(new Propiedad("tipo", "Sala"), edificio);
-	}
-
-
-	private Recurso newRecurso(Propiedad tipo, Propiedad edificio) {
-		Recurso recurso = new Recurso();
-		recurso.setTipo(tipo.getValor());
-		recurso.setEdificio(edificio.getValor());
-		
-		return recurso;
 	}
 
 	public Recurso newProyector(Propiedad edificio) {
 		return this.newRecurso(new Propiedad("tipo", "Proyector"), edificio);
 	}
 
+	private Recurso newRecurso(Propiedad tipo, Propiedad edificio) {
+		Recurso recurso = new Recurso();
+		recurso.setTipo(tipo.getValor());
+		recurso.setEdificio(edificio.getValor());
+		return recurso;
+	}
+
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++ Empresa +++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
 	public Empresa newEmpresa(ArrayList<Recurso> recursos) {
 		Empresa empresa = new Empresa();
 		for (Recurso recurso : recursos) {
