@@ -11,6 +11,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
+
 import ar.edu.utn.tadp.agenda.Agenda;
 import ar.edu.utn.tadp.agenda.Evento;
 import ar.edu.utn.tadp.excepcion.UserException;
@@ -18,7 +20,6 @@ import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
-import ar.edu.utn.tadp.recurso.roles.Rol;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
 
 /**
@@ -30,32 +31,31 @@ public class CrearReunionTest {
 
 	private final Propiedad proyectoApollo = new Propiedad("proyecto", "Apollo");
 	private final Propiedad proyectoMir = new Propiedad("Proyecto", "Mir");
-	private final Propiedad proyectoShuttle = new Propiedad("Proyecto",
-			"shuttle");
-	private final Propiedad sectorDesarrollo = new Propiedad("Sector",
-			"Desarrollo");
+	private final Propiedad proyectoShuttle = new Propiedad("Proyecto", "shuttle");
+	private final Propiedad sectorDesarrollo = new Propiedad("Sector", "Desarrollo");
 	private final Propiedad sectorGerencia = new Propiedad("sector", "gerencia");
 	private final Propiedad rolProgramador = new Propiedad("rol", "programador");
 	private final Propiedad rolArquitecto = new Propiedad("rol", "Arquitecto");
 	private final Propiedad rolGerente = new Propiedad("Rol", "Gerente");
-	private final Propiedad edificioCatalinas = new Propiedad("edificio",
-			"catalinas");
+	private final Propiedad edificioCatalinas = new Propiedad("edificio","catalinas");
 	private final Propiedad edificioMadero = new Propiedad("edificio", "Madero");
 	private final Propiedad tipoSala = new Propiedad("tipo", "Sala");
 	private final Propiedad tipoProyector = new Propiedad("tipo", "Proyector");
-	private final Propiedad rolProjectLeader = new Propiedad("Rol",
-			"Project Leader");
-	private Persona programador1;
-	private Persona programador2;
-	private Persona programador3;
-	private Persona arquitecto1;
-	private Persona gerente1;
-	private Persona gerente2;
-	private Persona gerente3;
-	private Persona leader;
-	private Recurso sala;
-	private Recurso proyector1;
-	private Recurso proyector2;
+	private final Propiedad rolProjectLeader = new Propiedad("Rol","Project Leader");
+
+	private GeneradorDeContexto generador = new GeneradorDeContexto();
+	
+	private Persona programador1 = generador.newProgramador(proyectoApollo, sectorDesarrollo, edificioCatalinas);
+	private Persona programador2 = generador.newProgramador(proyectoApollo, sectorDesarrollo, edificioMadero);
+	private Persona programador3 = generador.newProgramador(proyectoMir, sectorDesarrollo, edificioMadero);
+	private Persona arquitecto1 = generador.newArquitecto(proyectoApollo, sectorDesarrollo, edificioCatalinas);
+	private Persona gerente1 = generador.newGerente(proyectoApollo, sectorGerencia, edificioMadero);
+	private Persona gerente2 = generador.newGerente(proyectoMir, sectorGerencia, edificioMadero);
+	private Persona gerente3 = generador.newGerente(proyectoShuttle, sectorGerencia, edificioMadero);
+	private Persona leader = generador.newProjectLeader(proyectoShuttle, null, edificioMadero);
+	private Recurso sala = generador.newSala(edificioMadero);
+	private Recurso proyector1 = generador.newProyector(edificioMadero);
+	private Recurso proyector2 = generador.newProyector(edificioCatalinas);
 	private Empresa unaEmpresa;
 
 	/**
@@ -63,60 +63,9 @@ public class CrearReunionTest {
 	 */
 	@Before
 	public void crearContexto() {
-		// Personas
-		programador1 = new Persona(Rol.PROGRAMADOR);
-		programador1.setProyecto(proyectoApollo.getValor());
-		programador1.setSector(sectorDesarrollo.getValor());
-		programador1.setEdificio(edificioCatalinas.getValor());
-		programador2 = new Persona(Rol.PROGRAMADOR);
-		programador2.setProyecto(proyectoApollo.getValor());
-		programador2.setSector(sectorDesarrollo.getValor());
-		programador2.setEdificio(edificioMadero.getValor());
-		programador3 = new Persona(Rol.PROGRAMADOR);
-		programador3.setProyecto(proyectoMir.getValor());
-		programador3.setSector(sectorDesarrollo.getValor());
-		programador3.setEdificio(edificioMadero.getValor());
-		arquitecto1 = new Persona(Rol.ARQUITECTO);
-		arquitecto1.setProyecto(proyectoApollo.getValor());
-		arquitecto1.setSector(sectorDesarrollo.getValor());
-		arquitecto1.setEdificio(edificioCatalinas.getValor());
-		gerente1 = new Persona(Rol.GERENTE);
-		gerente1.setProyecto(proyectoApollo.getValor());
-		gerente1.setSector(sectorGerencia.getValor());
-		gerente1.setEdificio(edificioMadero.getValor());
-		gerente2 = new Persona(Rol.GERENTE);
-		gerente2.setProyecto(proyectoMir.getValor());
-		gerente2.setSector(sectorGerencia.getValor());
-		gerente2.setEdificio(edificioMadero.getValor());
-		gerente3 = new Persona(Rol.GERENTE);
-		gerente3.setProyecto(proyectoShuttle.getValor());
-		gerente3.setSector(sectorGerencia.getValor());
-		gerente3.setEdificio(edificioMadero.getValor());
-		leader = new Persona(Rol.PROYECT_LEADER);
-		leader.setProyecto(proyectoShuttle.getValor());
-		leader.setEdificio(edificioMadero.getValor());
-		// Recursos
-		sala = new Recurso();
-		sala.setTipo(tipoSala.getValor());
-		sala.setEdificio(edificioMadero.getValor());
-		proyector1 = new Recurso();
-		proyector1.setTipo(tipoProyector.getValor());
-		proyector1.setEdificio(edificioMadero.getValor());
-		proyector2 = new Recurso();
-		proyector2.setTipo(tipoProyector.getValor());
-		proyector2.setEdificio(edificioCatalinas.getValor());
-		// Empresa
-		unaEmpresa = new Empresa();
-		unaEmpresa.addRecurso(leader);
-		unaEmpresa.addRecurso(arquitecto1);
-		unaEmpresa.addRecurso(gerente1);
-		unaEmpresa.addRecurso(gerente2);
-		unaEmpresa.addRecurso(programador1);
-		unaEmpresa.addRecurso(programador2);
-		unaEmpresa.addRecurso(programador3);
-		unaEmpresa.addRecurso(sala);
-		unaEmpresa.addRecurso(proyector1);
-		unaEmpresa.addRecurso(proyector2);
+
+		unaEmpresa = generador.newEmpresa(Lists.newArrayList(leader,arquitecto1,gerente1,gerente2,programador1,programador2,programador3,sala,proyector1,proyector2));
+
 	}
 
 	/**
@@ -192,12 +141,9 @@ public class CrearReunionTest {
 
 		final ArrayList<Propiedad> propiedadesProgramador = new ArrayList<Propiedad>();
 		propiedadesProgramador.add(rolProgramador);
-		final Requerimiento reqProgramador1 = new Requerimiento(
-				propiedadesProgramador);
-		final Requerimiento reqProgramador2 = new Requerimiento(
-				propiedadesProgramador);
-		final Requerimiento reqProgramador3 = new Requerimiento(
-				propiedadesProgramador);
+		final Requerimiento reqProgramador1 = new Requerimiento(propiedadesProgramador);
+		final Requerimiento reqProgramador2 = new Requerimiento(propiedadesProgramador);
+		final Requerimiento reqProgramador3 = new Requerimiento(propiedadesProgramador);
 
 		final List<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
 		requerimientos.add(requerimientoProjectLeader);
@@ -266,9 +212,10 @@ public class CrearReunionTest {
 		final Requerimiento reqArquitecto = new Requerimiento(propiedadesArq);
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
 		requerimientos.add(reqArquitecto);
-		unaEmpresa
-				.createReunion(gerente1, requerimientos, intervalo.toDuration()
-						.toStandardHours(), intervalo.getEnd().plusDays(2));
+		unaEmpresa.createReunion(gerente1, 
+								requerimientos, 
+								intervalo.toDuration().toStandardHours(), 
+								intervalo.getEnd().plusDays(2));
 
 		Assert.assertTrue(arquitecto1.estasOcupadoDurante(intervalo));
 	}

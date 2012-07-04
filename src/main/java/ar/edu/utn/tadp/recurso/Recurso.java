@@ -112,7 +112,7 @@ public class Recurso {
 	}
 
 	public int getHorasEnReunionesDeLaSemana() {
-		// Los recursos siempre están disponibles
+		//Los recursos siempre están disponibles
 		return 0;
 	}
 
@@ -123,13 +123,13 @@ public class Recurso {
 
 	public boolean tenesLaPropiedad(final Propiedad propiedad) {
 
-		Predicate<? super Propiedad> mismaPropiedad = new Predicate<Propiedad>() {
+		Predicate<? super Propiedad> mismaPropiedad = new Predicate<Propiedad>(){
 
 			@Override
 			public boolean apply(Propiedad unaPropiedad) {
 				return propiedad.equals(unaPropiedad);
 			}
-
+			
 		};
 		return Iterables.any(RecursoIntrospector.getPropiedadesDe(this),
 				mismaPropiedad);
