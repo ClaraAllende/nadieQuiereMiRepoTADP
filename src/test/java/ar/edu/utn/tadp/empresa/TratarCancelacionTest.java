@@ -132,72 +132,13 @@ public class TratarCancelacionTest {
 		assertEquals(horarioOriginal, reunion.getHorario());
 	}
 
-	/**
-	 * Deberia obtener un Proyector2. Se define que es opcional.
-	 */
-	private Requerimiento getReqProyector2_Opcional() {
-		final ArrayList<Propiedad> condicionesRecurso = new ArrayList<Propiedad>();
-		condicionesRecurso.add(edificioCatalinas);
-		condicionesRecurso.add(tipoProyector);
-		final Requerimiento reqProyector2 = new Requerimiento(
-				condicionesRecurso, false);
-		return reqProyector2;
-	}
-
-	/**
-	 * Deberia obtener un Programador3
-	 */
-	private Requerimiento getReqProgramador3() {
-		final ArrayList<Propiedad> condicionesInvitado3 = new ArrayList<Propiedad>();
-		condicionesInvitado3.add(proyectoMir);
-		condicionesInvitado3.add(edificioMadero);
-		condicionesInvitado3.add(rolProgramador);
-		final Requerimiento reqProgramador3 = new Requerimiento(
-				condicionesInvitado3);
-		return reqProgramador3;
-	}
-
-	/**
-	 * Deberia obtener un Programador2.
-	 */
-	private Requerimiento getReqProgramador2() {
-		final ArrayList<Propiedad> condicionesInvitado2 = new ArrayList<Propiedad>();
-		condicionesInvitado2.add(proyectoApollo);
-		condicionesInvitado2.add(edificioMadero);
-		condicionesInvitado2.add(rolProgramador);
-		final Requerimiento reqProgramador2 = new Requerimiento(
-				condicionesInvitado2);
-		return reqProgramador2;
-	}
-
-	/**
-	 * Deberia obtener un Programador1. Se define que es opcional.
-	 */
-	private Requerimiento getReqProgramador1_Opcional() {
-		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
-		condicionesInvitado1.add(proyectoApollo);
-		condicionesInvitado1.add(edificioCatalinas);
-		condicionesInvitado1.add(rolProgramador);
-		final Requerimiento reqProgramador1 = new Requerimiento(
-				condicionesInvitado1, false);
-		return reqProgramador1;
-	}
-
 	@Test
 	public void primeroAsistenciaLuegoObligatoriedadTampocoCancela() {
-		final Requerimiento reqProgramador1 = getReqProgramador1_Opcional();
-
-		final Requerimiento reqProgramador2 = getReqProgramador2();
-
-		final Requerimiento reqProgramador3 = getReqProgramador3();
-
-		final Requerimiento reqProyector2 = getReqProyector2_Opcional();
-
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
-		requerimientos.add(reqProgramador1);
-		requerimientos.add(reqProgramador2);
-		requerimientos.add(reqProgramador3);
-		requerimientos.add(reqProyector2);
+		requerimientos.add(getReqProgramador1_Opcional());
+		requerimientos.add(getReqProgramador2());
+		requerimientos.add(getReqProgramador3());
+		requerimientos.add(getReqProyector2_Opcional());
 
 		/**************** Hasta aca la preparacion ***********/
 
@@ -227,25 +168,11 @@ public class TratarCancelacionTest {
 
 	@Test
 	public void primeroAsistenciaLuegoObligatoriedadYLuegoPorReplanificacionNoCancela() {
-		// Deberia obtener un Programador1.
-		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
-		condicionesInvitado1.add(proyectoApollo);
-		condicionesInvitado1.add(edificioCatalinas);
-		condicionesInvitado1.add(rolProgramador);
-		final Requerimiento reqProgramador1 = new Requerimiento(
-				condicionesInvitado1, true);
-
-		final Requerimiento reqProgramador2 = getReqProgramador2();
-
-		final Requerimiento reqProgramador3 = getReqProgramador3();
-
-		final Requerimiento reqProyector2 = getReqProyector2_Opcional();
-
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
-		requerimientos.add(reqProgramador1);
-		requerimientos.add(reqProgramador2);
-		requerimientos.add(reqProgramador3);
-		requerimientos.add(reqProyector2);
+		requerimientos.add(getReqProgramador1());
+		requerimientos.add(getReqProgramador2());
+		requerimientos.add(getReqProgramador3());
+		requerimientos.add(getReqProyector2_Opcional());
 
 		/**************** Hasta aca la preparacion ***********/
 
@@ -273,24 +200,11 @@ public class TratarCancelacionTest {
 	@Test
 	public void primeroAsistenciaLuegoObligatoriedadYLuegoPorReplanificacionYCancela() {
 		// Deberia obtener un Programador1.
-		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
-		condicionesInvitado1.add(proyectoApollo);
-		condicionesInvitado1.add(edificioCatalinas);
-		condicionesInvitado1.add(rolProgramador);
-		final Requerimiento reqProgramador1 = new Requerimiento(
-				condicionesInvitado1, true);
-
-		final Requerimiento reqProgramador2 = getReqProgramador2();
-
-		final Requerimiento reqProgramador3 = getReqProgramador3();
-
-		final Requerimiento reqProyector2 = getReqProyector2_Opcional();
-
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
-		requerimientos.add(reqProgramador1);
-		requerimientos.add(reqProgramador2);
-		requerimientos.add(reqProgramador3);
-		requerimientos.add(reqProyector2);
+		requerimientos.add(getReqProgramador1());
+		requerimientos.add(getReqProgramador2());
+		requerimientos.add(getReqProgramador3());
+		requerimientos.add(getReqProyector2_Opcional());
 
 		/**************** Hasta aca la preparacion ***********/
 
@@ -314,35 +228,12 @@ public class TratarCancelacionTest {
 
 	@Test
 	public void primeroAsistenciaLuegoObligatoriedadLuegoPorReplanificacionYLuegoPorCriterioAlternativo() {
-		// Deberia obtener un Leader.
-		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
-		condicionesInvitado1.add(proyectoApollo);
-		condicionesInvitado1.add(edificioCatalinas);
-		condicionesInvitado1.add(rolLeader);
-		final Requerimiento reqLeader = new Requerimiento(condicionesInvitado1,
-				true);
-		// Alternativa al Leader -> Programador1
-		final ArrayList<Propiedad> condicionesAlternativa = new ArrayList<Propiedad>();
-		condicionesAlternativa.add(proyectoApollo);
-		condicionesAlternativa.add(edificioCatalinas);
-		condicionesAlternativa.add(rolProgramador);
-		final Requerimiento reqProgramador1 = new Requerimiento(
-				condicionesAlternativa, true);
-
-		// Se agrega la alternativa.
-		reqLeader.setRequerimientoAlternativo(reqProgramador1);
-
-		final Requerimiento reqProgramador2 = getReqProgramador2();
-
-		final Requerimiento reqProgramador3 = getReqProgramador3();
-
-		final Requerimiento reqProyector2 = getReqProyector2_Opcional();
 
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
-		requerimientos.add(reqLeader);
-		requerimientos.add(reqProgramador2);
-		requerimientos.add(reqProgramador3);
-		requerimientos.add(reqProyector2);
+		requerimientos.add(getReqLeader());
+		requerimientos.add(getReqProgramador2());
+		requerimientos.add(getReqProgramador3());
+		requerimientos.add(getReqProyector2_Opcional());
 
 		/**************** Hasta aca la preparacion ***********/
 
@@ -364,5 +255,85 @@ public class TratarCancelacionTest {
 		assertFalse(reunion.isCancelada());
 		// NO Se aplico la replanificacion.
 		assertEquals(7, reunion.getRecursos().size());
+	}
+
+	/**
+	 * Deberia obtener un Leader.
+	 */
+	private Requerimiento getReqLeader() {
+		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
+		condicionesInvitado1.add(proyectoApollo);
+		condicionesInvitado1.add(edificioCatalinas);
+		condicionesInvitado1.add(rolLeader);
+		final Requerimiento reqLeader = new Requerimiento(condicionesInvitado1,
+				true);
+		// Se agrega la alternativa.
+		// Alternativa al Leader -> Programador1
+		reqLeader.setRequerimientoAlternativo(getReqProgramador1());
+		return reqLeader;
+	}
+
+	/**
+	 * Deberia obtener un Programador1.
+	 */
+	private Requerimiento getReqProgramador1() {
+		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
+		condicionesInvitado1.add(proyectoApollo);
+		condicionesInvitado1.add(edificioCatalinas);
+		condicionesInvitado1.add(rolProgramador);
+		final Requerimiento reqProgramador1 = new Requerimiento(
+				condicionesInvitado1, true);
+		return reqProgramador1;
+	}
+
+	/**
+	 * Deberia obtener un Programador1. Se define que es opcional.
+	 */
+	private Requerimiento getReqProgramador1_Opcional() {
+		final ArrayList<Propiedad> condicionesInvitado1 = new ArrayList<Propiedad>();
+		condicionesInvitado1.add(proyectoApollo);
+		condicionesInvitado1.add(edificioCatalinas);
+		condicionesInvitado1.add(rolProgramador);
+		final Requerimiento reqProgramador1 = new Requerimiento(
+				condicionesInvitado1, false);
+		return reqProgramador1;
+	}
+
+	/**
+	 * Deberia obtener un Programador2.
+	 */
+	private Requerimiento getReqProgramador2() {
+		final ArrayList<Propiedad> condicionesInvitado2 = new ArrayList<Propiedad>();
+		condicionesInvitado2.add(proyectoApollo);
+		condicionesInvitado2.add(edificioMadero);
+		condicionesInvitado2.add(rolProgramador);
+		final Requerimiento reqProgramador2 = new Requerimiento(
+				condicionesInvitado2);
+		return reqProgramador2;
+	}
+
+	/**
+	 * Deberia obtener un Programador3
+	 */
+	private Requerimiento getReqProgramador3() {
+		final ArrayList<Propiedad> condicionesInvitado3 = new ArrayList<Propiedad>();
+		condicionesInvitado3.add(proyectoMir);
+		condicionesInvitado3.add(edificioMadero);
+		condicionesInvitado3.add(rolProgramador);
+		final Requerimiento reqProgramador3 = new Requerimiento(
+				condicionesInvitado3);
+		return reqProgramador3;
+	}
+
+	/**
+	 * Deberia obtener un Proyector2. Se define que es opcional.
+	 */
+	private Requerimiento getReqProyector2_Opcional() {
+		final ArrayList<Propiedad> condicionesRecurso = new ArrayList<Propiedad>();
+		condicionesRecurso.add(edificioCatalinas);
+		condicionesRecurso.add(tipoProyector);
+		final Requerimiento reqProyector2 = new Requerimiento(
+				condicionesRecurso, false);
+		return reqProyector2;
 	}
 }
