@@ -133,8 +133,9 @@ public class Empresa {
 		return intervalo;
 	}
 
-	public void addRecurso(final Recurso recurso) {
+	public Empresa addRecurso(final Recurso recurso) {
 		this.recursos.add(recurso);
+		return this;
 	}
 
 	private ArrayList<ArrayList<Recurso>> seleccionarCandidatos(
