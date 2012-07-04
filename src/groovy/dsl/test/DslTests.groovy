@@ -1,24 +1,43 @@
-package test;
+package dsl.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.*
 
-import org.junit.Test;
+import ar.edu.utn.tadp.empresa.Empresa
+import org.junit.Test
+import org.junit.Before
+
 
 class DslTests {
-//TODO: escribir el código groovy para que esto ande, si están de acuerdo con el uso.
-	@Test
-	void testReunionSemestral(){
-		planificar reunion {
-			[
-				PM:"Mobilablame",
-			PM: "Zarlanga Object Manager Abstract System",
-			PM: "Automatic Losing Reference Counter Garbage colector",
-			Marketing:1,
-			Gerentes:2
-			]
-		}
-		cancelar si{
-			porcentajeDeAsistencia.esMenor(70)
-		}
+
+	def planificar
+	
+	@Before
+	def setUp(){
+		planificar = new Empresa()
+		
 	}
+	
+	@Test
+    def testSegundoCoso(){
+        planificar.(reunion).con(1).projectMgr("Mobiliame") 
+        .con(1).liderTecnico("Mobiliame") 
+        .con(2).diseniadorGrafico()
+        .con(1).proyector()
+        .con.(1).notebook() 
+        .cancelar({
+            porcentajeDeAsistencia.esMenor(70)
+        })
+    }
+    
+    @Test
+    def testSegundoCosoPrima(){
+        planificar reunion con un projectMgr "Mobiliame"
+        con un liderTecnico "Mobiliame"
+        con dos diseniadorGrafico()
+        con un proyector()
+        con un notebook()
+        cancelar si{
+            porcentajeDeAsistencia.esMenor(70)
+        }
+    }
 }

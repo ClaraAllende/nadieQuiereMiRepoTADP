@@ -85,8 +85,9 @@ public class Persona extends Recurso {
 		return sector;
 	}
 
-	public void setSector(final String sector) {
+	public Persona setSector(final String sector) {
 		this.sector = sector;
+		return this;
 	}
 
 	public Rol getRol() {
@@ -97,8 +98,9 @@ public class Persona extends Recurso {
 		return proyecto;
 	}
 
-	public void setProyecto(final String proyecto) {
+	public Persona setProyecto(final String proyecto) {
 		this.proyecto = proyecto;
+		return this;
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++
