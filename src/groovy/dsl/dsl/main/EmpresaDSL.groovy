@@ -1,5 +1,6 @@
 package dsl.main
 
+import junit.extensions.RepeatedTest;
 import ar.edu.utn.tadp.empresa.Empresa
 import ar.edu.utn.tadp.empresa.GeneradorDeContexto
 import ar.edu.utn.tadp.propiedad.Propiedad
@@ -31,17 +32,18 @@ class EmpresaDSL {
 		empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
 	}
 	
-	def con(cuantos){
+	def con(cuantos, unBloque){
 		cantidad = cuantos
+		cantidad.times ({unBloque()})
 		this
 	}
+
 	
 	def programador(proyecto){
-		//TODO agregar la lógica para que tome la cantidad del con()
 		requerimientos << new Requerimiento(Lists.newArrayList(new Propiedad("proyecto",proyecto), new Propiedad("rol","Programador")))
 		this
 	}
-	
-	
+
+
 	
 }

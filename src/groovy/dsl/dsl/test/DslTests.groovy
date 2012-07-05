@@ -8,6 +8,7 @@ import ar.edu.utn.tadp.propiedad.Propiedad
 import ar.edu.utn.tadp.requerimiento.Requerimiento
 import dsl.main.EmpresaDSL
 
+
 import org.joda.time.DateTime
 import org.joda.time.Hours
 import org.junit.Test
@@ -32,11 +33,11 @@ class DslTests {
 	
 	@Test
     void testSegundoCoso(){
-        empresaDSL.planificar(reunion).con(1).projectMgr("Mobiliame") 
-        .con(1).liderTecnico("Mobiliame") 
-        .con(2).diseniadorGrafico()
-        .con(1).proyector()
-        .con.(1).notebook() 
+        empresaDSL.planificar(reunion).con(1, {projectMgr("Mobiliame")}) 
+        .con(1, {liderTecnico("Mobiliame")}) 
+        .con(2,{diseniadorGrafico()})
+        .con(1,{proyector()})
+        .con(1,{notebook()}) 
         .cancelar({
             porcentajeDeAsistencia.esMenor(70)
         })
