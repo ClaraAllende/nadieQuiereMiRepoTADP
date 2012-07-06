@@ -1,4 +1,4 @@
-package main
+package dsl.main
 
 import javax.management.relation.Role;
 
@@ -33,19 +33,23 @@ class EmpresaDSL {
 		this
 	}
 	
-	def planificar(reunion){
+	def planificar(sarlanga){
 		reunion = empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
+		this
 	}
 	
-	def con(cuantos){//, unBloque){
+	def con(cuantos){
 		cantidad = cuantos
-		//cantidad.times({this.with(unBloque)})
 		this
 	}
 
-	def conUn(block){
-		this.with(block)
+	def cancelar(block){
+		block
 		this
+	}
+	
+	def porcentajeDeAsistenciaMenorA(numero){
+		reunion.addTratamientoPorAsistenciaMinima(numero)
 	}
 	
 	
@@ -95,11 +99,4 @@ class EmpresaDSL {
 		cant.with {requerimientos << new Requerimiento(propiedades)}
 	}
 	
-	def cancelar(block){
-		empresa.with (block)
-	}
-	
-	def porcentajeDeAsistenciaMenorA(numero){
-		reunion.addTratamientoPorAsistenciaMinima(numero)
-	}
 }

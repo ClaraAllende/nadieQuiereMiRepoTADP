@@ -95,7 +95,7 @@ public class RequerimientoTest {
 		gerente3.setProyecto(proyectoShuttle.getValor());
 		gerente3.setSector(sectorGerencia.getValor());
 		gerente3.setEdificio(edificioMadero.getValor());
-		leader = new Persona(Rol.PROYECT_LEADER);
+		leader = new Persona(Rol.PROJECT_LEADER);
 		leader.setProyecto(proyectoShuttle.getValor());
 		leader.setEdificio(edificioMadero.getValor());
 		systemDesigner = new Persona(Rol.DIS_SISTEMAS);
