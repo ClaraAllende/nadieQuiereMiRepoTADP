@@ -127,8 +127,7 @@ public class Requerimiento {
 				recursos.add(recurso);
 		}
 		if (recursos.isEmpty())
-			throw new UserException(
-					"No hay recurso que satisfaga este requerimiento");
+			throw new UserException("No hay recurso que satisfaga el requerimiento: "+this.toString());
 		return recursos;
 	}
 
