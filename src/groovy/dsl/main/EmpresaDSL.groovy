@@ -34,10 +34,14 @@ class EmpresaDSL {
 	
 	def con(cuantos, unBloque){
 		cantidad = cuantos
-		cantidad.times ({unBloque()})
+		cantidad.times({this.with(unBloque)})
 		this
 	}
 
+	def conUn(block){
+		this.with(block)
+		this
+	}
 	
 	def programador(proyecto){
 		requerimientos << new Requerimiento(Lists.newArrayList(new Propiedad("proyecto",proyecto), new Propiedad("rol","Programador")))

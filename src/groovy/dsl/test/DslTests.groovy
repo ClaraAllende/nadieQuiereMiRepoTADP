@@ -57,6 +57,7 @@ class DslTests {
 	
 	@Test
 	void testHumilde(){
+		
 		//reunion En java. Se pueden hacer un par de inlines, pero pierde expresividad.
 		def propProgramador = new Propiedad("rol","Programador")
 		def propProyectoMobiliame = new Propiedad("proyecto","Mobiliame")
@@ -65,10 +66,27 @@ class DslTests {
 		def reunionPosta = empresa.createReunion(host,requerimientos, Hours.THREE, DateTime.now().plusDays(2));
 		
 		//reunion con el dsl en groovy. La batata de la vida :D
-		def reunion //no se hace nada con esto, pero me lo pide o se rompe. 
-		def reunionGenerada = empresaDSL.anfitrion(host).con(1).programador("Mobiliame")planificar(reunion)
-
-		assertEquals(reunionPosta, reunionGenerada)
+		def reunion 	//no se hace nada con esto, pero me lo pide o se rompe. 
 		
+		def reunionGenerada = empresaDSL.anfitrion(host).con(1,{programador("Mobiliame")}).planificar(reunion)
+		
+
+		/*
+		 * Es una paja, pero como el equals entre objetos compara por identidad, solo me queda
+		 * esto o redefinir equals para la clase que quiero. 
+		 * Y no quiero redefinir equals :D
+		 * 
+		 * OBS: No es EXACTAMENTE la misma reunión... como la reunión tiene efecto en los recursos,
+		 * se genera una reunión nueva de las mismas características (cumple los mismos requerimientos)
+		 * pero un rato después (para ser precisos, inmediatamente después :D)
+		 * 
+		 * Cuando comparamos por igual sólo comparamos aquéllo que no tiene que ver con el horario.
+		 */
+		assertTrue(reunionPosta.getRecursos().containsAll(reunionGenerada.getRecursos()))
+		assertTrue(reunionGenerada.getRecursos().containsAll(reunionPosta.getRecursos()))
+		assertEquals(reunionPosta.getAnfitrion(), reunionGenerada.getAnfitrion())
+		assertTrue(reunionPosta.getTratamientos().containsAll(reunionGenerada.getTratamientos()))
+		assertTrue(reunionGenerada.getTratamientos().containsAll(reunionPosta.getTratamientos()))
+		
+		}
 	}
-}
