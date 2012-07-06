@@ -38,7 +38,7 @@ public class CriterioAlternativo implements TratamientoCancelacion {
 					.getRequerimientoAlternativo();
 			Collection<Recurso> candidatos = requerimiento
 					.getRequerimientoAlternativo().buscaLosQueTeSatisfacen(
-							empresa.gerRecursos());
+							empresa.getRecursos());
 			Recurso reemplazo = getRecursoDisponible(reunion.getHorario(),
 					candidatos);
 			reunion.reemplazarPorAlternativo(requerimiento, recurso,

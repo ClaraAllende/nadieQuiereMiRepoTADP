@@ -93,11 +93,11 @@ public class Empresa {
 	}
 
 	public void removeRecurso(final Recurso recurso) {
-		this.recursos.remove(recurso);
+		this.getRecursos().remove(recurso);
 	}
 
 	public void removeAllRecurso() {
-		this.recursos.removeAll(this.recursos);
+		this.getRecursos().removeAll(this.getRecursos());
 	}
 
 	/*
@@ -136,7 +136,7 @@ public class Empresa {
 	}
 
 	public Empresa addRecurso(final Recurso recurso) {
-		this.recursos.add(recurso);
+		this.getRecursos().add(recurso);
 		return this;
 	}
 
@@ -155,7 +155,7 @@ public class Empresa {
 	private void satisfaceRequerimientos(
 			final List<Requerimiento> requerimientos) {
 		for (Requerimiento requerimiento : requerimientos) {
-			requerimiento.buscaLosQueTeSatisfacen(recursos);
+			requerimiento.buscaLosQueTeSatisfacen(getRecursos());
 		}
 	}
 
@@ -229,7 +229,7 @@ public class Empresa {
 		;
 
 		return obtenerTotalHoras(
-				Iterables.filter(this.recursos, cumplenPropiedad), unosEventos,
+				Iterables.filter(this.getRecursos(), cumplenPropiedad), unosEventos,
 				fechaLimite);
 	}
 
@@ -308,7 +308,7 @@ public class Empresa {
 		}
 	}
 
-	public List<Recurso> gerRecursos() {
+	public List<Recurso> getRecursos() {
 		return recursos;
 	}
 

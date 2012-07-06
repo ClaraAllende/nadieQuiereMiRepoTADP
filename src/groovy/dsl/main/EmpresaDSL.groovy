@@ -1,12 +1,13 @@
-package dsl.main
+package main
 
 import javax.management.relation.Role;
 
 import junit.extensions.RepeatedTest;
-import ar.edu.utn.tadp.empresa.Empresa
+import ar.edu.utn.tadp.empresa.Empresa.*
 import ar.edu.utn.tadp.empresa.GeneradorDeContexto
 import ar.edu.utn.tadp.propiedad.Propiedad
 import ar.edu.utn.tadp.recurso.Persona
+import ar.edu.utn.tadp.recurso.Recurso
 import ar.edu.utn.tadp.requerimiento.Requerimiento
 import ar.edu.utn.tadp.recurso.roles.Rol
 
@@ -21,6 +22,7 @@ class EmpresaDSL {
 	def requerimientos = new ArrayList()
 	def empresa 
 	def host
+	def reunion
 	
 	def EmpresaDSL(unaEmpresa){
 		empresa = unaEmpresa
@@ -32,7 +34,7 @@ class EmpresaDSL {
 	}
 	
 	def planificar(reunion){
-		empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
+		reunion = empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
 	}
 	
 	def con(cuantos){//, unBloque){
@@ -93,5 +95,11 @@ class EmpresaDSL {
 		cant.with {requerimientos << new Requerimiento(propiedades)}
 	}
 	
+	def cancelar(block){
+		empresa.with (block)
+	}
 	
+	def porcentajeDeAsistenciaMenorA(numero){
+		reunion.addTratamientoPorAsistenciaMinima(numero)
+	}
 }

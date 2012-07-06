@@ -1,12 +1,13 @@
-package dsl.test;
+package test;
 
 import static org.junit.Assert.*
 
-import ar.edu.utn.tadp.empresa.Empresa
+import ar.edu.utn.tadp.empresa.Empresa.*
 import ar.edu.utn.tadp.empresa.GeneradorDeContexto
 import ar.edu.utn.tadp.propiedad.Propiedad
 import ar.edu.utn.tadp.requerimiento.Requerimiento
-import dsl.main.EmpresaDSL
+import main.EmpresaDSL
+import org.mockito.Mockito.*
 
 
 import org.joda.time.DateTime
@@ -22,13 +23,22 @@ class DslTests {
 	def empresaDSL
 	def empresa
 	def programador = new GeneradorDeContexto().newProgramador(new Propiedad("proyecto", "Mobiliame"), Propiedad.empty(), Propiedad.empty())
+	def arquitecto = new GeneradorDeContexto().newArquitecto(new Propiedad("proyecto", "ACE"), Propiedad.empty(), Propiedad.empty())
+	def programador2 = new GeneradorDeContexto().newProgramador(new Propiedad("proyecto", "Notes"), Propiedad.empty(), Propiedad.empty())
+	def leader = new GeneradorDeContexto().newProjectLeader(new Propiedad("proyecto", "Mobiliame"), Propiedad.empty(), Propiedad.empty())
 	def host = new GeneradorDeContexto().newGerente(Propiedad.empty(), Propiedad.empty(), Propiedad.empty())
 	def sala = new GeneradorDeContexto().newSala(Propiedad.empty())
+	def sala2 = new GeneradorDeContexto().newSala(Propiedad.empty())
+	def sala3 = new GeneradorDeContexto().newSala(Propiedad.empty())
+	def epson = new GeneradorDeContexto().newProyector(Propiedad.empty())
+	def dell = new GeneradorDeContexto().newRecurso(new Propiedad("tipo", "notebook"), Propiedad.empty())
 	
 	@Before
 	void setUp(){
-		empresa = new GeneradorDeContexto().newEmpresa(Lists.newArrayList(host, programador, sala))
+		
+		empresa = new GeneradorDeContexto().newEmpresa(Lists.newArrayList(host, programador, sala,sala2,arquitecto,programador2,epson,dell,leader))
 		empresaDSL = new EmpresaDSL(empresa)
+		empresaDSL.anfitrion(host)
 	}
 	
 	@Test
@@ -44,7 +54,7 @@ class DslTests {
 			.anfitrion(host)
 			.planificar(reunion)
 	        .cancelar({
-	            porcentajeDeAsistencia.esMenor(70)
+	            porcentajeDeAsistenciaMenorA(70)
 	        })
     }
     
