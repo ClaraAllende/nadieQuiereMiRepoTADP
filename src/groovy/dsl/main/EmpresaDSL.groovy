@@ -15,6 +15,7 @@ import org.joda.time.DateTime
 import org.joda.time.Hours
 
 import com.google.common.collect.Lists
+import com.google.common.collect.Sets;
 
 class EmpresaDSL {
 	

@@ -47,13 +47,13 @@ class DslTests {
 	def disGrafico	= new GeneradorDeContexto().newGraphicDesigner(propDiseniadorGrafico, Propiedad.empty(), Propiedad.empty())
 	def programador 	= new GeneradorDeContexto().newProgramador(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
 	def programador2 	= new GeneradorDeContexto().newProgramador(new Propiedad("proyecto", "Notes"), Propiedad.empty(), Propiedad.empty())
-	def otroDisGrafico	= new GeneradorDeContexto().newGraphicDesigner(propDiseniadorGrafico, Propiedad.empty(), Propiedad.empty())
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++ definición requerimientos para requerimientos +++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def reqPLDeMobiliame = new Requerimiento([propProjectLeader,propProyectoMobiliame])
 	def reqDiseniadorGr  = new Requerimiento([propDiseniadorGrafico])
+	def reqOtroDisGrafi	 = new Requerimiento([propDiseniadorGrafico])
 	def reqProyector	 = new Requerimiento([propCanion])
 	def reqNotebook		 = new Requerimiento([propNotebook])
 	def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
