@@ -146,8 +146,7 @@ public class Empresa {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
 		for (Requerimiento requerimiento : criterios) {
-			candidatos.add(requerimiento
-					.teSatisfacenDurante(horas, vencimiento));
+			candidatos.add(requerimiento.teSatisfacenDurante(horas, vencimiento));
 		}
 		return candidatos;
 	}

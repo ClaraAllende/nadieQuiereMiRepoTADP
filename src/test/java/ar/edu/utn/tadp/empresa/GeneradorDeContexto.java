@@ -26,7 +26,11 @@ public class GeneradorDeContexto {
 	}
 	
 	public Persona newProjectLeader(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
-		return this.newPersona(Rol.PROYECT_LEADER, proyecto, sector, edificio);
+		return this.newPersona(Rol.PROJECT_LEADER, proyecto, sector, edificio);
+	}
+	
+	public Persona newGraphicDesigner(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
+		return this.newPersona(Rol.DIS_GRAFICO, proyecto, sector, edificio);
 	}
 	
 	private Persona newPersona(Rol rol, Propiedad proyecto, Propiedad sector, Propiedad edificio) {

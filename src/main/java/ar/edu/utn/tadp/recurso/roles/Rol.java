@@ -13,7 +13,7 @@ public abstract class Rol {
 			new CostoPorHora(BigDecimal.valueOf(29.0)));
 	public static final Rol DIS_SISTEMAS = new RolSimple("system designer",
 			new CostoPorHora(BigDecimal.valueOf(30.0)));
-	public static final Rol PROYECT_LEADER = new Lider("project leader",
+	public static final Rol PROJECT_LEADER = new Lider("project leader",
 			new CostoPorHora(BigDecimal.valueOf(35.0)));
 	public static final Rol GERENTE = new RolSimple("gerente",
 			new CostoPorHora(BigDecimal.valueOf(50.0)));

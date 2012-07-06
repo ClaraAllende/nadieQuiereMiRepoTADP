@@ -90,7 +90,7 @@ public class TratarCancelacionTest {
 		gerente3.setSector(sectorGerencia.getValor());
 		gerente3.setEdificio(edificioMadero.getValor());
 		gerente3.setNombre("Gerente3");
-		leader = new Persona(Rol.PROYECT_LEADER);
+		leader = new Persona(Rol.PROJECT_LEADER);
 		leader.setProyecto(proyectoApollo.getValor());
 		leader.setEdificio(edificioCatalinas.getValor());
 		leader.setNombre("NaNaNaLeader!");
