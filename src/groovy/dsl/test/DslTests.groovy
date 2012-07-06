@@ -68,7 +68,7 @@ class DslTests {
 		//reunion con el dsl en groovy. La batata de la vida :D
 		def reunion 	//no se hace nada con esto, pero me lo pide o se rompe. 
 		
-		def reunionGenerada = empresaDSL.anfitrion(host).con(1,{programador("Mobiliame")}).planificar(reunion)
+		def reunionGenerada = empresaDSL.anfitrion host con (1,{programador("Mobiliame")}) planificar reunion
 		
 
 		/*
