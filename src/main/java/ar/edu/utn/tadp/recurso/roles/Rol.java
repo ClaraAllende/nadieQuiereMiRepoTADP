@@ -9,7 +9,7 @@ import ar.edu.utn.tadp.recurso.Recurso;
 public abstract class Rol {
 	public static final Rol ARQUITECTO = new RolSimple("arquitecto",
 			new CostoPorHora(BigDecimal.valueOf(25.0)));
-	public static final Rol DIS_GRAFICO = new RolSimple("grafic designer",
+	public static final Rol DIS_GRAFICO = new RolSimple("graphic designer",
 			new CostoPorHora(BigDecimal.valueOf(29.0)));
 	public static final Rol DIS_SISTEMAS = new RolSimple("system designer",
 			new CostoPorHora(BigDecimal.valueOf(30.0)));

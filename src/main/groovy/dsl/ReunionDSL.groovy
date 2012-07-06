@@ -1,5 +1,0 @@
-package dsl
-
-class ReunionDsl {
-
-}
