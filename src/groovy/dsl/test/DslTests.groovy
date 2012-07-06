@@ -32,27 +32,37 @@ class DslTests {
 	}
 	
 	@Test
+	//rompe porque la empresa no tiene recursos de posta todavía... hay que armar todo el contexto y medio es una paja :P
     void testSegundoCoso(){
-        empresaDSL.planificar(reunion).con(1, {projectMgr("Mobiliame")}) 
-        .con(1, {liderTecnico("Mobiliame")}) 
-        .con(2,{diseniadorGrafico()})
-        .con(1,{proyector()})
-        .con(1,{notebook()}) 
-        .cancelar({
-            porcentajeDeAsistencia.esMenor(70)
-        })
+        def reunion		// No hago nada con esto
+		empresaDSL
+			.con(1).projectLeader("Mobiliame")
+	        .con(1).liderTecnico("Mobiliame")
+	        .con(2).diseniadorGrafico()
+	        .con(1).proyector()
+	        .con(1).notebook() 
+			.anfitrion(host)
+			.planificar(reunion)
+	        .cancelar({
+	            porcentajeDeAsistencia.esMenor(70)
+	        })
     }
     
     @Test
     void testSegundoCosoPrima(){
-        empresaDSL planificar reunion con un projectMgr "Mobiliame"
-        con un liderTecnico "Mobiliame"
-        con dos diseniadorGrafico()
-        con un proyector()
-        con un notebook()
-        cancelar si{
-            porcentajeDeAsistencia.esMenor(70)
-        }
+        def reunion		//No hago nada con esto.
+		
+		empresaDSL.
+			con 1 projectLeader "Mobiliame"
+	        con 1 liderTecnico "Mobiliame"
+	        con 1 diseniadorGrafico()
+	        con 1 proyector()
+	        con 1 notebook()
+			anfitrion host
+			planificar reunion
+	        cancelar si{
+	            porcentajeDeAsistencia.esMenor(70)
+	        }
     }
 	
 	@Test
@@ -61,14 +71,15 @@ class DslTests {
 		//reunion En java. Se pueden hacer un par de inlines, pero pierde expresividad.
 		def propProgramador = new Propiedad("rol","Programador")
 		def propProyectoMobiliame = new Propiedad("proyecto","Mobiliame")
-		def requerimiento = new Requerimiento(Lists.newArrayList(propProgramador,propProyectoMobiliame))
-		def requerimientos = Lists.newArrayList(requerimiento)
+		def requerimiento = new Requerimiento([propProgramador,propProyectoMobiliame])
+		def requerimientos = [requerimiento]
 		def reunionPosta = empresa.createReunion(host,requerimientos, Hours.THREE, DateTime.now().plusDays(2));
 		
 		//reunion con el dsl en groovy. La batata de la vida :D
 		def reunion 	//no se hace nada con esto, pero me lo pide o se rompe. 
 		
-		def reunionGenerada = empresaDSL.anfitrion host con (1,{programador("Mobiliame")}) planificar reunion
+//		def reunionGenerada = empresaDSL.anfitrion host con (1,{programador("Mobiliame")}) planificar reunion
+		def reunionGenerada = empresaDSL.con 1 programador "Mobiliame" anfitrion host planificar reunion
 		
 
 		/*
