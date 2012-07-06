@@ -8,9 +8,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
 import ar.edu.utn.tadp.empresa.Empresa;
-import ar.edu.utn.tadp.empresa.GeneradorDeContexto;
 import ar.edu.utn.tadp.excepcion.UserException;
-import ar.edu.utn.tadp.propiedad.Propiedad;
 import ar.edu.utn.tadp.recurso.Persona;
 import ar.edu.utn.tadp.recurso.Recurso;
 import ar.edu.utn.tadp.requerimiento.Requerimiento;
