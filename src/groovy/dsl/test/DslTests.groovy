@@ -83,8 +83,8 @@ class DslTests {
 		empresa = new GeneradorDeContexto()
 		.newEmpresa([host, programador,leader, disGrafico2,leader2,leader3,leader4,arquitecto2,arquitecto3,gerente,gerente2,sala])
 		empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
-		def reqDeMarketing = new Requerimiento(propMarketing)
-		def reqDeGerente= new Requerimiento(new Propiedad("rol","Gerente"))
+		def reqDeMarketing = new Requerimiento([propMarketing])
+		def reqDeGerente= new Requerimiento([new Propiedad("rol","Gerente")])
 		def requerimientos1= [reqPLDeMobiliame, reqPLDeZarlanga, reqPLDeGC, reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing, reqDeGerente,reqDeGerente]
 		def reunionPosta = empresa.createReunion(host,requerimientos1, Hours.THREE, DateTime.now().plusDays(2));
 	

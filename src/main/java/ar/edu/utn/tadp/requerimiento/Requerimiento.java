@@ -122,10 +122,12 @@ public class Requerimiento {
 	public ArrayList<Recurso> teSatisfacenDurante(final Hours horas,
 			final DateTime vencimiento) {
 		final ArrayList<Recurso> recursos = new ArrayList<Recurso>();
-		for (final Recurso recurso : meSatisfacen) {
-			if (recurso.tenesDisponibleAntesDe(horas, vencimiento))
-				recursos.add(recurso);
-		}
+		Collection <Recurso> aux = meSatisfacen;
+		for (final Recurso recurso : aux) {
+			if(recurso.tenesDisponibleAntesDe(horas, vencimiento)){
+				recursos.add(recurso);				
+			}
+			}			
 		if (recursos.isEmpty())
 			throw new UserException("No hay recurso que satisfaga el requerimiento: "+this.toString());
 		return recursos;

@@ -11,6 +11,7 @@ import org.joda.time.Interval;
 import org.joda.time.ReadableDuration;
 
 import ar.edu.utn.tadp.excepcion.UserException;
+import ar.edu.utn.tadp.recurso.Recurso;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -30,7 +31,11 @@ public class Agenda {
 	private final List<Evento> eventos = new ArrayList<Evento>();
 
 	public void ocupate(Evento evento) {
-		this.eventos.add(evento);
+		if (this.disponibleDurante(evento.getIntervalo())){
+			this.eventos.add(evento);
+		} else
+		throw new UserException("Este horario se encuentra ocupado.");
+
 	}
 
 	public boolean disponibleDurante(Interval unIntervalo) {

@@ -69,9 +69,11 @@ class EmpresaDSL {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def sector(sector){
 		agregarRequerimiento(cantidad, [new Propiedad("Sector", sector)])
+		this
 	}
 	def gerente(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol", "Gerente")])
+		this
 	}
 	def programador(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol","programador")])
