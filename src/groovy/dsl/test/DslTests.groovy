@@ -1,12 +1,10 @@
-package dsl.test;
-
+package dsl.test
 import static org.junit.Assert.*
 
 import ar.edu.utn.tadp.empresa.Empresa.*
 import ar.edu.utn.tadp.empresa.GeneradorDeContexto
 import ar.edu.utn.tadp.propiedad.Propiedad
 import ar.edu.utn.tadp.requerimiento.Requerimiento
-import org.mockito.Mockito.*
 
 
 import org.joda.time.DateTime
@@ -25,9 +23,15 @@ class DslTests {
 	
 	def propProjectLeader = new Propiedad("rol","project leader")
 	def propProyectoMobiliame = new Propiedad("proyecto","Mobiliame")
+	def propProyectoZarlanga = new Propiedad("proyecto","Zarlanga Object Manager Abstract System")
+	def propProyectoGC= new Propiedad("proyecto", "Automatic Losing Reference Counter Garbage Collector")
 	def propDiseniadorGrafico = new Propiedad("rol", "graphic designer")
 	def propNotebook = new Propiedad("tipo", "notebook")
 	def propCanion = new Propiedad("tipo", "proyector")
+    def propProgramador = new Propiedad("rol", "programador")
+	def propMarketing = new Propiedad("Sector",
+			"Marketing");
+	
 
 	
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -37,27 +41,41 @@ class DslTests {
 	def empresaDSL
 	def empresa
 	def leader 	= new GeneradorDeContexto().newProjectLeader(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
+	def leader2 	= new GeneradorDeContexto().newProjectLeader(propProyectoZarlanga, Propiedad.empty(), Propiedad.empty())
+	def leader3= new GeneradorDeContexto().newProjectLeader(propProyectoGC,Propiedad.empty(),Propiedad.empty())
 	def host 	= new GeneradorDeContexto().newGerente(Propiedad.empty(), Propiedad.empty(), Propiedad.empty())
 	def sala 	= new GeneradorDeContexto().newSala(Propiedad.empty())
 	def sala2 	= new GeneradorDeContexto().newSala(Propiedad.empty())
 	def sala3 	= new GeneradorDeContexto().newSala(Propiedad.empty())
 	def canion 	= new GeneradorDeContexto().newProyector(Propiedad.empty())
 	def notebook 	= new GeneradorDeContexto().newRecurso(new Propiedad("tipo", "notebook"), Propiedad.empty())
-	def arquitecto 	= new GeneradorDeContexto().newArquitecto(new Propiedad("proyecto", "ACE"), Propiedad.empty(), Propiedad.empty())
+	def arquitecto 	= new GeneradorDeContexto().newArquitecto(new Propiedad("proyecto", "Mobiliame"), Propiedad.empty(), Propiedad.empty())
 	def disGrafico	= new GeneradorDeContexto().newGraphicDesigner(propDiseniadorGrafico, Propiedad.empty(), Propiedad.empty())
 	def programador 	= new GeneradorDeContexto().newProgramador(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
-	def programador2 	= new GeneradorDeContexto().newProgramador(new Propiedad("proyecto", "Notes"), Propiedad.empty(), Propiedad.empty())
+	def programador2 	= new GeneradorDeContexto().newProgramador(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
+	def programador3 	= new GeneradorDeContexto().newProgramador(new Propiedad("sector", "Marketing"), propProyectoMobiliame, Propiedad.empty())
+	def arquitecto2 	= new GeneradorDeContexto().newArquitecto(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
+	def arquitecto3 	= new GeneradorDeContexto().newArquitecto(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
+	def disGrafico2 	= new GeneradorDeContexto().newGraphicDesigner(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
+	def leader4 	= new GeneradorDeContexto().newProjectLeader(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
+	def gerente	= new GeneradorDeContexto().newGerente(propProyectoGC, Propiedad.empty(), Propiedad.empty())
+	def gerente2= new GeneradorDeContexto().newGerente(propProyectoZarlanga, Propiedad.empty(), Propiedad.empty())
 	
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++ definición requerimientos para requerimientos +++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	def reqPLDeMobiliame = new Requerimiento([propProjectLeader,propProyectoMobiliame])
+	def reqProgramador = new Requerimiento([propProgramador])
 	def reqDiseniadorGr  = new Requerimiento([propDiseniadorGrafico])
 	def reqOtroDisGrafi	 = new Requerimiento([propDiseniadorGrafico])
 	def reqProyector	 = new Requerimiento([propCanion])
 	def reqNotebook		 = new Requerimiento([propNotebook])
-	def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
-
+	def reqProgramadorMobiliame= new Requerimiento([propProgramador,propProyectoMobiliame])
+	def reqDiseniadorMobiliame= new Requerimiento([propDiseniadorGrafico,propProyectoMobiliame])
+	def reqPLDeZarlanga = new Requerimiento([propProjectLeader,propProyectoZarlanga])
+	def reqPLDeGC = new Requerimiento([propProjectLeader,propProyectoGC])
+	def requerimientos3=[reqProgramadorMobiliame,reqProgramadorMobiliame,reqProgramadorMobiliame,reqDiseniadorMobiliame/*,reqLiderTecnico*/]
+	
 	@Before
 	void setUp(){
 		
@@ -67,7 +85,33 @@ class DslTests {
 	}
 	
 	@Test
-    void testSegundoCoso(){
+	void testPrimeraReunion(){
+		def requerimientos1= [reqPLDeMobiliame, reqPLDeZarlanga, reqPLDeGC, reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing, reqDeGerente,reqDeGerente]
+		def reqDeMarketing = new Requerimiento(propMarketing)
+		def reqDeGerente= new Requerimiento(new Propiedad("rol","Gerente"))
+		def reunionPosta = empresa.createReunion(host,requerimientos1, Hours.THREE, DateTime.now().plusDays(2));
+		def reunion	// No hago nada con esto
+		def reunionGenerada =
+			empresaDSL	
+				.con(1).projectLeader("Mobiliame")
+				.con(1).projectLeader("Zarlanga Object Manager Abstract System")
+				.con(1).projectLeader("Automatic Losing Reference Counter Garbage Collector")
+				.con(5).sector("Marketing")
+				.con(2).gerente()
+				.planificar(reunion)
+				.cancelar({porcentajeDeAsistenciaMenorA(70)})
+				.getReunion()
+				//en algún momento solucionaremos lo de estos asserts :P
+				assertTrue(reunionPosta.getRecursos().containsAll(reunionGenerada.getRecursos()))
+				assertTrue(reunionGenerada.getRecursos().containsAll(reunionPosta.getRecursos()))
+				assertEquals(reunionPosta.getAnfitrion(), reunionGenerada.getAnfitrion())
+				assertTrue(reunionPosta.getTratamientos().containsAll(reunionGenerada.getTratamientos()))
+				assertTrue(reunionGenerada.getTratamientos().containsAll(reunionPosta.getTratamientos()))
+	}
+	
+	@Test
+    void testSegundaReunion(){
+		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
         // reunión en java
 		
         def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
@@ -83,7 +127,8 @@ class DslTests {
 		        .con(1).proyector()
 		        .con(1).notebook() 
 				.planificar(reunion)
-		        .cancelar({ porcentajeDeAsistenciaMenorA(70) })
+		        .cancelar({ projectManagerCancela() })
+				.cancelar({buscar(arquitecto,"Mobiliame")})
 				.getReunion()
 		       
 			
@@ -96,8 +141,9 @@ class DslTests {
     }
     
     @Test
-    void testSegundoCosoPrima(){
-    	def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
+    void testSegundaReunionSinParentesis(){
+		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
+		    	def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
 		
 		
     	def reunion		//No hago nada con esto.
@@ -116,6 +162,29 @@ class DslTests {
 			assertTrue(reunionGenerada.getTratamientos().containsAll(reunionPosta.getTratamientos()))
     }
 	
+	@Test
+	void testTerceraReunion(){
+	
+		def reunionPosta = empresa.createReunion(host,requerimientos3, Hours.THREE, DateTime.now().plusDays(2));
+			def reunion
+			def reunionGenerada= 
+				empresaDSL
+				.con(1).projectLeader("Mobiliame")
+				//  			.con(1).liderTecnico()
+								.con(3).programador("Mobiliame")
+								.con(1).diseniadorGrafico("Mobiliame")
+								.planificar(reunion)
+								//.cancelar({fecha("30/7/2012))
+								.cancelar({replanificar()})
+								.getReunion()
+								
+					assertTrue(reunionPosta.getRecursos().containsAll(reunionGenerada.getRecursos()))
+					assertTrue(reunionGenerada.getRecursos().containsAll(reunionPosta.getRecursos()))
+					assertEquals(reunionPosta.getAnfitrion(), reunionGenerada.getAnfitrion())
+					assertTrue(reunionPosta.getTratamientos().containsAll(reunionGenerada.getTratamientos()))
+					assertTrue(reunionGenerada.getTratamientos().containsAll(reunionPosta.getTratamientos()))
+					   
+	}
 	@Test
 	void testHumilde(){
 		

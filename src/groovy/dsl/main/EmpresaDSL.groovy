@@ -53,10 +53,24 @@ class EmpresaDSL {
 		reunion.addTratamientoPorAsistenciaMinima(numero)
 	}
 	
+	def projectManagerCancela(){
+		reunion.addTratamientoPorObligatoriedad()
+	}
 	
+	def buscar(rol, proyecto){
+		con(rol,proyecto)
+	}
+	
+	def replanificar(){
+		reunion.agregarTratamientoPorReplanificacion()
+	}
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++ Personas ++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def sector(sector){
+		agregarRequerimiento(cantidad, [new Propiedad("Sector", sector)])
+	}
+	
 	def programador(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol","programador")])
 		this
@@ -79,6 +93,11 @@ class EmpresaDSL {
 	
 	def diseniadorGrafico(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol","graphic designer")])
+		this
+	}
+
+	def diseniadorGrafico(proyecto){
+		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","graphic designer")])
 		this
 	}
 
