@@ -19,6 +19,8 @@ public abstract class Rol {
 			new CostoPorHora(BigDecimal.valueOf(50.0)));
 	public static final Rol PROGRAMADOR = new RolSimple("programador",
 			new CostoPorHora(BigDecimal.valueOf(150.0)));
+	public static final Rol LIDER_TECNICO= new RolSimple("lider tecnico", 
+			new CostoPorHora(BigDecimal.valueOf(300.0)));
 
 	private final CostoPorHora costoPorHora;
 	protected String nombre;

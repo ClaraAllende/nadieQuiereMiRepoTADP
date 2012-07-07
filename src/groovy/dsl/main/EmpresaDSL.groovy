@@ -70,7 +70,9 @@ class EmpresaDSL {
 	def sector(sector){
 		agregarRequerimiento(cantidad, [new Propiedad("Sector", sector)])
 	}
-	
+	def gerente(){
+		agregarRequerimiento(cantidad, [new Propiedad("rol", "Gerente")])
+	}
 	def programador(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol","programador")])
 		this
@@ -81,6 +83,11 @@ class EmpresaDSL {
 		this
 	}
 
+	def liderTecnico(){
+		agregarRequerimiento(cantidad, [new Propiedad("rol","Lider Tecnico")])
+		this
+	}
+	
 	def liderTecnico(proyecto){
 		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","Lider Tecnico")])
 		this

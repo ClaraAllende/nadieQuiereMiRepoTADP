@@ -16,6 +16,11 @@ public class GeneradorDeContexto {
 	public Persona newProgramador(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
 		return this.newPersona(Rol.PROGRAMADOR, proyecto, sector, edificio);
 	}
+	
+	public Persona newTechnicalLeader(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
+		return this.newPersona(Rol.LIDER_TECNICO, proyecto, sector, edificio);
+	}
+
 
 	public Persona newArquitecto(Propiedad proyecto, Propiedad sector, Propiedad edificio) {
 		return this.newPersona(Rol.ARQUITECTO, proyecto, sector, edificio);

@@ -29,8 +29,8 @@ class DslTests {
 	def propNotebook = new Propiedad("tipo", "notebook")
 	def propCanion = new Propiedad("tipo", "proyector")
     def propProgramador = new Propiedad("rol", "programador")
-	def propMarketing = new Propiedad("Sector",
-			"Marketing");
+	def propMarketing = new Propiedad("Sector","Marketing")
+	def propLiderTecnico = new Propiedad("rol", "Lider tecnico")
 	
 
 	
@@ -60,7 +60,7 @@ class DslTests {
 	def leader4 	= new GeneradorDeContexto().newProjectLeader( Propiedad.empty(), new Propiedad("sector", "Marketing"),Propiedad.empty())
 	def gerente	= new GeneradorDeContexto().newGerente(propProyectoGC, Propiedad.empty(), Propiedad.empty())
 	def gerente2= new GeneradorDeContexto().newGerente(propProyectoZarlanga, Propiedad.empty(), Propiedad.empty())
-	
+	def technicalLeader= new GeneradorDeContexto().newTechnicalLeader(propProyectoMobiliame, propLiderTecnico,Propiedad.empty())
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++ definición requerimientos para requerimientos +++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -68,6 +68,7 @@ class DslTests {
 	def reqProgramador = new Requerimiento([propProgramador])
 	def reqDiseniadorGr  = new Requerimiento([propDiseniadorGrafico])
 	def reqOtroDisGrafi	 = new Requerimiento([propDiseniadorGrafico])
+	def reqTechnicalLeaderMobiliame = new Requerimiento([propLiderTecnico, propProyectoMobiliame])
 	def reqProyector	 = new Requerimiento([propCanion])
 	def reqNotebook		 = new Requerimiento([propNotebook])
 	def reqProgramadorMobiliame= new Requerimiento([propProgramador,propProyectoMobiliame])
@@ -75,21 +76,18 @@ class DslTests {
 	def reqPLDeZarlanga = new Requerimiento([propProjectLeader,propProyectoZarlanga])
 	def reqPLDeGC = new Requerimiento([propProjectLeader,propProyectoGC])
 	def requerimientos3=[reqProgramadorMobiliame,reqProgramadorMobiliame,reqProgramadorMobiliame,reqDiseniadorMobiliame/*,reqLiderTecnico*/]
-	
-	@Before
-	void setUp(){
 		
-		empresa = new GeneradorDeContexto()
-				.newEmpresa([host, programador,leader, disGrafico, canion, notebook, sala])
-		empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
-	}
-	
 	@Test
 	void testPrimeraReunion(){
+		// fixture
+		empresa = new GeneradorDeContexto()
+		.newEmpresa([host, programador,leader, disGrafico2,leader2,leader3,leader4,arquitecto2,arquitecto3,gerente,gerente2,sala])
+		empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
 		def reqDeMarketing = new Requerimiento(propMarketing)
-		def requerimientos1= [reqPLDeMobiliame, reqPLDeZarlanga, reqPLDeGC, reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing, reqDeGerente,reqDeGerente]
 		def reqDeGerente= new Requerimiento(new Propiedad("rol","Gerente"))
+		def requerimientos1= [reqPLDeMobiliame, reqPLDeZarlanga, reqPLDeGC, reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing, reqDeGerente,reqDeGerente]
 		def reunionPosta = empresa.createReunion(host,requerimientos1, Hours.THREE, DateTime.now().plusDays(2));
+	
 		def reunion	// No hago nada con esto
 		def reunionGenerada =
 			empresaDSL	
@@ -101,6 +99,7 @@ class DslTests {
 				.planificar(reunion)
 				.cancelar({porcentajeDeAsistenciaMenorA(70)})
 				.getReunion()
+				
 				//en algún momento solucionaremos lo de estos asserts :P
 				assertTrue(reunionPosta.getRecursos().containsAll(reunionGenerada.getRecursos()))
 				assertTrue(reunionGenerada.getRecursos().containsAll(reunionPosta.getRecursos()))
@@ -111,7 +110,10 @@ class DslTests {
 	
 	@Test
     void testSegundaReunion(){
-		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
+		empresa = new GeneradorDeContexto()
+		.newEmpresa([host, programador,leader, disGrafico, canion, technicalLeader, notebook, sala])
+		empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
+		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook,reqTechnicalLeaderMobiliame	]
         // reunión en java
 		
         def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
@@ -122,7 +124,7 @@ class DslTests {
 		def reunionGenerada = 
 			empresaDSL
 				.con(1).projectLeader("Mobiliame")
-//  			.con(1).liderTecnico("Mobiliame")
+    			.con(1).liderTecnico("Mobiliame")
 		        .con(2).diseniadorGrafico()
 		        .con(1).proyector()
 		        .con(1).notebook() 
@@ -142,6 +144,9 @@ class DslTests {
     
     @Test
     void testSegundaReunionSinParentesis(){
+		empresa = new GeneradorDeContexto()
+		.newEmpresa([host, programador,leader, disGrafico, canion, notebook, sala])
+empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
 		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
 		    	def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
 		
@@ -164,13 +169,15 @@ class DslTests {
 	
 	@Test
 	void testTerceraReunion(){
-	
+		empresa = new GeneradorDeContexto()
+		.newEmpresa([host, programador,leader, disGrafico, programador2,programador3, technicalLeader,sala])
+empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
 		def reunionPosta = empresa.createReunion(host,requerimientos3, Hours.THREE, DateTime.now().plusDays(2));
 			def reunion
 			def reunionGenerada= 
 				empresaDSL
 				.con(1).projectLeader("Mobiliame")
-				//  			.con(1).liderTecnico()
+					  			.con(1).liderTecnico()
 								.con(3).programador("Mobiliame")
 								.con(1).diseniadorGrafico("Mobiliame")
 								.planificar(reunion)
@@ -187,6 +194,9 @@ class DslTests {
 	}
 	@Test
 	void testHumilde(){
+		empresa = new GeneradorDeContexto()
+		.newEmpresa([host, programador,leader, disGrafico, canion, notebook, sala])
+empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
 		
 		//reunion En java. Se pueden hacer un par de inlines, pero pierde expresividad.
 		def propProgramador = new Propiedad("rol","Programador")
