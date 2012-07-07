@@ -49,15 +49,15 @@ class DslTests {
 	def sala3 	= new GeneradorDeContexto().newSala(Propiedad.empty())
 	def canion 	= new GeneradorDeContexto().newProyector(Propiedad.empty())
 	def notebook 	= new GeneradorDeContexto().newRecurso(new Propiedad("tipo", "notebook"), Propiedad.empty())
-	def arquitecto 	= new GeneradorDeContexto().newArquitecto(new Propiedad("proyecto", "Mobiliame"), Propiedad.empty(), Propiedad.empty())
-	def disGrafico	= new GeneradorDeContexto().newGraphicDesigner(propDiseniadorGrafico, Propiedad.empty(), Propiedad.empty())
+	def arquitecto 	= new GeneradorDeContexto().newArquitecto(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
+	def disGrafico	= new GeneradorDeContexto().newGraphicDesigner(propProyectoMobiliame, propDiseniadorGrafico, Propiedad.empty())
 	def programador 	= new GeneradorDeContexto().newProgramador(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
 	def programador2 	= new GeneradorDeContexto().newProgramador(propProyectoMobiliame, Propiedad.empty(), Propiedad.empty())
-	def programador3 	= new GeneradorDeContexto().newProgramador(new Propiedad("sector", "Marketing"), propProyectoMobiliame, Propiedad.empty())
-	def arquitecto2 	= new GeneradorDeContexto().newArquitecto(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
-	def arquitecto3 	= new GeneradorDeContexto().newArquitecto(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
-	def disGrafico2 	= new GeneradorDeContexto().newGraphicDesigner(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
-	def leader4 	= new GeneradorDeContexto().newProjectLeader(new Propiedad("sector", "Marketing"), Propiedad.empty(), Propiedad.empty())
+	def programador3 	= new GeneradorDeContexto().newProgramador( propProyectoMobiliame,new Propiedad("sector", "Marketing"), Propiedad.empty())
+	def arquitecto2 	= new GeneradorDeContexto().newArquitecto(Propiedad.empty(),new Propiedad("sector", "Marketing"),  Propiedad.empty())
+	def arquitecto3 	= new GeneradorDeContexto().newArquitecto( Propiedad.empty(),new Propiedad("sector", "Marketing"), Propiedad.empty())
+	def disGrafico2 	= new GeneradorDeContexto().newGraphicDesigner( Propiedad.empty(),new Propiedad("sector", "Marketing"), Propiedad.empty())
+	def leader4 	= new GeneradorDeContexto().newProjectLeader( Propiedad.empty(), new Propiedad("sector", "Marketing"),Propiedad.empty())
 	def gerente	= new GeneradorDeContexto().newGerente(propProyectoGC, Propiedad.empty(), Propiedad.empty())
 	def gerente2= new GeneradorDeContexto().newGerente(propProyectoZarlanga, Propiedad.empty(), Propiedad.empty())
 	
@@ -86,8 +86,8 @@ class DslTests {
 	
 	@Test
 	void testPrimeraReunion(){
-		def requerimientos1= [reqPLDeMobiliame, reqPLDeZarlanga, reqPLDeGC, reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing, reqDeGerente,reqDeGerente]
 		def reqDeMarketing = new Requerimiento(propMarketing)
+		def requerimientos1= [reqPLDeMobiliame, reqPLDeZarlanga, reqPLDeGC, reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing,reqDeMarketing, reqDeGerente,reqDeGerente]
 		def reqDeGerente= new Requerimiento(new Propiedad("rol","Gerente"))
 		def reunionPosta = empresa.createReunion(host,requerimientos1, Hours.THREE, DateTime.now().plusDays(2));
 		def reunion	// No hago nada con esto
