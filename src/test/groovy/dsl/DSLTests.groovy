@@ -92,6 +92,7 @@ class DslTests {
 		.con(1).projectLeader("Automatic Losing Reference Counter Garbage Collector")
 		.con(5).sector("Marketing")
 		.con(2).gerente()
+		.deDuracion(Hours.THREE)
 		.planificarReunion()
 		.cancelar({porcentajeDeAsistenciaMenorA(70)
 		})
@@ -111,7 +112,6 @@ class DslTests {
 		.newEmpresa([host, programador,leader, disGrafico, canion, technicalLeader, notebook, sala])
 		empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
 		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook,reqTechnicalLeaderMobiliame	]
-		// reunión en java
 		
 		def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
 		
@@ -125,6 +125,7 @@ class DslTests {
 		.con(2).diseniadorGrafico()
 		.con(1).proyector()
 		.con(1).notebook() 
+		.deDuracion(Hours.THREE)
 		.planificarReunion()
 		.cancelar({ projectManagerCancela()
 		})
@@ -149,16 +150,13 @@ class DslTests {
 		def requerimientos2 = [reqPLDeMobiliame, reqDiseniadorGr, reqProyector, reqNotebook]
 		def reunionPosta = empresa.createReunion(host,requerimientos2, Hours.THREE, DateTime.now().plusDays(2));
 		
-		
-		def reunion		//No hago nada con esto.
-		
 		def reunionGenerada = 
 		empresaDSL
-		//	        con 1 liderTecnico "Mobiliame"
 		.con(1).projectLeader("Mobiliame")
 		.con(1).diseniadorGrafico() 
 		.con(1).proyector()
-		.con(1).notebook() 
+		.con(1).notebook()
+		.deDuracion(Hours.THREE)
 		.planificarReunion()
 		.cancelar({porcentajeDeAsistenciaMenorA(70)})
 		.getReunion()
@@ -184,8 +182,8 @@ class DslTests {
 		.con(1).liderTecnico()
 		.con(3).programador("Mobiliame")
 		.con(1).diseniadorGrafico("Mobiliame")
+		.deDuracion(Hours.THREE)
 		.planificarReunion()
-		//.cancelar({fecha("30/7/2012))
 		.cancelar({replanificar()
 		})
 		.getReunion()
@@ -202,18 +200,15 @@ class DslTests {
 		.newEmpresa([host, programador,leader, disGrafico, canion, notebook, sala])
 		empresaDSL = new EmpresaDSL(empresa).anfitrion(host)
 		
-		//reunion En java. Se pueden hacer un par de inlines, pero pierde expresividad.
 		def propProgramador = new Propiedad("rol","Programador")
 		def requerimiento = new Requerimiento([propProgramador,propProyectoMobiliame])
 		def requerimientos = [requerimiento]
 		def reunionPosta = empresa.createReunion(host,requerimientos, Hours.THREE, DateTime.now().plusDays(2));
 		
-		//reunion con el dsl en groovy. La batata de la vida :D
-		def reunion 	//no se hace nada con esto, pero me lo pide o se rompe. 
-		
 		def reunionGenerada = empresaDSL
 			.con(1).programador("Mobiliame")
 			.anfitrion(host)
+			.deDuracion(Hours.THREE)
 			.planificarReunion().getReunion()
 		
 		

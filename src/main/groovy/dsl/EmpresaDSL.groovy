@@ -14,6 +14,7 @@ class EmpresaDSL {
 	def empresa 
 	def host
 	def reunion
+	def duracion
 	
 	def EmpresaDSL(unaEmpresa){
 		empresa = unaEmpresa
@@ -24,8 +25,13 @@ class EmpresaDSL {
 		this
 	}
 	
+	def deDuracion(duracion) {
+		this.duracion = duracion
+		this
+	}
+	
 	def planificarReunion(){
-		reunion = empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
+		reunion = empresa.createReunion(host, requerimientos, duracion, DateTime.now().plusDays(2))
 		this
 	}
 	
