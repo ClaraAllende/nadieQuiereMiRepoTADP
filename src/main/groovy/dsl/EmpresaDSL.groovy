@@ -1,16 +1,11 @@
 package dsl
 
-
-import ar.edu.utn.tadp.empresa.Empresa
-import ar.edu.utn.tadp.propiedad.Propiedad
-import ar.edu.utn.tadp.recurso.Persona
-import ar.edu.utn.tadp.requerimiento.Requerimiento
-import ar.edu.utn.tadp.recurso.roles.Rol
-
 import org.joda.time.DateTime
 import org.joda.time.Hours
 
-import com.google.common.collect.Lists
+import ar.edu.utn.tadp.empresa.Empresa.*
+import ar.edu.utn.tadp.propiedad.Propiedad
+import ar.edu.utn.tadp.requerimiento.Requerimiento
 
 class EmpresaDSL {
 	
@@ -18,6 +13,7 @@ class EmpresaDSL {
 	def requerimientos = new ArrayList()
 	def empresa 
 	def host
+	def reunion
 	
 	def EmpresaDSL(unaEmpresa){
 		empresa = unaEmpresa
@@ -28,25 +24,47 @@ class EmpresaDSL {
 		this
 	}
 	
-	def planificar(reunion){
-		empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
+	def planificar(sarlanga){
+		reunion = empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
+		this
 	}
 	
-	def con(cuantos){//, unBloque){
+	def con(cuantos){
 		cantidad = cuantos
-		//cantidad.times({this.with(unBloque)})
 		this
 	}
 
-	def conUn(block){
-		this.with(block)
+	def cancelar(block){
+		block
 		this
 	}
 	
+	def porcentajeDeAsistenciaMenorA(numero){
+		reunion.addTratamientoPorAsistenciaMinima(numero)
+	}
 	
+	def projectManagerCancela(){
+		reunion.addTratamientoPorObligatoriedad()
+	}
+	
+	def buscar(rol, proyecto){
+		con(rol,proyecto)
+	}
+	
+	def replanificar(){
+		reunion.agregarTratamientoPorReplanificacion()
+	}
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++ Personas ++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	def sector(sector){
+		agregarRequerimiento(cantidad, [new Propiedad("Sector", sector)])
+		this
+	}
+	def gerente(){
+		agregarRequerimiento(cantidad, [new Propiedad("rol", "Gerente")])
+		this
+	}
 	def programador(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol","programador")])
 		this
@@ -57,6 +75,11 @@ class EmpresaDSL {
 		this
 	}
 
+	def liderTecnico(){
+		agregarRequerimiento(cantidad, [new Propiedad("rol","Lider Tecnico")])
+		this
+	}
+	
 	def liderTecnico(proyecto){
 		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","Lider Tecnico")])
 		this
@@ -69,6 +92,11 @@ class EmpresaDSL {
 	
 	def diseniadorGrafico(){
 		agregarRequerimiento(cantidad, [new Propiedad("rol","graphic designer")])
+		this
+	}
+
+	def diseniadorGrafico(proyecto){
+		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","graphic designer")])
 		this
 	}
 
@@ -89,6 +117,5 @@ class EmpresaDSL {
 	def agregarRequerimiento(cant, propiedades){
 		cant.with {requerimientos << new Requerimiento(propiedades)}
 	}
-	
 	
 }
