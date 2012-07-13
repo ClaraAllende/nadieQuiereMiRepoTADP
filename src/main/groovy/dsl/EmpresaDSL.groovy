@@ -1,5 +1,7 @@
 package dsl
 
+import groovy.lang.MetaClass;
+
 import org.joda.time.DateTime
 import org.joda.time.Hours
 
@@ -18,6 +20,7 @@ class EmpresaDSL {
 	
 	def EmpresaDSL(unaEmpresa){
 		empresa = unaEmpresa
+		initialize()
 	}
 	
 	def anfitrion(anfitrion){
@@ -67,57 +70,25 @@ class EmpresaDSL {
 		agregarRequerimiento(cantidad, [new Propiedad("Sector", sector)])
 		this
 	}
-	def gerente(){
-		agregarRequerimiento(cantidad, [new Propiedad("rol", "Gerente")])
-		this
-	}
-	def programador(){
-		agregarRequerimiento(cantidad, [new Propiedad("rol","programador")])
-		this
-	}
 	
-	def programador(proyecto){
-		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","programador")])
-		this
-	}
-
-	def liderTecnico(){
-		agregarRequerimiento(cantidad, [new Propiedad("rol","Lider Tecnico")])
-		this
-	}
-	
-	def liderTecnico(proyecto){
-		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","Lider Tecnico")])
-		this
-	}
-	
-	def projectLeader(proyecto){
-		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","project leader")])
-		this
-	} 
-	
-	def diseniadorGrafico(){
-		agregarRequerimiento(cantidad, [new Propiedad("rol","graphic designer")])
-		this
-	}
-
-	def diseniadorGrafico(proyecto){
-		agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol","graphic designer")])
-		this
-	}
-
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	//++ otros recursos ++++++++++++++++++++++++++++++++++++
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	
-	def proyector(){
-			agregarRequerimiento(cantidad, [new Propiedad("tipo","proyector")])
-		this
-	}
-
-	def notebook(){
-			agregarRequerimiento(cantidad, [new Propiedad("tipo","notebook")])
-		this
+	def initialize() {
+		def map = [
+			gerente:"Gerente",
+			programador:"programador",
+			liderTecnico:"Lider Tecnico",
+			projectLeader:"project leader",
+			diseniadorGrafico:"graphic designer"]
+		
+		map.each { key, value ->
+			this.getClass().metaClass."$key" << { -> agregarRequerimiento(cantidad, [new Propiedad("rol",value)]); this }
+			this.getClass().metaClass."$key" << { String proyecto -> agregarRequerimiento(cantidad, [new Propiedad("proyecto",proyecto), new Propiedad("rol",value)]); this } 
+		}
+		
+		def recursos = ["proyector", "notebook"]
+		
+		recursos.each { value -> 
+			this.getClass().metaClass."$value" << { -> agregarRequerimiento(cantidad, [new Propiedad("tipo",value)]); this }
+		} 
 	}
 	
 	def agregarRequerimiento(cant, propiedades){
