@@ -66,12 +66,13 @@ class EmpresaDSL {
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	//++ Personas ++++++++++++++++++++++++++++++++++++++++++
 	//++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	def sector(sector){
-		agregarRequerimiento(cantidad, [new Propiedad("Sector", sector)])
-		this
-	}
-	
 	def initialize() {
+		def otroRequerimiento = [ "sector" ]
+		
+		otroRequerimiento.each { value ->
+			this.getClass().metaClass."$value" << { String requerimiento -> agregarRequerimiento(cantidad, [new Propiedad(value,requerimiento)]); this} 
+		}
+		
 		def map = [
 			gerente:"Gerente",
 			programador:"programador",
