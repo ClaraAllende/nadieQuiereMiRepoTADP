@@ -24,7 +24,7 @@ class EmpresaDSL {
 		this
 	}
 	
-	def planificar(sarlanga){
+	def planificarReunion(){
 		reunion = empresa.createReunion(host, requerimientos, Hours.THREE, DateTime.now().plusDays(2))
 		this
 	}
