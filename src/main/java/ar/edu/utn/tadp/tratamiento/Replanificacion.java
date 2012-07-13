@@ -6,7 +6,7 @@ import ar.edu.utn.tadp.organizables.Reunion;
 import ar.edu.utn.tadp.recurso.Recurso;
 
 /**
- * Trata de replaniﬁcar la reunion con todos sus requerimientos para mas
+ * Trata de replanificar la reunion con todos sus requerimientos para mas
  * adelante.
  * 
  * @version 15-06-2012
