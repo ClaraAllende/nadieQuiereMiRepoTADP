@@ -34,7 +34,7 @@ public class RequerimientoTest {
 	private final Propiedad rolArquitecto = new Propiedad("rol", "Arquitecto");
 	private final Propiedad rolGerente = new Propiedad("Rol", "Gerente");
 	private final Propiedad rolGraficDesigner = new Propiedad("Rol",
-			"Grafic Designer");
+			"graphic designer");
 	private final Propiedad rolSystemDesigner = new Propiedad("Rol",
 			"System Designer");
 	private final Propiedad rolProjectLeader = new Propiedad("Rol",

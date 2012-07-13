@@ -28,34 +28,48 @@ import com.google.common.collect.Lists;
  */
 public class CrearReunionTest {
 
-	private final Propiedad proyectoApollo 	= new Propiedad("proyecto", "Apollo");
-	private final Propiedad proyectoMir 	= new Propiedad("Proyecto", "Mir");
-	private final Propiedad proyectoShuttle = new Propiedad("Proyecto", "shuttle");
-	private final Propiedad sectorGerencia 	= new Propiedad("sector", "gerencia");
-	private final Propiedad rolProgramador 	= new Propiedad("rol", "programador");
-	private final Propiedad rolArquitecto 	= new Propiedad("rol", "Arquitecto");
-	private final Propiedad rolGerente 		= new Propiedad("Rol", "Gerente");
-	private final Propiedad edificioMadero 	= new Propiedad("edificio", "Madero");
-	private final Propiedad tipoSala 		= new Propiedad("tipo", "Sala");
-	private final Propiedad tipoProyector 	= new Propiedad("tipo", "Proyector");
-	private final Propiedad sectDesarrollo	= new Propiedad("Sector", "Desarrollo");
-	private final Propiedad rolProjectLider	= new Propiedad("Rol","Project Leader");
-	private final Propiedad edifCatalinas 	= new Propiedad("edificio","catalinas");
+	private final Propiedad proyectoApollo = new Propiedad("proyecto", "Apollo");
+	private final Propiedad proyectoMir = new Propiedad("Proyecto", "Mir");
+	private final Propiedad proyectoShuttle = new Propiedad("Proyecto",
+			"shuttle");
+	private final Propiedad sectorGerencia = new Propiedad("sector", "gerencia");
+	private final Propiedad rolProgramador = new Propiedad("rol", "programador");
+	private final Propiedad rolArquitecto = new Propiedad("rol", "Arquitecto");
+	private final Propiedad rolGerente = new Propiedad("Rol", "Gerente");
+	private final Propiedad edificioMadero = new Propiedad("edificio", "Madero");
+	private final Propiedad tipoSala = new Propiedad("tipo", "Sala");
+	private final Propiedad tipoProyector = new Propiedad("tipo", "Proyector");
+	private final Propiedad sectDesarrollo = new Propiedad("Sector",
+			"Desarrollo");
+	private final Propiedad rolProjectLider = new Propiedad("Rol",
+			"Project Leader");
+	private final Propiedad edifCatalinas = new Propiedad("edificio",
+			"catalinas");
 
-	private GeneradorDeContexto generador = new GeneradorDeContexto();
-	
-	private Persona programador1 = generador.newProgramador(proyectoApollo, sectDesarrollo, edifCatalinas);
-	private Persona programador2 = generador.newProgramador(proyectoApollo, sectDesarrollo, edificioMadero);
-	private Persona programador3 = generador.newProgramador(proyectoMir, sectDesarrollo, edificioMadero);
-	private Persona arquitecto1 = generador.newArquitecto(proyectoApollo, sectDesarrollo, edifCatalinas);
-	private Persona gerente1 = generador.newGerente(proyectoApollo, sectorGerencia, edificioMadero);
-	private Persona gerente2 = generador.newGerente(proyectoMir, sectorGerencia, edificioMadero);
-	private Persona gerente3 = generador.newGerente(proyectoShuttle, sectorGerencia, edificioMadero);
-	private Persona leader = generador.newProjectLeader(proyectoShuttle, null, edificioMadero);
-	private Recurso sala = generador.newSala(edificioMadero);
-	private Recurso proyector1 = generador.newProyector(edificioMadero);
-	private Recurso proyector2 = generador.newProyector(edifCatalinas);
-	private Empresa unaEmpresa = generador.newEmpresa(Lists.newArrayList(leader,arquitecto1,gerente1,gerente2,programador1,programador2,programador3,sala,proyector1,proyector2));
+	private final GeneradorDeContexto generador = new GeneradorDeContexto();
+
+	private final Persona programador1 = generador.newProgramador(
+			proyectoApollo, sectDesarrollo, edifCatalinas);
+	private final Persona programador2 = generador.newProgramador(
+			proyectoApollo, sectDesarrollo, edificioMadero);
+	private final Persona programador3 = generador.newProgramador(proyectoMir,
+			sectDesarrollo, edificioMadero);
+	private final Persona arquitecto1 = generador.newArquitecto(proyectoApollo,
+			sectDesarrollo, edifCatalinas);
+	private final Persona gerente1 = generador.newGerente(proyectoApollo,
+			sectorGerencia, edificioMadero);
+	private final Persona gerente2 = generador.newGerente(proyectoMir,
+			sectorGerencia, edificioMadero);
+	private final Persona gerente3 = generador.newGerente(proyectoShuttle,
+			sectorGerencia, edificioMadero);
+	private final Persona leader = generador.newProjectLeader(proyectoShuttle,
+			null, edificioMadero);
+	private final Recurso sala = generador.newSala(edificioMadero);
+	private final Recurso proyector1 = generador.newProyector(edificioMadero);
+	private final Recurso proyector2 = generador.newProyector(edifCatalinas);
+	private final Empresa unaEmpresa = generador.newEmpresa(Lists.newArrayList(
+			leader, arquitecto1, gerente1, gerente2, programador1,
+			programador2, programador3, sala, proyector1, proyector2));
 
 	/**
 	 * Se reserva una sala para todos los integrantes de un proyecto
@@ -122,20 +136,16 @@ public class CrearReunionTest {
 		propiedadesSala.add(tipoSala);
 
 		final Requerimiento sala = new Requerimiento(propiedadesSala);
-		final Collection<Propiedad> propiedadesProjectLeader = new ArrayList<Propiedad>();
-
-		propiedadesProjectLeader.add(rolProjectLider);
-		final Requerimiento requerimientoProjectLeader = new Requerimiento(
-				propiedadesProjectLeader);
-
 		final ArrayList<Propiedad> propiedadesProgramador = new ArrayList<Propiedad>();
 		propiedadesProgramador.add(rolProgramador);
-		final Requerimiento reqProgramador1 = new Requerimiento(propiedadesProgramador);
-		final Requerimiento reqProgramador2 = new Requerimiento(propiedadesProgramador);
-		final Requerimiento reqProgramador3 = new Requerimiento(propiedadesProgramador);
+		final Requerimiento reqProgramador1 = new Requerimiento(
+				propiedadesProgramador);
+		final Requerimiento reqProgramador2 = new Requerimiento(
+				propiedadesProgramador);
+		final Requerimiento reqProgramador3 = new Requerimiento(
+				propiedadesProgramador);
 
 		final List<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
-		requerimientos.add(requerimientoProjectLeader);
 		requerimientos.add(reqProgramador1);
 		requerimientos.add(reqProgramador2);
 		requerimientos.add(reqProgramador3);
@@ -201,10 +211,9 @@ public class CrearReunionTest {
 		final Requerimiento reqArquitecto = new Requerimiento(propiedadesArq);
 		final ArrayList<Requerimiento> requerimientos = new ArrayList<Requerimiento>();
 		requerimientos.add(reqArquitecto);
-		unaEmpresa.createReunion(gerente1, 
-								requerimientos, 
-								intervalo.toDuration().toStandardHours(), 
-								intervalo.getEnd().plusDays(2));
+		unaEmpresa
+				.createReunion(gerente1, requerimientos, intervalo.toDuration()
+						.toStandardHours(), intervalo.getEnd().plusDays(2));
 
 		Assert.assertTrue(arquitecto1.estasOcupadoDurante(intervalo));
 	}
