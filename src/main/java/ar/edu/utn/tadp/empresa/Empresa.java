@@ -50,14 +50,14 @@ public class Empresa {
 	 * @see Reunion
 	 * @see Requerimiento
 	 */
-	public Reunion createReunion(final Persona anfitrion, 
-								List<Requerimiento> requerimientos, 
-								final Hours horas,
-								final DateTime vencimiento) {
-		
+	public Reunion createReunion(final Persona anfitrion,
+			List<Requerimiento> requerimientos, final Hours horas,
+			final DateTime vencimiento) {
+
 		// Agrega a los requerimientos al anfitrion.
 		Requerimiento reqAnfitrion = new Requerimiento(anfitrion);
-		requerimientos.add(reqAnfitrion);
+		// XXX Lo agrego primero, asi el candidato no se pierde!
+		requerimientos.add(0, reqAnfitrion);
 
 		// Si no hay requerimiento de sala, se agrega, etc...
 		List<Requerimiento> indespensables = this
@@ -66,11 +66,10 @@ public class Empresa {
 
 		this.satisfaceRequerimientos(requerimientos);
 
-		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
-		candidatos = seleccionarCandidatos(requerimientos, horas, vencimiento);
+		ArrayList<ArrayList<Recurso>> candidatos = seleccionarCandidatos(
+				requerimientos, horas, vencimiento);
 
-		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
-		asistentes = this.seleccionarCandidatos(candidatos,
+		ArrayList<Recurso> asistentes = this.seleccionarAsistentes(candidatos,
 				new OrganizableSimple(anfitrion, horas));
 
 		/*
@@ -146,7 +145,8 @@ public class Empresa {
 		ArrayList<ArrayList<Recurso>> candidatos = new ArrayList<ArrayList<Recurso>>();
 
 		for (Requerimiento requerimiento : criterios) {
-			candidatos.add(requerimiento.teSatisfacenDurante(horas, vencimiento));
+			candidatos.add(requerimiento
+					.teSatisfacenDurante(horas, vencimiento));
 		}
 		return candidatos;
 	}
@@ -158,7 +158,7 @@ public class Empresa {
 		}
 	}
 
-	private ArrayList<Recurso> seleccionarCandidatos(
+	private ArrayList<Recurso> seleccionarAsistentes(
 			final ArrayList<ArrayList<Recurso>> candidatos, Organizable ubicable) {
 
 		ManejadorDeReglas manejadorDeReglas = new ManejadorDeReglas(
@@ -168,12 +168,38 @@ public class Empresa {
 
 		ArrayList<Recurso> asistentes = new ArrayList<Recurso>();
 		for (ArrayList<Recurso> recursos : candidatos) {
+
 			Recurso recurso = manejadorDeReglas.filtra(recursos);
+			recursos.remove(recurso);
+			// Si sacamos repetido, se veulve a filtrar.
+			while (this.estaIncluido(recurso, asistentes)) {
+				if (recursos.isEmpty()) {
+					throw new UserException("No hay candidatos disponibles");
+				}
+				recursos.remove(recurso);
+				recurso = manejadorDeReglas.filtra(recursos);
+			}
 			recurso.apuntateALaReunion(asistentes);
 		}
 		if (asistentes.isEmpty())
 			throw new UserException("No hay candidatos disponibles");
 		return asistentes;
+	}
+
+	/**
+	 * Verifica si un recurso ya esta incluido entre los asistentes.
+	 * 
+	 * @param recurso
+	 * @param asistentes
+	 * @return <code>true</code> si esta incluido.
+	 */
+	private boolean estaIncluido(Recurso recurso, ArrayList<Recurso> asistentes) {
+		Requerimiento perfil = new Requerimiento(recurso);
+		for (Recurso asistente : asistentes) {
+			if (perfil.cumpleCondiciones(asistente))
+				return true;
+		}
+		return false;
 	}
 
 	/**
@@ -208,7 +234,8 @@ public class Empresa {
 			final List<Requerimiento> requerimientos) {
 		for (final Requerimiento requerimiento : requerimientos) {
 			for (final Propiedad propiedad : requerimiento.getCondiciones()) {
-				if (propiedad.getTipo().equals("sala")) {
+				if ("sala"
+						.equals(propiedad.getValor().toString().toLowerCase())) {
 					return true;
 				}
 			}
@@ -228,8 +255,8 @@ public class Empresa {
 		;
 
 		return obtenerTotalHoras(
-				Iterables.filter(this.getRecursos(), cumplenPropiedad), unosEventos,
-				fechaLimite);
+				Iterables.filter(this.getRecursos(), cumplenPropiedad),
+				unosEventos, fechaLimite);
 	}
 
 	private Hours obtenerTotalHoras(Iterable<Recurso> recursos,
