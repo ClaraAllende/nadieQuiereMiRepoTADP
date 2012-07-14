@@ -7,7 +7,7 @@ import ar.edu.utn.tadp.propiedad.Propiedad
 import ar.edu.utn.tadp.requerimiento.Requerimiento
 import dsl.manejadores.ManejadorDeRecursos;
 import dsl.manejadores.ManejadorDeRequerimientos;
-import dsl.manejadores.ManejadorDeRoles
+import dsl.manejadores.Manejadores
 
 class EmpresaDSL {
 	
@@ -18,7 +18,7 @@ class EmpresaDSL {
 	def reunion
 	def duracion
 	
-	def EmpresaDSL(unaEmpresa, manejadores = [new ManejadorDeRoles(), new ManejadorDeRecursos(), new ManejadorDeRequerimientos()]){
+	def EmpresaDSL(unaEmpresa, manejadores = [new Manejadores(), new ManejadorDeRecursos(), new ManejadorDeRequerimientos()]){
 		empresa = unaEmpresa
 		initialize(manejadores)
 	}

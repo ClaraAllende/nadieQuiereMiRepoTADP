@@ -2,7 +2,7 @@ package dsl.manejadores
 
 import ar.edu.utn.tadp.propiedad.Propiedad
 
-class ManejadorDeRoles {
+class Manejadores {
 
 	def map = [
 			gerente:"Gerente",
@@ -11,7 +11,7 @@ class ManejadorDeRoles {
 			projectLeader:"project leader",
 			diseniadorGrafico:"graphic designer"]
 	
-	def ManejadorDeRoles() {
+	def Manejadores() {
 	}
 	
 	def void execute(empresaDSL) {
