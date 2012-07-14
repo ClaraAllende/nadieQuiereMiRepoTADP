@@ -352,7 +352,7 @@ public class TratarCancelacionTest {
 
 		// Se crea la reunion.
 		final Reunion reunion = unaEmpresa.createReunion(arquitecto1,
-				requerimientos, Hours.hours(22), DateTime.now().plusDays(1));
+				requerimientos, Hours.hours(23), DateTime.now().plusDays(1));
 		assertFalse(reunion.isCancelada());
 
 		// Se agregan los tratamientos.
