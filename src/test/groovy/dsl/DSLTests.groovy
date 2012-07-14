@@ -25,7 +25,7 @@ class DslTests {
 	def propNotebook = new Propiedad("tipo", "notebook")
 	def propCanion = new Propiedad("tipo", "proyector")
 	def propProgramador = new Propiedad("rol", "programador")
-	def propMarketing = new Propiedad("Sector","Marketing")
+	def propMarketing = new Propiedad("sector","Marketing")
 	def propLiderTecnico = new Propiedad("rol", "Lider tecnico")
 	
 	
