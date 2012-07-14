@@ -5,9 +5,9 @@ import org.joda.time.DateTime
 import ar.edu.utn.tadp.empresa.Empresa.*
 import ar.edu.utn.tadp.propiedad.Propiedad
 import ar.edu.utn.tadp.requerimiento.Requerimiento
-import dsl.manejadores.ManejadorDeRecursos;
-import dsl.manejadores.ManejadorDeRequerimientos;
-import dsl.manejadores.Manejadores
+import dsl.manejadores.ConfiguradorDeRecursos;
+import dsl.manejadores.ConfiguradorDeRequerimientos;
+import dsl.manejadores.ConfiguradorDeRoles
 
 class EmpresaDSL {
 	
@@ -18,7 +18,7 @@ class EmpresaDSL {
 	def reunion
 	def duracion
 	
-	def EmpresaDSL(unaEmpresa, manejadores = [new Manejadores(), new ManejadorDeRecursos(), new ManejadorDeRequerimientos()]){
+	def EmpresaDSL(unaEmpresa, manejadores = [new ConfiguradorDeRoles(), new ConfiguradorDeRecursos(), new ConfiguradorDeRequerimientos()]){
 		empresa = unaEmpresa
 		initialize(manejadores)
 	}
